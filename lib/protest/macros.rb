@@ -6,10 +6,10 @@ module Protest
   end # ContextMacros
 
   module AssertionMacros
-    def equals(expected)
-      assert_block do
-        actual = yield
-        failure("expected #{expected.inspect}, not #{actual.inspect}") unless expected == actual
+    def equals(expected, &block)
+      assert_block do |scope|
+        actual = scope.instance_eval(&block)
+        expected == actual || failure("expected #{expected.inspect}, not #{actual.inspect}")
       end
     end
     
@@ -17,10 +17,10 @@ module Protest
       equals(nil, &block)
     end
 
-    def raises(expected)
-      assert_block do
+    def raises(expected, &block)
+      assert_block do |scope|
         begin
-          yield
+          scope.instance_eval(&block)
         rescue Exception => e
           failure("should have raised #{expected}, not #{e.class}") unless expected == e.class
         else
@@ -29,10 +29,13 @@ module Protest
       end
     end
     
-    # def matches(matcher, &block)
-    #   expectation(@expectation, &block)
-    #   # equals(nil, &block)
-    # end
+    def matches(expected, &block)
+      expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
+      assert_block do |scope|
+        actual = scope.instance_eval(&block)
+        actual =~ expected || failure("expected #{expected.inspect}, not #{actual.inspect}")
+      end
+    end
   end # ContextMacros
 end # Protest
 

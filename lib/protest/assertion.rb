@@ -2,8 +2,9 @@ module Protest
   class Assertion
     def initialize(description, &block)
       @description = description
-      assert_block do
-        failure("expected to be true, not false") unless yield
+      assert_block do |scope|
+        actual = scope.instance_eval(&block)
+        actual || failure("expected to be true, not #{actual.inspect}")
       end
     end
 
@@ -15,11 +16,9 @@ module Protest
     end
 
     def run(binding_scope)
-      binding_scope.instance_eval(&@block)
-    rescue Failure => e
-      e
-    rescue Exception => e
-      raise Protest::Error.new("errored with #{e}", e)
+      @block.call(binding_scope)
     end
+
+    def failure(message) raise(Protest::Failure, message); end
   end # Assertion
 end # Protest

@@ -31,10 +31,10 @@ module Protest
         begin
           assertion.run(self)
           writer.print '.'
-        rescue Protest::Error => e
-          writer.print 'E'; @failures << e.asserted(assertion)
         rescue Protest::Failure => e
           writer.print 'F'; @failures << e.asserted(assertion)
+        rescue Exception => e
+          writer.print 'E'; @failures << Protest::Error.new("errored with #{e}", e).asserted(e)
         end
       end
     end
@@ -43,7 +43,5 @@ module Protest
       @parent.bootstrap(binder) if @parent
       binder.instance_eval(&@setup) if @setup
     end
-
-    def failure(message) raise(Protest::Failure, message); end
   end # Context
 end # Protest

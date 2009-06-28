@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'protest'
 require 'stringio'
 
 context "any context" do
@@ -52,5 +52,9 @@ context "nested context" do
   
   asserts("inner context inherits parent context setup").equals(10) do
     inner_nested_context.instance_variable_get(:@test_counter)
+  end
+
+  asserts("nested context name").equals("foo baz") do
+    inner_nested_context.to_s
   end
 end

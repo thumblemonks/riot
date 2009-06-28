@@ -10,7 +10,7 @@ module Protest
     end
 
     def to_s
-      @description
+      [@parent.to_s, @description].join(' ').strip
     end
 
     def context(description, &block)

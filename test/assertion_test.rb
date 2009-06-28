@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'protest'
 
 context "any assertion" do
   asserts("its description").equals("i will pass: expected [true]") do

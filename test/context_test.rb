@@ -6,7 +6,7 @@ context "any context" do
     @context = Protest::Context.new("a")
   end
 
-  denies("two contexts with same name are the same").equals(@context) { Protest::Context.new("a") }
+  # denies("two contexts with same name are the same").equals(@context) { Protest::Context.new("a") }
 
   context "that doesn't have passing tests" do
     setup do
@@ -16,11 +16,11 @@ context "any context" do
     end
 
     asserts("that failures are captured").equals(1) do
-      @context.errors.select{|e| e.kind_of?(Protest::Failure)}.length
+      @context.failures.select{|e| e.class == Protest::Failure}.length
     end
 
     asserts("that unexpected errors are captured").equals(1) do
-      @context.errors.select{|e| e.kind_of?(Protest::Error)}.length
+      @context.failures.select{|e| e.class == Protest::Error}.length
     end
   end # that doesn't have passing tests
 end # any context

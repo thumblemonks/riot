@@ -1,16 +1,16 @@
 module Protest
   class Context
-    attr_reader :assertions, :errors
+    attr_reader :assertions, :failures
     def initialize(description, parent=nil)
       @description = description
       @assertions = []
-      @errors = []
+      @failures = []
       @parent = parent
       @setup = nil
     end
 
     def to_s
-      [@parent.to_s, @description].join(' ').strip
+      @to_s ||= [@parent.to_s, @description].join(' ').strip
     end
 
     def context(description, &block)
@@ -31,18 +31,19 @@ module Protest
         begin
           assertion.run(self)
           writer.print '.'
-        rescue Protest::Failure => e
-          writer.print 'F'; @errors << e
         rescue Protest::Error => e
-          writer.print 'E'; @errors << e
+          writer.print 'E'; @failures << e.asserted(assertion)
+        rescue Protest::Failure => e
+          writer.print 'F'; @failures << e.asserted(assertion)
         end
       end
-      @errors
     end
 
     def bootstrap(binder)
       @parent.bootstrap(binder) if @parent
       binder.instance_eval(&@setup) if @setup
     end
+
+    def failure(message) raise(Protest::Failure, message); end
   end # Context
 end # Protest

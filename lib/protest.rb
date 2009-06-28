@@ -20,17 +20,39 @@ module Protest
   def self.run(writer=nil)
     writer ||= STDOUT
     start = Time.now
-    failures = @contexts.map { |context| context.run(writer) }.flatten
+    failures = @contexts.map { |context| context.run(writer) }.flatten.compact
     running_time = Time.now - start
 
     writer.puts "\n\n"
-    failures.each_with_index { |failure, idx|
-      message = ["##{idx + 1} - #{failure.to_s}"]
-      message += failure.backtrace
-      writer.puts message.join("\n") + "\n\n"
-    } unless failures.empty?
+    counter = 0
+    @contexts.each do |context|
+      context.failures.each do |failure|
+        counter += 1
+        message = ["##{counter} - #{context} asserted #{failure}"]
+        message += failure.backtrace
+        writer.puts message.join("\n") + "\n\n"
+      end
+    end
     assertions = @contexts.inject(0) { |acc, context| acc + context.assertions.length }
     writer.puts "#{@contexts.length} contexts, #{assertions} assertions: #{"%0.6f" % running_time} seconds"
+  end
+
+  #
+  # Failures
+
+  class Failure < Exception
+    def asserted(assertion)
+      @assertion = assertion
+      self
+    end
+    
+    def to_s; "#{@assertion}: #{super}"; end
+  end
+  class Error < Failure
+    def initialize(message, e)
+      super(message)
+      set_backtrace(e.backtrace)
+    end
   end
 end # Protest
 

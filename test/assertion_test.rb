@@ -1,31 +1,45 @@
 require 'protest'
 
-context "any assertion" do
+fake_object = Object.new
+
+context "basic assertion:" do
   asserts("its description").equals("i will pass: expected [true]") do
     Protest::Assertion.new("i will pass").to_s
   end
-end # any assertion
 
-context "passing assertion" do
-  asserts("true is expected") { Protest::Assertion.new("i will pass") { true }.run(Object.new) }
-  asserts("false on denial") { Protest::Assertion.new("i will fail").not { false }.run(Object.new) }
-  asserts("actual result is nil") { Protest::Assertion.new("i will fail").nil { nil }.run(Object.new) }
+  asserts("true is expected") { Protest::Assertion.new("i will pass") { true }.run(fake_object) }
 
-  asserts("provided block was executed and returned true") do
-    Protest::Assertion.new("i will pass").equals("foo bar") { "foo bar" }.run(Object.new)
-  end
-
-  asserts("expectation does not equal actual result") do
-    Protest::Assertion.new("i will fail").not.equals("foo") { "bar" }.run(Object.new)
-  end
-end # passing assertion
-
-context "failing assertions:" do
-  asserts("a Failure error is thrown").raises(Protest::Failure) do
-    Protest::Assertion.new("failure") { false }.run(Object.new)
+  asserts("a Failure if not true").raises(Protest::Failure) do
+    Protest::Assertion.new("i will pass") { false }.run(fake_object)
   end
 
   asserts("an Error error is thrown").raises(Protest::Error) do
-    Protest::Assertion.new("error") { raise Exception, "blah" }.run(Object.new)
+    Protest::Assertion.new("error") { raise Exception, "blah" }.run(fake_object)
   end
-end # failing assertions
+end # basic assertion
+
+context "equals assertion:" do
+  asserts("provided block was executed and returned true") do
+    Protest::Assertion.new("i will pass").equals("foo bar") { "foo bar" }.run(fake_object)
+  end
+
+  asserts("a Failure if results don't equal eachother").raises(Protest::Failure) do
+    Protest::Assertion.new("failure").equals("foo") { "bar" }.run(fake_object)
+  end
+end # equals assertion
+
+context "nil assertion:" do
+  asserts("actual result is nil") { Protest::Assertion.new("foo").nil { nil }.run(fake_object) }
+  asserts("a Failure if not nil").raises(Protest::Failure) do
+    Protest::Assertion.new("foo").nil { "a" }.run(fake_object)
+  end
+end # nil assertion
+
+# context "matching assertion:" do
+#   asserts("actual result matches expression") do
+#     Protest::Assertion.new("foo").matches(%r[.]) { "a" }.run(fake_object)
+#   end
+#   asserts("a Failure if not nil").raises(Protest::Failure) do
+#     Protest::Assertion.new("foo").matches(%r[.]) { "" }.run(fake_object)
+#   end
+# end # nil assertion

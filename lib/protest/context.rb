@@ -14,14 +14,19 @@ module Protest
     writer ||= STDOUT
     start = Time.now
     failures = @contexts.map { |context| context.run(writer) }.flatten
-    STDOUT.puts ''
     running_time = Time.now - start
+    report(running_time, failures)
+  end
+
+  def self.report(running_time, failures)
+    STDOUT.puts "\n\n"
     failures.each_with_index { |failure, idx|
       message = ["##{idx + 1} - #{failure.to_s}"]
       # message += failure.backtrace
-      STDOUT.puts message.join("\n")
+      STDOUT.puts message.join("\n") + "\n\n"
     } unless failures.empty?
-    STDOUT.puts "\n#{@contexts.length} contexts: #{"%0.6f" % running_time} seconds"
+    assertions = @contexts.inject(0) { |acc, context| acc + context.assertions.length }
+    STDOUT.puts "#{@contexts.length} contexts, #{assertions} assertions: #{"%0.6f" % running_time} seconds"
   end
 
   class Context
@@ -42,6 +47,10 @@ module Protest
 
     def asserts(description, &block)
       (assertions << Assertion.new(description, &block)).last
+    end
+
+    def denies(description, &block)
+      asserts(description, &block).not
     end
 
     def run(writer)

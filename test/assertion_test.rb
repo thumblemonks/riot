@@ -1,27 +1,28 @@
 require 'test_helper'
 
 context "any assertion" do
-  setup { @assertion = Protest::Assertion.new("i will pass") }
-  asserts("its description").equals("i will pass: expected [true]") { @assertion.to_s }
-end
+  asserts("its description").equals("i will pass: expected [true]") do
+    Protest::Assertion.new("i will pass").to_s
+  end
+end # any assertion
 
 context "passing assertion" do
-  setup do
-    assertion = Protest::Assertion.new("i will pass") { true }
-    @result = assertion.run(Object.new)
+  asserts("true is expected") do
+    Protest::Assertion.new("i will pass") { true }.run(Object.new)
   end
-  
-  asserts("true is expected") { @result == true }
-end
 
-context "assertion with equals" do
-  setup do
-    assertion = Protest::Assertion.new("i will pass").equals("foo bar") { "foo bar" }
-    @result = assertion.run(Object.new)
+  asserts("provided block was executed and returned true") do
+    Protest::Assertion.new("i will pass").equals("foo bar") { "foo bar" }.run(Object.new)
   end
-  
-  asserts("provided block was executed and returned true") { @result == true }
-end
+
+  asserts("false on denial") do
+    Protest::Assertion.new("i will fail").not { false }.run(Object.new)
+  end
+
+  asserts("expectation does not equal actual result") do
+    Protest::Assertion.new("i will fail").not.equals("foo") { "bar" }.run(Object.new)
+  end
+end # passing assertion
 
 context "failing assertion" do
   setup do
@@ -37,4 +38,4 @@ context "failing assertion" do
   asserts("failure message").equals(@expected_message) do
     @result.to_s
   end
-end
+end # failing assertion

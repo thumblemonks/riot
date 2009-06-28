@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'stringio'
 
 test_context = context "foo" do
   setup do
@@ -27,5 +28,11 @@ context "test context" do
   asserts("setup runs only once").equals(2) do
     test_context.run(StringIO.new)
     test_context.instance_variable_get(:@test_counter)
+  end
+end
+
+context "any context" do
+  denies("two contexts with same name are the same").equals(Protest::Context.new("a")) do
+    Protest::Context.new("a")
   end
 end

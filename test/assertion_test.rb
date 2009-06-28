@@ -46,3 +46,9 @@ context "matching assertion:" do
     Protest::Assertion.new("foo").matches("a") { "a" }.run(fake_object)
   end
 end # maching assertion
+
+context "a denial" do
+  asserts("that a passing assertion evaluates to false") do
+    Protest::Denial.new("foo") { false }.run(fake_object)
+  end
+end # a denial

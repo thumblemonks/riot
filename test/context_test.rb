@@ -6,7 +6,7 @@ context "any context" do
     @context = Protest::Context.new("a")
   end
 
-  # denies("two contexts with same name are the same").equals(@context) { Protest::Context.new("a") }
+  denies("two contexts with same name are the same").equals(@context) { Protest::Context.new("a") }
 
   context "that doesn't have passing tests" do
     setup do

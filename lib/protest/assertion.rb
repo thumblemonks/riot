@@ -21,4 +21,14 @@ module Protest
 
     def failure(message) raise(Protest::Failure, message); end
   end # Assertion
+
+  class Denial < Assertion
+    def run(binding_scope)
+      super
+    rescue Protest::Failure => e
+      true
+    else
+      failure("expected to fail, but did not")
+    end
+  end
 end # Protest

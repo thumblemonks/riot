@@ -1,10 +1,4 @@
 module Protest
-  module ContextMacros
-    # def denies(description, &block)
-    #   asserts(description, &block).not
-    # end
-  end # ContextMacros
-
   module AssertionMacros
     def equals(expected, &block)
       assert_block do |scope|
@@ -36,8 +30,7 @@ module Protest
         actual =~ expected || failure("expected #{expected.inspect}, not #{actual.inspect}")
       end
     end
-  end # ContextMacros
+  end # AssertionMacros
 end # Protest
 
-Protest::Context.instance_eval { include Protest::ContextMacros }
 Protest::Assertion.instance_eval { include Protest::AssertionMacros }

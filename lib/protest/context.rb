@@ -22,9 +22,8 @@ module Protest
       self.bootstrap(self)
     end
 
-    def asserts(description, &block)
-      (assertions << Assertion.new(description, &block)).last
-    end
+    def asserts(description, &block) new_assertion(Assertion, description, &block); end
+    def denies(description, &block) new_assertion(Denial, description, &block); end
 
     def run(writer)
       assertions.each do |assertion|
@@ -42,6 +41,10 @@ module Protest
     def bootstrap(binder)
       @parent.bootstrap(binder) if @parent
       binder.instance_eval(&@setup) if @setup
+    end
+  private
+    def new_assertion(klass, description, &block)
+      (assertions << klass.new(description, &block)).last
     end
   end # Context
 end # Protest

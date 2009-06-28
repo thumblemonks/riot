@@ -21,9 +21,8 @@ context "test context" do
     Protest.dequeue_context(test_context)
   end
 
-  asserts("assertion count").equals(2) do
-    test_context.assertions.length
-  end
+  asserts("context description").equals("foo") { test_context.to_s }
+  asserts("assertion count").equals(2) { test_context.assertions.length }
 
   asserts("setup runs only once").equals(2) do
     test_context.run(StringIO.new)

@@ -2,15 +2,18 @@ require 'protest/context'
 require 'protest/assertion'
 
 module Protest
-  def self.context(description, &block)
+  def self.contexts
     @contexts ||= []
-    context = Context.new(description)
+  end
+
+  def self.context(description, parent = nil, &block)
+    context = Context.new(description, parent)
     context.instance_eval(&block)
-    (@contexts << context).last
+    (contexts << context).last
   end
 
   def self.dequeue_context(context)
-    @contexts.delete(context)
+    contexts.delete(context)
   end
 
   def self.run(writer=nil)

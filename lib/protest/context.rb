@@ -1,18 +1,25 @@
 module Protest
   class Context
     attr_reader :assertions
-    def initialize(description)
-      @_description = description
+    def initialize(description, parent=nil)
+      @description = description
       @assertions = []
       @failures = []
+      @parent = parent
+      @setup = nil
     end
 
     def to_s
-      @_description
+      @description
+    end
+
+    def context(description, &block)
+      Protest.context(description, self, &block)
     end
 
     def setup(&block)
-      self.instance_eval(&block)
+      @setup = block
+      self.bootstrap(self)
     end
 
     def asserts(description, &block)
@@ -34,6 +41,11 @@ module Protest
         end
       end
       @failures
+    end
+
+    def bootstrap(binder)
+      @parent.bootstrap(binder) if @parent
+      binder.instance_eval(&@setup) if @setup
     end
   end # Context
 end # Protest

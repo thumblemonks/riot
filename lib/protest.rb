@@ -26,7 +26,7 @@ module Protest
     writer.puts "\n\n"
     failures.each_with_index { |failure, idx|
       message = ["##{idx + 1} - #{failure.to_s}"]
-      # message += failure.backtrace
+      message += failure.backtrace
       writer.puts message.join("\n") + "\n\n"
     } unless failures.empty?
     assertions = @contexts.inject(0) { |acc, context| acc + context.assertions.length }

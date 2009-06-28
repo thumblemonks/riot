@@ -20,28 +20,12 @@ context "passing assertion" do
   end
 end # passing assertion
 
-context "failing assertion" do
-  setup do
-    @expected_message = "test context asserted failure: expected [true], but received [false] instead"
-    assertion = Protest::Assertion.new("failure") { false }
-    begin
-      assertion.run(Protest::Context.new("test context"))
-    rescue Protest::Failure => e
-      @result = e
-    end
+context "failing assertions:" do
+  asserts("a Failure error is thrown").raises(Protest::Failure) do
+    Protest::Assertion.new("failure") { false }.run(Object.new)
   end
-  asserts("failure message").equals(@expected_message) { @result.to_s }
-end # failing assertion
 
-context "erroring assertion" do
-  setup do
-    @expected_message = "test context asserted error: expected [true], but errored with: blah"
-    assertion = Protest::Assertion.new("error") { raise Exception, "blah" }
-    begin
-      assertion.run(Protest::Context.new("test context"))
-    rescue Protest::Error => e
-      @result = e
-    end
+  asserts("an Error error is thrown").raises(Protest::Error) do
+    Protest::Assertion.new("error") { raise Exception, "blah" }.run(Object.new)
   end
-  asserts("error message").equals(@expected_message) { @result.to_s }
-end # failing assertion
+end # failing assertions

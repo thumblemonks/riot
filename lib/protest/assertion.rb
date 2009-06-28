@@ -10,7 +10,8 @@ module Protest
   class Assertion
     def initialize(description, &block)
       @description = description
-      @boolean_expectation = true
+      @evaluated_expectation = true
+      @expects_raise = false
       expectation(true, &block)
     end
 
@@ -19,7 +20,7 @@ module Protest
     end
 
     def not(&block)
-      @boolean_expectation = false
+      @evaluated_expectation = false
       expectation(@expectation, &block)
     end
 
@@ -27,14 +28,19 @@ module Protest
       expectation(expectation, &block)
     end
 
-    def run(context)
+    def raises(expectation, &block)
+      @expects_raise = true
+      expectation(expectation, &block)
+    end
+
+    def run(binding_scope)
       begin
-        actual = context.instance_eval(&@block)
+        actual = binding_scope.instance_eval(&@block)
       rescue Exception => e
-        message = "#{context} asserted #{self}, but errored with: #{e.to_s}"
-        raise Error.new(message, e)
+        errored("#{binding_scope} asserted #{self}, but errored with: #{e.to_s}", e) unless @expects_raise
+        actual = e.class
       end
-      assert(@expectation == actual, "#{context} asserted #{self}, but received [#{actual}] instead")
+      assert(@expectation == actual, "#{binding_scope} asserted #{self}, but received [#{actual}] instead")
     end
   private
     def expectation(expectation, &block)
@@ -43,8 +49,10 @@ module Protest
       self
     end
     
-    def assert(expression, msg)
-      @boolean_expectation == expression || raise(Failure, msg)
+    def errored(message, e); raise Error.new(message, e); end
+
+    def assert(evaluation, message)
+      @evaluated_expectation == evaluation || raise(Failure, message)
     end
   end # Assertion
 end # Protest

@@ -14,7 +14,7 @@ test_context = context "foo" do
   setup { @test_counter = 0 }
   asserts("a block returns true") { @test_counter += 1; true }
   asserts("another block returns true") { @test_counter += 1; true }
-end
+end # A CONTEXT THAT IS DEQUEUED
 
 context "test context" do
   setup { Protest.dequeue_context(test_context) }
@@ -39,8 +39,8 @@ nested_context = context "foo" do
   
   inner_nested_context = context("baz") do
     setup { @test_counter += 10 }
-  end
-end
+  end # A CONTEXT THAT IS DEQUEUED
+end # A CONTEXT THAT IS DEQUEUED
 
 context "nested context" do
   setup do

@@ -1,5 +1,6 @@
 require 'protest/context'
 require 'protest/assertion'
+require 'protest/macros'
 
 module Protest
   def self.contexts

@@ -26,10 +26,6 @@ module Protest
       (assertions << Assertion.new(description, &block)).last
     end
 
-    def denies(description, &block)
-      asserts(description, &block).not
-    end
-
     def run(writer)
       assertions.each do |assertion|
         begin

@@ -1,5 +1,11 @@
 module Protest
   class Failure < Exception; end
+  class Error < Exception
+    def initialize(message, e)
+      super(message)
+      set_backtrace(e.backtrace)
+    end
+  end
 
   class Assertion
     def initialize(description, &block)
@@ -22,7 +28,12 @@ module Protest
     end
 
     def run(context)
-      actual = context.instance_eval(&@block)
+      begin
+        actual = context.instance_eval(&@block)
+      rescue Exception => e
+        message = "#{context} asserted #{self}, but errored with: #{e.to_s}"
+        raise Error.new(message, e)
+      end
       assert(@expectation == actual, "#{context} asserted #{self}, but received [#{actual}] instead")
     end
   private

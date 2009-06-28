@@ -1,10 +1,10 @@
 module Protest
   class Context
-    attr_reader :assertions
+    attr_reader :assertions, :errors
     def initialize(description, parent=nil)
       @description = description
       @assertions = []
-      @failures = []
+      @errors = []
       @parent = parent
       @setup = nil
     end
@@ -32,11 +32,12 @@ module Protest
           assertion.run(self)
           writer.print '.'
         rescue Protest::Failure => e
-          writer.print 'F'
-          @failures << e
+          writer.print 'F'; @errors << e
+        rescue Protest::Error => e
+          writer.print 'E'; @errors << e
         end
       end
-      @failures
+      @errors
     end
 
     def bootstrap(binder)

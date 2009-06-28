@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "protest"
-  s.version  = "0.0.2"
+  s.version  = "0.0.3"
   s.date     = "2009-06-28"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]

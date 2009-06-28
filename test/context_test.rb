@@ -2,19 +2,10 @@ require 'test_helper'
 require 'stringio'
 
 test_context = context "foo" do
-  setup do
-    @test_counter = 0
-  end
+  setup { @test_counter = 0 }
 
-  asserts "a block returns true" do
-    @test_counter += 1
-    true
-  end
-
-  asserts "another block returns true" do
-    @test_counter += 1
-    true
-  end
+  asserts("a block returns true") { @test_counter += 1; true }
+  asserts("another block returns true") { @test_counter += 1; true }
 end
 
 context "test context" do

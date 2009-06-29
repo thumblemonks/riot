@@ -9,3 +9,8 @@ task :test do
   Dir.glob("./test/*_test.rb").each { |test| require test }
   Protest.run
 end
+
+desc "Run flog against library (except tests)"
+task :flog do
+  puts %x[find ./lib -name *.rb | xargs flog]
+end

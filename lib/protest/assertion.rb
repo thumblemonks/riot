@@ -19,6 +19,8 @@ module Protest
     def to_s; @description; end
   end # Assertion
 
+  # Denial will evaulate to true of the assertion failed in some way. Errors pass through. A Failure
+  # is generated if the assertion actually passed.
   class Denial < Assertion
     def run(binding_scope)
       super

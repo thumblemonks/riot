@@ -18,7 +18,7 @@ For instance, given a test file named `foo_test.rb`, you might have the followin
       denies("that it is valid") { @user.valid? }
     end
 
-Notice that you do not define a class anywhere. That would the entire contents of that test file.
+Notice that you do not define a class anywhere. That would be the entire contents of that test file.
 
 #### Example: Equality
 
@@ -93,11 +93,39 @@ When you want to test that an expression returns an object of an expected type:
       asserts("the balance").kind_of(Currency) { @user.balance }
     end
 
+#### Example: Nested contexts
+
+Oh yeah, Protest does those, too. The `setup` from each parent is "loaded" into the context and then the context is executed as normal. Test naming is a composite of the parent contexts' names. Here, we'll do a little Sinatra testing (see below for instructions on how to make it Protest work seamlessly with Sinatra tests).
+
+    context "My App:" do
+      setup { @app = MyApp }
+
+      context "get /" do
+        setup { get '/' }
+        # ...
+        # assertions
+
+        context "renders a body" do
+          setup { @body = last_response.body }
+          # ...
+          # assertions 
+        end
+      end
+      
+      context "get /books/1" do
+        setup { get '/books/1' }
+        # ...
+        # assertions
+      end
+    end
+
 #### More examples/documentation
 
 There are many more basic assertion modifiers to come. See below for writing Protest extensions if you want to help out.
 
-Also, see [the wiki](http://github.com/thumblemonks/protest) for more examples and documentation.
+See the TODO section for everything that's missing.
+
+Also, see [the wiki](http://wiki.github.com/thumblemonks/protest) for more examples and documentation.
 
 ## You say, "OMG! Why did you write this?"
 
@@ -252,6 +280,7 @@ TONS OF STUFF
 1. Documentation
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Need to know where in backtrace a test failed (line number, etc.)
+1. Uhhhhh ... a teardown method :)
 1. More assertion macros: kind\_of, throws, etc.
 1. Handle assertion macros better
 1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion. I don't want to add deny\_this and deny\_that macros
@@ -260,4 +289,5 @@ TONS OF STUFF
   1. 19.3: AssertionMacros#raises
   1. 17.8: AssertionMacros#equals
 1. Better error messages (maybe need to rename asserts to should for better readability)
+1. Perhaps: Multiple setup blocks in one context
 1. Perhaps: association macro chaining

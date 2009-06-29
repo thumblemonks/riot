@@ -1,8 +1,11 @@
+require 'protest/report'
 require 'protest/context'
 require 'protest/assertion'
 require 'protest/macros'
 
 module Protest
+  #
+  # Initializing logic
   def self.contexts
     @contexts ||= []
   end
@@ -17,40 +20,28 @@ module Protest
     contexts.delete(context)
   end
 
-  def self.run(writer=nil)
-    writer ||= STDOUT
-    start = Time.now
-    failures = @contexts.map { |context| context.run(writer) }.flatten.compact
-    running_time = Time.now - start
-
-    writer.puts "\n\n"
-    counter = 0
-    @contexts.each do |context|
-      context.failures.each do |failure|
-        counter += 1
-        message = ["##{counter} - #{context} asserted #{failure}"]
-        message += failure.backtrace
-        writer.puts message.join("\n") + "\n\n"
-      end
-    end
-    assertions = @contexts.inject(0) { |acc, context| acc + context.assertions.length }
-    writer.puts "#{@contexts.length} contexts, #{assertions} assertions: #{"%0.6f" % running_time} seconds"
+  def self.run(report=nil)
+    report ||= TextReport.new
+    report.start
+    @contexts.each { |context| context.run(report) }
+    report.stop
+    report.results
+    at_exit { exit false unless report.passed? }
   end
 
   #
-  # Failures
+  # Exception
 
   class Failure < Exception
-    def asserted(assertion)
+    attr_reader :assertion
+    def initialize(message, assertion)
+      super(message)
       @assertion = assertion
-      self
     end
-    
-    def to_s; "#{@assertion}: #{super}"; end
   end
   class Error < Failure
-    def initialize(message, e)
-      super(message)
+    def initialize(message, assertion, e)
+      super(message, assertion)
       set_backtrace(e.backtrace)
     end
   end

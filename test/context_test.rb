@@ -10,18 +10,16 @@ context "any context" do
 
   context "that doesn't have passing tests" do
     setup do
+      @report = Protest::NilReport.new
+      @context.asserts("a") { true }
       @context.asserts("b") { false }
       @context.asserts("c") { raise Exception, "blah" }
-      @context.run(StringIO.new)
+      @context.run(@report)
     end
 
-    asserts("that failures are captured").equals(1) do
-      @context.failures.select{|e| e.class == Protest::Failure}.length
-    end
-
-    asserts("that unexpected errors are captured").equals(1) do
-      @context.failures.select{|e| e.class == Protest::Error}.length
-    end
+    asserts("that passes are disctinct").equals(1) { @report.passes }
+    asserts("that failures are captured").equals(1) { @report.failures }
+    asserts("that unexpected errors are captured").equals(2) { @report.errors }
   end # that doesn't have passing tests
 end # any context
 
@@ -40,7 +38,7 @@ context "test context" do
   asserts("assertion count").equals(2) { test_context.assertions.length }
 
   asserts("setup runs only once").equals(2) do
-    test_context.run(StringIO.new)
+    test_context.run(Protest::NilReport.new)
     test_context.instance_variable_get(:@test_counter)
   end
 end
@@ -67,7 +65,7 @@ context "nested context" do
   setup do
     [nested_context, inner_nested_context, other_nested_context].each do |c|
       Protest.dequeue_context(c)
-      c.run(StringIO.new)
+      c.run(Protest::NilReport.new)
     end
   end
   

@@ -1,4 +1,5 @@
 module Protest
+
   class Assertion
     def initialize(description, &block)
       @description = description
@@ -8,18 +9,14 @@ module Protest
       end
     end
 
-    def to_s; @description; end
-
     def assert_block(&block)
       @block = block if block_given?
       self
     end
 
-    def run(binding_scope)
-      @block.call(binding_scope)
-    end
-
-    def failure(message) raise(Protest::Failure, message); end
+    def run(binding_scope) @block.call(binding_scope); end
+    def failure(message) raise Protest::Failure.new(message, self); end
+    def to_s; @description; end
   end # Assertion
 
   class Denial < Assertion
@@ -30,5 +27,6 @@ module Protest
     else
       failure("expected to fail, but did not")
     end
-  end
+  end # Denial
+
 end # Protest

@@ -1,10 +1,9 @@
 module Protest
   class Context
-    attr_reader :assertions, :failures
+    attr_reader :description, :assertions
     def initialize(description, parent=nil)
       @description = description
       @assertions = []
-      @failures = []
       @parent = parent
       @setup = nil
       bootstrap(self)
@@ -15,31 +14,27 @@ module Protest
       binder.instance_eval(&@setup) if @setup
     end
 
-    def to_s
-      @to_s ||= [@parent.to_s, @description].join(' ').strip
-    end
-
-    def context(description, &block)
-      Protest.context(description, self, &block)
-    end
-
     def setup(&block)
       @setup = block
       self.instance_eval(&block)
     end
 
+    def to_s; @to_s ||= [@parent.to_s, @description].join(' ').strip; end
+    def context(description, &block) Protest.context(description, self, &block); end
+
     def asserts(description, &block) new_assertion(Assertion, description, &block); end
     def denies(description, &block) new_assertion(Denial, description, &block); end
 
-    def run(writer)
+    def run(report)
       assertions.each do |assertion|
         begin
-          assertion.run(self)
-          writer.print '.'
+          result = assertion.run(self)
         rescue Protest::Failure => e
-          writer.print 'F'; @failures << e.asserted(assertion)
+          result = e
         rescue Exception => e
-          writer.print 'E'; @failures << Protest::Error.new("errored with #{e}", e).asserted(e)
+          result = Protest::Error.new("errored with #{e}", assertion, e)
+        ensure
+          report.record self, result
         end
       end
     end

@@ -48,24 +48,27 @@ end
 # 
 # Nested Context
 
-inner_nested_context = nil
+inner_nested_context, other_nested_context = nil, nil
 nested_context = context "foo" do
   setup do
     @test_counter = 0
+    @foo = "bar"
   end
   asserts("a block returns true") { @test_counter += 1; true }
   
   inner_nested_context = context("baz") do
     setup { @test_counter += 10 }
   end # A CONTEXT THAT IS DEQUEUED
+
+  other_nested_context = context("bum") {} # A CONTEXT THAT IS DEQUEUED
 end # A CONTEXT THAT IS DEQUEUED
 
 context "nested context" do
   setup do
-    Protest.dequeue_context(nested_context)
-    Protest.dequeue_context(inner_nested_context)
-    nested_context.run(StringIO.new)
-    inner_nested_context.run(StringIO.new)
+    [nested_context, inner_nested_context, other_nested_context].each do |c|
+      Protest.dequeue_context(c)
+      c.run(StringIO.new)
+    end
   end
   
   asserts("inner context inherits parent context setup").equals(10) do
@@ -74,5 +77,9 @@ context "nested context" do
 
   asserts("nested context name").equals("foo baz") do
     inner_nested_context.to_s
+  end
+
+  asserts("inner context without setup is still bootstrapped").equals("bar") do
+    other_nested_context.instance_variable_get(:@foo)
   end
 end

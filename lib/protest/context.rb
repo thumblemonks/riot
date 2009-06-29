@@ -7,6 +7,12 @@ module Protest
       @failures = []
       @parent = parent
       @setup = nil
+      bootstrap(self)
+    end
+
+    def bootstrap(binder)
+      @parent.bootstrap(binder) if @parent
+      binder.instance_eval(&@setup) if @setup
     end
 
     def to_s
@@ -19,7 +25,7 @@ module Protest
 
     def setup(&block)
       @setup = block
-      self.bootstrap(self)
+      self.instance_eval(&block)
     end
 
     def asserts(description, &block) new_assertion(Assertion, description, &block); end
@@ -36,11 +42,6 @@ module Protest
           writer.print 'E'; @failures << Protest::Error.new("errored with #{e}", e).asserted(e)
         end
       end
-    end
-
-    def bootstrap(binder)
-      @parent.bootstrap(binder) if @parent
-      binder.instance_eval(&@setup) if @setup
     end
   private
     def new_assertion(klass, description, &block)

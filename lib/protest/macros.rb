@@ -27,7 +27,7 @@ module Protest
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
       assert_block do |scope|
         actual = scope.instance_eval(&block)
-        actual =~ expected || failure("expected #{expected.inspect}, not #{actual.inspect}")
+        actual =~ expected || failure("expected #{expected.inspect} to match #{actual.inspect}")
       end
     end
   end # AssertionMacros

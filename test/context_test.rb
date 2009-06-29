@@ -19,7 +19,7 @@ context "any context" do
 
     asserts("that passes are disctinct").equals(1) { @report.passes }
     asserts("that failures are captured").equals(1) { @report.failures }
-    asserts("that unexpected errors are captured").equals(2) { @report.errors }
+    asserts("that unexpected errors are captured").equals(1) { @report.errors }
   end # that doesn't have passing tests
 end # any context
 

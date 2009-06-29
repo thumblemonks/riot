@@ -42,16 +42,17 @@ module Protest
 
     def results
       @writer.puts "\n\n"
+      print_result_stack
+      format = "%d assertions, %d failures, %d errors in %s seconds"
+      @writer.puts format % [assertions, failures, errors, ("%0.6f" % time_taken)]
+    end
+  private
+    def print_result_stack
       bad_results.each_with_index do |recorded, idx|
         ctx, failure = recorded
         @writer.puts "#%d - %s asserted %s: %s" % [idx + 1, ctx.to_s, failure.assertion.to_s, failure.to_s]
         @writer.puts "  " + failure.backtrace.join("\n  ") + "\n\n"
       end
-      format = "%d assertions, %d failures, %d errors in %s seconds"
-      @writer.puts format % [assertions, failures, errors, ("%0.6f" % time_taken)]
-    end
-  private
-    def bad_results_stack
     end
   end
 

@@ -169,6 +169,10 @@ TONS OF STUFF
 1. Documentation
 1. More assertion macros: kind\_of, throws, etc.
 1. Handle assertion macros better
-1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion
+1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion. I don't want to add deny\_this and deny\_that macros
+1. Optimization and simplification (ex. flog is complaining about the assertion macros)
+  * 20.9: AssertionMacros#matches
+  * 19.3: AssertionMacros#raises
+  * 17.8: AssertionMacros#equals
+1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Perhaps: association macro chaining
-1. Optimization

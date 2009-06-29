@@ -2,19 +2,102 @@
 
 An extremely fast-running, context-driven, unit testing framework.
 
-    context "Foo" do
-      setup do
-        @foo = Foo.new
+#### Example: Basic booleans
+
+**NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
+
+At it's very basic, Protest simply tries to assert that an expression is true or false. Protest does this through its `asserts` and `denies` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `denies` test confirms just the opposite.
+
+For instance, given a test file named `foo_test.rb`, you might have the following code in it:
+
+    require 'protest'
+    
+    context "a new user" do
+      setup { @user = User.new }
+      asserts("that it is not yet created") { @user.new_record? }
+      denies("that it is valid") { @user.valid? }
+    end
+
+Notice that you do not define a class anywhere. That would the entire contents of that test file.
+
+#### Example: Equality
+
+One of the most common assertions you will (or do already) utilize is that of equality; is this equal to that? Protest supports this in a slightly different manner than most other frameworks. With Protest, you add the expectation to the assertion itself.
+
+For example:
+
+    context "a new user" do
+      setup { @user = User.new(:email => 'foo@bar.com') }
+      asserts("email address").equals('foo@bar.com') { @user.email }
+    end
+
+Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `@user.email`, the assertion would have failed.
+
+The `equals` modifier works with any type of value, including nil's. However, if you wanted to test for nil explicitly, you could simple do this:
+
+    context "a new user" do
+      setup { @user = User.new }
+      asserts("email address").nil { @user.email }
+    end
+
+Notice the `nil` modifier added to asserts. Also notice how the test almost reads as "a new user asserts email address *is* nil". With Test::Unit, you would have probably written:
+
+    class UserTest < Test::Unit::TestCase
+      def setup
+        @user = User.new
       end
       
-      asserts("this block returns true") { true }
-
-      asserts("this block returns a specific string").equals("my friend") do
-        @foo.your_mom
+      def test_email_address_is_nil
+        assert_nil @user.email
       end
     end
 
-MORE TO COME
+Which, to me, seems like a redundancy. The test already says it's nil! Maybe Shoulda woulda helped:
+
+    class UserTest < Test::Unit::TestCase
+      def setup
+        @user = User.new
+      end
+  
+      should "have nil email" { assert_nil @user.email }
+    end
+
+In my opinion, the same redundancy exists. Sure, I could write a macro like `should_be_nil {@user.email}`, but the redundancy exists in the framework itself.
+
+#### Example: Matches
+
+If you need to assert that a test result matches a regular expression, use the `matches` modifier like so:
+
+    context "a new user" do
+      setup { @user = User.new }
+
+      # I'm a contrived example
+      asserts("random phone number").matches(/^\d{3}-\d{3}-\d{4}$/) { @user.random_phone_number }
+    end
+
+#### Example: Raises
+
+Sometimes, your test raises an exception that you actually expected.
+
+    context "a new user" do
+      setup { @user = User.new }
+      asserts("with bad data").raises(ActiveRecord::RecordInvalid) { @user.save! }
+    end
+
+#### Example: Kind Of
+
+When you want to test that an expression returns an object of an expected type:
+
+    context "a new user" do
+      setup { @user = User.new }
+      asserts("the balance").kind_of(Currency) { @user.balance }
+    end
+
+#### More examples/documentation
+
+There are many more basic assertion modifiers to come. See below for writing Protest extensions if you want to help out.
+
+Also, see [the wiki](http://github.com/thumblemonks/protest) for more examples and documentation.
 
 ## You say, "OMG! Why did you write this?"
 

@@ -50,7 +50,7 @@ module Protest
     def print_result_stack
       bad_results.each_with_index do |recorded, idx|
         ctx, failure = recorded
-        @writer.puts "#%d - %s asserted %s: %s" % [idx + 1, ctx.to_s, failure.assertion.to_s, failure.to_s]
+        @writer.puts "#%d - %s asserts %s: %s" % [idx + 1, ctx.to_s, failure.assertion.to_s, failure.to_s]
         @writer.puts "  " + failure.backtrace.join("\n  ") + "\n\n"
       end
     end

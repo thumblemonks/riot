@@ -30,6 +30,13 @@ module Protest
         actual =~ expected || failure("expected #{expected.inspect} to match #{actual.inspect}")
       end
     end
+
+    def kind_of(expected, &block)
+      assert_block do |scope|
+        actual = scope.instance_eval(&block)
+        actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
+      end
+    end
   end # AssertionMacros
 end # Protest
 

@@ -280,10 +280,10 @@ TONS OF STUFF
 1. Documentation
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Need to know where in backtrace a test failed (line number, etc.)
-1. Uhhhhh ... a teardown method :)
 1. More assertion macros: kind\_of, throws, etc.
 1. Handle assertion macros better
 1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion. I don't want to add deny\_this and deny\_that macros
+1. Aliases for context "with, without, when, ..."; add those words to test description
 1. Optimization and simplification (ex. flog is complaining about the assertion macros)
   1. 20.9: AssertionMacros#matches
   1. 19.3: AssertionMacros#raises
@@ -291,3 +291,4 @@ TONS OF STUFF
 1. Better error messages (maybe need to rename asserts to should for better readability)
 1. Perhaps: Multiple setup blocks in one context
 1. Perhaps: association macro chaining
+1. Uhhhhh ... a teardown method (maybe :)

@@ -1,51 +1,36 @@
 module Protest
   module AssertionMacros
     # Asserts that the result of the test equals the expected value
-    #   asserts("test").equals("foo") { "foo" }
-    def equals(expected, &block)
-      assert_block do |scope|
-        actual = scope.instance_eval(&block)
-        expected == actual || failure("expected #{expected.inspect}, not #{actual.inspect}")
-      end
+    #   asserts("test") { "foo" }.equals("foo")
+    def equals(expected)
+      expected == actual || failure("expected #{expected.inspect}, not #{actual.inspect}")
     end
-    
+
     # Asserts that the result of the test is nil
-    #   asserts("test").nil { nil }
-    def nil(&block)
-      equals(nil, &block)
+    #   asserts("test") { nil }.nil
+    def nil
+      actual.nil? || failure("expected nil, not #{actual.inspect}")
     end
 
     # Asserts that the test raises the expected Exception
-    #   asserts("test").raises(My::Exception) { raise My::Exception }
-    def raises(expected, &block)
-      assert_block do |scope|
-        begin
-          scope.instance_eval(&block)
-        rescue Exception => e
-          failure("should have raised #{expected}, not #{e.class}") unless expected == e.class
-        else
-          failure("should have raised #{expected}, but raised nothing")
-        end
-      end
+    #   asserts("test") { raise My::Exception }.raises(My::Exception)
+    def raises(expected)
+      failure("should have raised #{expected}, but raised nothing") unless raised
+      failure("should have raised #{expected}, not #{error.class}") unless expected == raised.class
+      @raised = nil
     end
-    
+
     # Asserts that the result of the test equals matches against the proved expression
-    #   asserts("test").matches(/\d+/) { "12345" }
-    def matches(expected, &block)
+    #   asserts("test") { "12345" }.matches(/\d+/)
+    def matches(expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
-      assert_block do |scope|
-        actual = scope.instance_eval(&block)
-        actual =~ expected || failure("expected #{expected.inspect} to match #{actual.inspect}")
-      end
+      actual =~ expected || failure("expected #{expected.inspect} to match #{actual.inspect}")
     end
 
     # Asserts that the result of the test is an object that is a kind of the expected type
-    #   asserts("test").kind_of(String) { "foo" }
-    def kind_of(expected, &block)
-      assert_block do |scope|
-        actual = scope.instance_eval(&block)
-        actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
-      end
+    #   asserts("test") { "foo" }.kind_of(String)
+    def kind_of(expected)
+      actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
     end
   end # AssertionMacros
 end # Protest

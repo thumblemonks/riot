@@ -1,32 +1,30 @@
 module Protest
   class Report
-    attr_reader :bad_results, :passes, :failures, :errors
+    attr_reader :bad_results, :passes, :failures, :errors, :time_taken
     def initialize
       @bad_results = []
-      @passes, @failures, @errors = 0, 0 ,0
+      @passes, @failures, @errors, @time_taken = 0, 0, 0, 0.0
     end
 
     def passed?; failures + errors == 0; end
     def assertions; passes + failures + errors; end
 
-    def start; @start = Time.now; end
-    def stop; @stop = Time.now; end
-    def time_taken; @stop - @start; end
+    def time(&block)
+      @start = Time.now
+      yield
+      @time_taken += (Time.now - @start).to_f
+    end
+
+    def passed; @passes += 1; end
     
-    def record(context, object)
-      case object
-      when Protest::Error then
-        @bad_results << [context, object]
-        @errors += 1
-        errored
-      when Protest::Failure then
-        @bad_results << [context, object]
-        @failures += 1
-        failed
-      else
-        @passes += 1
-        passed
-      end
+    def failed(failure)
+      @failures += 1
+      @bad_results << failure
+    end
+
+    def errored(error)
+      @errors += 1
+      @bad_results << error
     end
   end # Report
 
@@ -36,9 +34,20 @@ module Protest
       @writer ||= STDOUT
     end
 
-    def passed; @writer.print('.'); end
-    def failed; @writer.print('F'); end
-    def errored; @writer.print('E'); end
+    def passed
+      super
+      @writer.print('.')
+    end
+
+    def failed(failure)
+      super
+      @writer.print('F')
+    end
+
+    def errored(error)
+      super
+      @writer.print('E')
+    end
 
     def results
       @writer.puts "\n\n"
@@ -48,18 +57,23 @@ module Protest
     end
   private
     def print_result_stack
-      bad_results.each_with_index do |recorded, idx|
-        ctx, failure = recorded
-        @writer.puts "#%d - %s asserts %s: %s" % [idx + 1, ctx.to_s, failure.assertion.to_s, failure.to_s]
-        @writer.puts "  " + failure.backtrace.join("\n  ") + "\n\n"
+      bad_results.each_with_index do |result, idx|
+        @writer.puts render_result(idx + 1, result)
+        @writer.puts "  " + result.backtrace.join("\n  ") + "\n\n"
       end
     end
-  end
+
+    def render_result(idx, result)
+      format_args = [idx, result.context.to_s, result.assertion.to_s, result.to_s]
+      "#%d - %s asserts %s: %s" % format_args
+    end
+  end # TextReport
 
   class NilReport < Report
     def passed; end
-    def failed; end
-    def errored; end
+    def failed(failure); end
+    def errored(error); end
     def results; end
-  end
+    def time(&block); yield; end
+  end # NilReport
 end # Protest

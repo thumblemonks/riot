@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "protest"
-  s.version  = "0.0.5"
-  s.date     = "2009-06-29"
+  s.version  = "0.0.6"
+  s.date     = "2009-07-05"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"

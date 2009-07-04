@@ -1,6 +1,6 @@
 # Protest
 
-An extremely fast-running, context-driven, unit testing framework.
+An extremely fast, expressive, and context-driven unit-testing framework.
 
 #### Example: Basic booleans
 
@@ -28,7 +28,7 @@ For example:
 
     context "a new user" do
       setup { @user = User.new(:email => 'foo@bar.com') }
-      asserts("email address").equals('foo@bar.com') { @user.email }
+      asserts("email address") { @user.email }.equals('foo@bar.com')
     end
 
 Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `@user.email`, the assertion would have failed.
@@ -37,7 +37,7 @@ The `equals` modifier works with any type of value, including nil's. However, if
 
     context "a new user" do
       setup { @user = User.new }
-      asserts("email address").nil { @user.email }
+      asserts("email address") { @user.email }.nil
     end
 
 Notice the `nil` modifier added to asserts. Also notice how the test almost reads as "a new user asserts email address *is* nil". With Test::Unit, you would have probably written:
@@ -72,7 +72,7 @@ If you need to assert that a test result matches a regular expression, use the `
       setup { @user = User.new }
 
       # I'm a contrived example
-      asserts("random phone number").matches(/^\d{3}-\d{3}-\d{4}$/) { @user.random_phone_number }
+      asserts("random phone number") { @user.random_phone_number }.matches(/^\d{3}-\d{3}-\d{4}$/)
     end
 
 #### Example: Raises
@@ -81,7 +81,7 @@ Sometimes, your test raises an exception that you actually expected.
 
     context "a new user" do
       setup { @user = User.new }
-      asserts("with bad data").raises(ActiveRecord::RecordInvalid) { @user.save! }
+      asserts("with bad data") { @user.save! }.raises(ActiveRecord::RecordInvalid)
     end
 
 #### Example: Kind Of
@@ -90,7 +90,7 @@ When you want to test that an expression returns an object of an expected type:
 
     context "a new user" do
       setup { @user = User.new }
-      asserts("the balance").kind_of(Currency) { @user.balance }
+      asserts("the balance") { @user.balance }.kind_of(Currency)
     end
 
 #### Example: Nested contexts
@@ -182,7 +182,7 @@ Create or modify your existing Rakefile to define a test task like so:
       require 'protest'
       $:.concat ['./lib', './test']
       Dir.glob("./test/*_test.rb").each { |test| require test }
-      Protest.run
+      Protest.report
     end
 
 Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.
@@ -223,9 +223,9 @@ To extend Protest, similar to how you would with Shoulda, you simply need to inc
     module Custom
       module Macros
         def asserts_response_status(expected)
-          asserts("response status is #{expected}").equals(expected) do
+          asserts("response status is #{expected}") do
             last_response.status
-          end
+          end.equals(expected)
         end
       end # Macros
     end # Custom
@@ -245,17 +245,15 @@ And then in your actual test, you might do the following:
 **COMING SOON:** Protest will look into test/protest\_macros, but not today.
 
 #### Assertion macros
-If you want to add special macros to an Assertion, this is only slightly more tricky. The trickiness is simply understanding when and why to do so. Assertion macros are statements that can be appended to `asserts` or `denies` statements; similar to the `equals` or `raises` statements. Your assertion must know how and when to evaluate the provided block (if there is one), and what a failure looks like. Similar to Context macros, Assertion macros are included into the Assertion class.
+
+If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Similar to Context macros, Assertion macros are included into the Assertion class.
 
 For instance, let's say you wanted to add a macro for verifying that the result of an assertion is the same kind\_of object as you would expect. You would define the macro like so:
 
     module Custom
       module AssertionMacros
-        def kind_of(expected, &block)
-          assert_block do |scope|
-            actual = scope.instance_eval(&block)
-            actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
-          end
+        def kind_of(expected_class)
+          actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
         end
       end # AssertionMacros
     end # Custom
@@ -264,14 +262,10 @@ For instance, let's say you wanted to add a macro for verifying that the result 
 And in your context, you would use it like so:
 
     context "example" do
-      asserts("a hash is defined").kind_of(Hash) do
-        {:foo => 'bar'}
-      end
+      asserts("a hash is defined") { {:foo => 'bar'} }.kind_of(Hash)
     end
 
-The `assert_block` is important because it defers execution until the assertion is evaluated.
-
-*NOTE:* I welcome alternatives as I am really not digging this approach. Everything else is mostly to my liking.
+Notice in the new macro we defined the use of the magical **actual** variable. `actual` is evaluated when the assertion is defined and made available to any Assertion macro. If you think you might want to chain assertions checks together, know that only the last failure will get recorded.
 
 ## TODO
 
@@ -280,15 +274,11 @@ TONS OF STUFF
 1. Documentation
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Need to know where in backtrace a test failed (line number, etc.)
-1. More assertion macros: kind\_of, throws, etc.
-1. Handle assertion macros better
+1. More assertion macros: throws, etc.
 1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion. I don't want to add deny\_this and deny\_that macros
 1. Aliases for context "with, without, when, ..."; add those words to test description
-1. Optimization and simplification (ex. flog is complaining about the assertion macros)
-  1. 20.9: AssertionMacros#matches
-  1. 19.3: AssertionMacros#raises
-  1. 17.8: AssertionMacros#equals
+1. Optimization and simplification (ex. flog is complaining print\_result\_stack)
 1. Better error messages (maybe need to rename asserts to should for better readability)
 1. Perhaps: Multiple setup blocks in one context
 1. Perhaps: association macro chaining
-1. Uhhhhh ... a teardown method (maybe :)
+1. Perhaps: Uhhhhh ... a teardown method (maybe :)

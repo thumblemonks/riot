@@ -10,9 +10,11 @@ module Protest
     @contexts ||= []
   end
 
-  def self.context(description, parent = nil, &block)
-    context = Context.new(description, parent)
-    context.instance_eval(&block)
+  def self.context(description, reporter = nil, parent = nil, &block)
+    reporter ||= self.reporter
+    context = Context.new(description, reporter, parent)
+    reporter.time { context.instance_eval(&block) }
+    context.report # Results get buffered this way, not necessarily the best
     (contexts << context).last
   end
 
@@ -20,29 +22,35 @@ module Protest
     contexts.delete(context)
   end
 
-  def self.run(report=nil)
-    report ||= TextReport.new
-    report.start
-    @contexts.each { |context| context.run(report) }
-    report.stop
-    report.results
-    at_exit { exit false unless report.passed? }
+  def self.report
+    reporter.results
+    at_exit { exit false unless reporter.passed? }
   end
+
+  #
+  # Reporter
+  
+  def self.reporter; @reporter ||= TextReport.new; end
+  def self.reporter=(report); @reporter = report; end
 
   #
   # Exception
 
   class Failure < Exception
-    attr_reader :assertion
+    attr_reader :assertion, :context
     def initialize(message, assertion)
       super(message)
       @assertion = assertion
     end
+    def contextualize(ctx)
+      @context = ctx
+      self
+    end
   end
   class Error < Failure
-    def initialize(message, assertion, e)
+    def initialize(message, assertion, error)
       super(message, assertion)
-      set_backtrace(e.backtrace)
+      set_backtrace(error.backtrace)
     end
   end
 end # Protest

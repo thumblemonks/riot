@@ -3,61 +3,77 @@ require 'protest'
 fake_context = Object.new
 
 context "basic assertion:" do
-  asserts("its description").equals("i will pass") do
-    Protest::Assertion.new("i will pass").to_s
+  asserts("its description") do
+    Protest::Assertion.new("i will pass", fake_context).to_s
+  end.equals("i will pass")
+
+  asserts("passed? if assertion returns true") do
+    Protest::Assertion.new("i will pass", fake_context) { true }.passed?
   end
 
-  asserts("true is expected") { Protest::Assertion.new("i will pass") { true }.run(fake_context) }
-
-  asserts("a Failure if not true").raises(Protest::Failure) do
-    Protest::Assertion.new("i will pass") { false }.run(fake_context)
+  asserts("failure? when assertion does not pass") do
+    Protest::Assertion.new("i will pass", fake_context) { false }.failure?
   end
 
-  asserts("an Exception error is thrown").raises(Exception) do
-    Protest::Assertion.new("error") { raise Exception, "blah" }.run(fake_context)
+  asserts("error? when an unexpected Exception is raised") do
+    Protest::Assertion.new("error", fake_context) { raise Exception, "blah" }.error?
+  end
+end
+
+context "basic denial:" do
+  asserts("false assertion passes") do
+    Protest::Denial.new("i will pass", fake_context) { false }.passed?
+  end
+
+  asserts("true assertion fails") do
+    Protest::Denial.new("i will not pass", fake_context) { true }.failure?
   end
 end # basic assertion
 
 context "equals assertion:" do
   asserts("results equals expectation") do
-    Protest::Assertion.new("i will pass").equals("foo bar") { "foo bar" }.run(fake_context)
+    Protest::Assertion.new("i will pass", fake_context) { "foo bar" }.equals("foo bar")
   end
 
-  asserts("a Failure if results don't equal eachother").raises(Protest::Failure) do
-    Protest::Assertion.new("failure").equals("foo") { "bar" }.run(fake_context)
-  end
+  asserts("a Failure if results don't equal eachother") do
+    Protest::Assertion.new("failure", fake_context) { "bar" }.equals("foo")
+  end.kind_of(Protest::Failure)
+
+  asserts("a non-matching string is a good thing when in denial") do
+    Protest::Denial.new("pass", fake_context) { "bar" }.equals("foo")
+  end.nil
 end # equals assertion
 
 context "nil assertion:" do
-  asserts("actual result is nil") { Protest::Assertion.new("foo").nil { nil }.run(fake_context) }
-  asserts("a Failure if not nil").raises(Protest::Failure) do
-    Protest::Assertion.new("foo").nil { "a" }.run(fake_context)
-  end
+  asserts("actual result is nil") { Protest::Assertion.new("foo", fake_context) { nil }.nil }
+  asserts("a Failure if not nil") do
+    Protest::Assertion.new("foo", fake_context) { "a" }.nil
+  end.kind_of(Protest::Failure)
 end # nil assertion
 
+context "raises assertion:" do
+  asserts("an Exception is raised") { raise Exception }.raises(Exception)
+end # maching assertion
+
 context "matching assertion:" do
-  asserts("actual result matches expression").equals(0) do
-    Protest::Assertion.new("foo").matches(%r[.]) { "a" }.run(fake_context)
-  end
-  asserts("a Failure if not nil").raises(Protest::Failure) do
-    Protest::Assertion.new("foo").matches(%r[.]) { "" }.run(fake_context)
-  end
-  asserts("string matches string").equals(0) do
-    Protest::Assertion.new("foo").matches("a") { "a" }.run(fake_context)
-  end
+  asserts("actual result matches expression") do
+    Protest::Assertion.new("foo", fake_context) { "a" }.matches(%r[.])
+  end.equals(0)
+
+  asserts("a Failure if not nil") do
+    Protest::Assertion.new("foo", fake_context) { "" }.matches(%r[.])
+  end.kind_of(Protest::Failure)
+
+  asserts("string matches string") do
+    Protest::Assertion.new("foo", fake_context) { "a" }.matches("a")
+  end.equals(0)
 end # maching assertion
 
 context "kind_of assertion:" do
   asserts("result is kind of String") do
-    Protest::Assertion.new("foo").kind_of(String) { "a" }.run(fake_context)
+    Protest::Assertion.new("foo", fake_context) { "a" }.kind_of(String)
   end
-  asserts("a Failure if not a kind of String").raises(Protest::Failure) do
-    Protest::Assertion.new("foo").kind_of(String) { 0 }.run(fake_context)
-  end
+  asserts("a Failure if not a kind of String") do
+    Protest::Assertion.new("foo", fake_context) { 0 }.kind_of(String)
+  end.kind_of(Protest::Failure)
 end # kind_of assertion
-
-context "a passing denial" do
-  asserts("that it is a failed assertion") do
-    Protest::Denial.new("foo") { false }.run(fake_context)
-  end
-end # a passing denial

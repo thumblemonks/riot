@@ -10,7 +10,12 @@ task :test do
   Protest.report
 end
 
-desc "Run flog against library (except tests)"
+desc "Run Flog against library (except tests)"
 task :flog do
   puts %x[find ./lib -name *.rb | xargs flog]
+end
+
+desc "Run Roodi against library (except tests)"
+task :roodi do
+  puts %x[find ./lib -name *.rb | xargs roodi]
 end

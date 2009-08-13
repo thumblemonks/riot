@@ -6,7 +6,7 @@ An extremely fast, expressive, and context-driven unit-testing framework. Protes
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
 
-At it's very basic, Protest simply tries to assert that an expression is true or false. Protest does this through its `asserts` or `should` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `should` test does the exact same thing - they are in fact aliases. The only difference is in the way you write the assertion. Sometimes it's more clear to say "this **should** do that" and sometimes it's better to say "**assert** this is that". I promise you that Protest will get no more redundant than this.
+At it's very basic, Protest simply tries to assert that an expression is true or false. Protest does this through its `asserts` or `should` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `should` test does the exact same thing - they are in fact aliases. The only difference is in the way you write the assertion. 
 
 For instance, given a test file named `foo_test.rb`, you might have the following code in it:
 
@@ -25,6 +25,8 @@ Notice that you do not define a class anywhere. That would be the entire content
       setup { @user = User.new }
       should("not be created") { @user.new_record? }
     end
+
+Sometimes it's more clear to say "this **should** be that" and sometimes it's better to say "**asserts** this is that". I promise you that Protest will get no more redundant than this, but also that besides speed, Protest will aim at being expressive with a minimal amount of syntax.
 
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 

@@ -11,41 +11,35 @@ context "any context" do
 
   context "that doesn't have passing tests" do
     setup do
-      @context.asserts("a") { true }
-      @context.asserts("b") { false }
-      @context.asserts("c") { raise Exception, "blah" }
+      @context.should("a") { true }
+      @context.should("b") { false }
+      @context.should("c") { raise Exception, "blah" }
     end
 
-    asserts("that passes are disctinct") { @reporter.passes }.equals(1)
-    asserts("that failures are captured") { @reporter.failures }.equals(1)
-    asserts("that unexpected errors are captured") { @reporter.errors }.equals(1)
+    asserts("passed test count") { @reporter.passes }.equals(1)
+    asserts("failure count") { @reporter.failures }.equals(1)
+    asserts("unexpected errors count") { @reporter.errors }.equals(1)
   end # that doesn't have passing tests
 end # any context
-
-context "when denying things" do
-  denies("true is false") { false }
-  denies("bar equals foo") { "bar" }.equals("foo")
-  denies("bar matches only digits") { "bar" }.matches(/^\d+$/)
-end
 
 # 
 # Test Context
 
 test_context = context("foo", Protest::NilReport.new) do
   setup { @test_counter = 0 }
-  asserts("a block returns true") { @test_counter += 1; true }
-  asserts("another block returns true") { @test_counter += 1; true }
+  asserts("truthiness") { @test_counter += 1; true }
+  asserts("more truthiness") { @test_counter += 1; true }
 end # A CONTEXT THAT IS DEQUEUED
 
 context "test context" do
   setup { Protest.dequeue_context(test_context) }
-  asserts("context description") { test_context.to_s }.equals("foo")
-  asserts("assertion count") { test_context.assertions.length }.equals(2)
+  should("confirm context description") { test_context.to_s }.equals("foo")
+  should("confirm assertion count") { test_context.assertions.length }.equals(2)
 
-  asserts("setup runs only once") do
+  should("call setup once") do
     test_context.instance_variable_get(:@test_counter)
   end.equals(2)
-end
+end # test context
 
 # 
 # Nested Context
@@ -56,7 +50,7 @@ nested_context = context("foo", Protest::NilReport.new) do
     @test_counter = 0
     @foo = "bar"
   end
-  asserts("a block returns true") { @test_counter += 1; true }
+  asserts("truthiness") { @test_counter += 1; true }
   
   inner_nested_context = context("baz") do
     setup { @test_counter += 10 }
@@ -72,13 +66,13 @@ context "nested context" do
     end
   end
   
-  asserts("inner context inherits parent context setup") do
+  should("inherit parent context") do
     inner_nested_context.instance_variable_get(:@test_counter)
   end.equals(10)
 
-  asserts("nested context name") { inner_nested_context.to_s }.equals("foo baz")
+  should("chain context names") { inner_nested_context.to_s }.equals("foo baz")
 
-  asserts("inner context without setup is still bootstrapped") do
+  asserts "parent setup is called even if setup not defined for self" do
     other_nested_context.instance_variable_get(:@foo)
   end.equals("bar")
 end

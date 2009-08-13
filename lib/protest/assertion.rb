@@ -1,9 +1,9 @@
 module Protest
 
   class Assertion
-    attr_reader :raised
+    attr_reader :raised, :to_s
     def initialize(description, target, &block)
-      @description = description
+      @description = @to_s = description
       actualize(target, &block)
     end
 
@@ -26,35 +26,12 @@ module Protest
     def error?; !failure? && raised; end
     def passed?; !failure? && !error?; end
     def result; @failure || error; end
-    def to_s; @description; end
   private
     def actualize(target, &block)
       @actual = target.instance_eval(&block)
-      @default_failure = base_assertion
+      @default_failure = failure("expected true, not #{@actual.inspect}") unless @actual
     rescue Exception => e
       @raised = e
     end
-
-    def base_assertion
-      failure("expected true, not #{@actual.inspect}") unless @actual
-    end
   end # Assertion
-
-  # Denial will evaulate to true if the assertion failed in some way. Errors pass through. A Failure
-  # is generated if the assertion actually passed.
-  class Denial < Assertion
-    def actual
-      @actual # Do not forget default failure unless a failure is thrown
-    end
-    
-    alias :actual_failure :failure
-    def failure(message)
-      @default_failure = @failure = nil # this is a good thing
-    end
-  private
-    def base_assertion
-      actual_failure("expected assertion to fail") if @actual
-    end
-  end # Denial
-
 end # Protest

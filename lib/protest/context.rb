@@ -23,8 +23,8 @@ module Protest
     def to_s; @to_s ||= [@parent.to_s, @description].join(' ').strip; end
 
     def context(description, &block) Protest.context(description, @reporter, self, &block); end
-    def asserts(description, &block) new_assertion(Assertion, description, &block); end
-    def denies(description, &block) new_assertion(Denial, description, &block); end
+    def asserts(description, &block) new_assertion("asserts #{description}", &block); end
+    def should(description, &block) new_assertion("should #{description}", &block); end
 
     def report
       assertions.each do |assertion|
@@ -38,8 +38,8 @@ module Protest
       end
     end
   private
-    def new_assertion(klass, description, &block)
-      (assertions << klass.new(description, self, &block)).last
+    def new_assertion(description, &block)
+      (assertions << Assertion.new(description, self, &block)).last
     end
   end # Context
 end # Protest

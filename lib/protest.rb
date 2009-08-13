@@ -42,16 +42,20 @@ module Protest
       super(message)
       @assertion = assertion
     end
+
     def contextualize(ctx)
       @context = ctx
       self
     end
+    
+    def print_stacktrace?; false; end
   end
   class Error < Failure
     def initialize(message, assertion, error)
       super(message, assertion)
       set_backtrace(error.backtrace)
     end
+    def print_stacktrace?; true; end
   end
 end # Protest
 

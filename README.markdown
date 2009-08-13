@@ -1,12 +1,12 @@
 # Protest
 
-An extremely fast, expressive, and context-driven unit-testing framework.
+An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.
 
 #### Example: Basic booleans
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
 
-At it's very basic, Protest simply tries to assert that an expression is true or false. Protest does this through its `asserts` and `denies` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `denies` test confirms just the opposite.
+At it's very basic, Protest simply tries to assert that an expression is true or false. Protest does this through its `asserts` or `should` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `should` test does the exact same thing - they are in fact aliases. The only difference is in the way you write the assertion. Sometimes it's more clear to say "this **should** do that" and sometimes it's better to say "**assert** this is that". I promise you that Protest will get no more redundant than this.
 
 For instance, given a test file named `foo_test.rb`, you might have the following code in it:
 
@@ -15,10 +15,18 @@ For instance, given a test file named `foo_test.rb`, you might have the followin
     context "a new user" do
       setup { @user = User.new }
       asserts("that it is not yet created") { @user.new_record? }
-      denies("that it is valid") { @user.valid? }
     end
 
-Notice that you do not define a class anywhere. That would be the entire contents of that test file.
+Notice that you do not define a class anywhere. That would be the entire contents of that test file. If you wanted to use a `should` instead, you could say this:
+
+    require 'protest'
+
+    context "a new user" do
+      setup { @user = User.new }
+      should("not be created") { @user.new_record? }
+    end
+
+I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
 #### Example: Equality
 
@@ -275,7 +283,6 @@ TONS OF STUFF
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Need to know where in backtrace a test failed (line number, etc.)
 1. More assertion macros: throws, etc.
-1. Handle denies macro different, so that an entire failure message can translated to the 'negative' assertion. I don't want to add deny\_this and deny\_that macros
 1. Aliases for context "with, without, when, ..."; add those words to test description
 1. Optimization and simplification (ex. flog is complaining print\_result\_stack)
 1. Better error messages (maybe need to rename asserts to should for better readability)

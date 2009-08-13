@@ -59,13 +59,14 @@ module Protest
     def print_result_stack
       bad_results.each_with_index do |result, idx|
         @writer.puts render_result(idx + 1, result)
-        @writer.puts "  " + result.backtrace.join("\n  ") + "\n\n"
+        @writer.puts "  " + result.backtrace.join("\n  ") if result.print_stacktrace?
+        @writer.puts "\n\n"
       end
     end
 
     def render_result(idx, result)
       format_args = [idx, result.context.to_s, result.assertion.to_s, result.to_s]
-      "#%d - %s asserts %s: %s" % format_args
+      "#%d - %s %s: %s" % format_args
     end
   end # TextReport
 

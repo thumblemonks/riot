@@ -15,6 +15,11 @@ task :flog do
   puts %x[find ./lib -name *.rb | xargs flog]
 end
 
+desc "Run Flay against library (except tests)"
+task :flay do
+  puts %x[find ./lib -name *.rb | xargs flay]
+end
+
 desc "Run Roodi against library (except tests)"
 task :roodi do
   puts %x[find ./lib -name *.rb | xargs roodi]

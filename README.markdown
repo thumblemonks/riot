@@ -43,7 +43,7 @@ For example:
 
 Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `@user.email`, the assertion would have failed.
 
-The `equals` modifier works with any type of value, including nil's. However, if you wanted to test for nil explicitly, you could simple do this:
+The `equals` modifier works with any type of value, including nil's. However, if you wanted to test for nil explicitly, you could simply do this:
 
     context "a new user" do
       setup { @user = User.new }
@@ -91,7 +91,7 @@ Sometimes, your test raises an exception that you actually expected.
 
     context "a new user" do
       setup { @user = User.new }
-      asserts("with bad data") { @user.save! }.raises(ActiveRecord::RecordInvalid)
+      asserts("invalid data") { @user.save! }.raises(ActiveRecord::RecordInvalid)
     end
 
 #### Example: Kind Of
@@ -100,7 +100,7 @@ When you want to test that an expression returns an object of an expected type:
 
     context "a new user" do
       setup { @user = User.new }
-      asserts("the balance") { @user.balance }.kind_of(Currency)
+      asserts("its balance") { @user.balance }.kind_of(Currency)
     end
 
 #### Example: Nested contexts
@@ -224,7 +224,7 @@ Make sure to check out the Protest + Sinatra testing macros in Chicago.
 
 ### With Rails
     
-It's doubtful that Protest works with Rails very easily as Protest completely replaces Test::Unit. I haven't tried it yet, but intend to with my next new Rails project. Porting would probably take some time unless you only have a few test cases.
+It's doubtful that Protest works with Rails very easily as Protest completely replaces Test::Unit. I haven't tried it yet, but intend to with my next new Rails project. Porting would probably take some time unless you only have a few test cases. Porting is made somewhat easier if you're already using Shoulda; you can replace the `TestCase` definition with a `context` of the same name as the class under test I suppose.
 
 ## Extending Protest with Macros
 
@@ -283,11 +283,11 @@ TONS OF STUFF
 
 1. Documentation
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
-1. Need to know where in backtrace a test failed (line number, etc.)
+1. Need to know where in backtrace a test failed (line number, etc.); i.e. backtrace filtering for clarity
 1. More assertion macros: throws, etc.
 1. Aliases for context "with, without, when, ..."; add those words to test description
 1. Optimization and simplification (ex. flog is complaining print\_result\_stack)
-1. Better error messages (maybe need to rename asserts to should for better readability)
+1. Better error messages?
 1. Perhaps: Multiple setup blocks in one context
 1. Perhaps: association macro chaining
-1. Perhaps: Uhhhhh ... a teardown method (maybe :)
+1. Perhaps: Uhhhhh ... a teardown method (only maybe. not sold :)

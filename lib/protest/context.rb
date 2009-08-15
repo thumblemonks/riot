@@ -1,5 +1,6 @@
 module Protest
   class Context
+    # The protein
     attr_reader :description, :assertions
     def initialize(description, reporter, parent=nil)
       @reporter = reporter
@@ -22,10 +23,12 @@ module Protest
 
     def to_s; @to_s ||= [@parent.to_s, @description].join(' ').strip; end
 
+    # DSLee stuff
     def context(description, &block) Protest.context(description, @reporter, self, &block); end
     def asserts(description, &block) new_assertion("asserts #{description}", &block); end
     def should(description, &block) new_assertion("should #{description}", &block); end
 
+    # In conclusion
     def report
       assertions.each do |assertion|
         if assertion.passed?

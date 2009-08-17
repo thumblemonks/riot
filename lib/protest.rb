@@ -29,9 +29,11 @@ module Protest
 
   #
   # Reporter
-  
+
   def self.reporter; @reporter ||= TextReport.new; end
   def self.reporter=(report); @reporter = report; end
+  def self.silently!; @silently = true; end
+  def self.silently?; @silently || false; end
 
   #
   # Exception

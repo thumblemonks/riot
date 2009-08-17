@@ -1,3 +1,5 @@
+require 'stringio'
+
 module Protest
   class Report
     attr_reader :bad_results, :passes, :failures, :errors, :time_taken
@@ -31,7 +33,7 @@ module Protest
   class TextReport < Report
     def initialize(writer=nil)
       super()
-      @writer ||= STDOUT
+      @writer ||= (Protest.silently? ? StringIO.new : STDOUT)
     end
 
     def passed

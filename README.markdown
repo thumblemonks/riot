@@ -281,7 +281,8 @@ Notice in the new macro we defined the use of the magical **actual** variable. `
 
 TONS OF STUFF
 
-1. Documentation
+1. Documentation about the `topic` method
+1. Better documentation for everything
 1. Refactor reporting; some abstracting is needed for recording a result (for instance)
 1. Need to know where in backtrace a test failed (line number, etc.); i.e. backtrace filtering for clarity
 1. More assertion macros: throws, etc.

@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "protest"
-  s.version  = "0.0.7"
-  s.date     = "2009-08-12"
+  s.version  = "0.0.8"
+  s.date     = "2009-09-12"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.test_files = %w[
     Rakefile
     test/assertion_test.rb
+    test/benchmark/simple_context_and_assertions.rb
     test/context_test.rb
   ]
 end

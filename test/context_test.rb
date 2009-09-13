@@ -19,6 +19,15 @@ context "any context" do
     asserts("failure count") { @reporter.failures }.equals(1)
     asserts("unexpected errors count") { @reporter.errors }.equals(1)
   end # that doesn't have passing tests
+
+  context "when running setup:" do
+    setup { @context.setup { "foo" } }
+
+    asserts("result is the new topic") { @context.topic }.equals("foo")
+    asserts "topic becomes available to test" do
+      @context.should("bar") { topic }.actual
+    end.equals("foo")
+  end # when running setup
 end # any context
 
 # 

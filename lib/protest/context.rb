@@ -1,13 +1,11 @@
 module Protest
   class Context
     # The protein
-    attr_reader :description, :assertions, :situation
+    attr_reader :description, :assertions, :situation, :topic
     def initialize(description, reporter, parent=nil)
-      @reporter = reporter
-      @description = description
+      @description, @reporter = description, reporter
       @assertions = []
       @parent = parent
-      @setup = nil
       @situation = Object.new
       bootstrap(@situation)
     end
@@ -17,9 +15,11 @@ module Protest
       induce_local_setup(a_situation)
     end
 
+    # something smelly between setup() and bootstrap()
     def setup(&block)
       @setup = block
-      induce_local_setup(situation)
+      @topic = induce_local_setup(situation)
+      make_situation_topical
     end
 
     # DSLee stuff
@@ -32,14 +32,10 @@ module Protest
       assertions.each do |assertion|
         if assertion.passed?
           @reporter.passed
-          # STDOUT.puts "#{assertion.description} passed"
         else
           result = assertion.result.contextualize(self)
-          if assertion.error?
-            @reporter.errored(result)
-          else
-            @reporter.failed(result) if assertion.failure?
-          end
+          @reporter.errored(result) if assertion.error?
+          @reporter.failed(result) if assertion.failure?
         end
       end
     end
@@ -52,6 +48,11 @@ module Protest
 
     def induce_local_setup(a_situation)
       a_situation.instance_eval(&@setup) if @setup
+    end
+
+    def make_situation_topical
+      situation.instance_variable_set(:@topic, @topic)
+      situation.instance_eval { def topic; @topic; end }
     end
   end # Context
 end # Protest

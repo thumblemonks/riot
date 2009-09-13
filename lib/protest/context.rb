@@ -1,7 +1,7 @@
 module Protest
   class Context
     # The protein
-    attr_reader :description, :assertions, :situation, :topic
+    attr_reader :description, :assertions, :situation
     def initialize(description, reporter, parent=nil)
       @description, @reporter = description, reporter
       @assertions = []
@@ -18,8 +18,7 @@ module Protest
     # something smelly between setup() and bootstrap()
     def setup(&block)
       @setup = block
-      @topic = induce_local_setup(situation)
-      make_situation_topical
+      make_situation_topical(induce_local_setup(situation))
     end
 
     # DSLee stuff
@@ -29,13 +28,13 @@ module Protest
 
     # In conclusion
     def report
+       # we should just be passing assertions to the reporter and building better descriptions earlier
       assertions.each do |assertion|
         if assertion.passed?
           @reporter.passed
         else
           result = assertion.result.contextualize(self)
-          @reporter.errored(result) if assertion.error?
-          @reporter.failed(result) if assertion.failure?
+          @reporter.send( (assertion.errored? ? :errored : :failed), result)
         end
       end
     end
@@ -50,8 +49,8 @@ module Protest
       a_situation.instance_eval(&@setup) if @setup
     end
 
-    def make_situation_topical
-      situation.instance_variable_set(:@topic, @topic)
+    def make_situation_topical(topic)
+      situation.instance_variable_set(:@topic, topic)
       situation.instance_eval { def topic; @topic; end }
     end
   end # Context

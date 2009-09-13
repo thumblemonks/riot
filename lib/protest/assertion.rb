@@ -13,12 +13,12 @@ module Protest
     end
 
     def fail(message)
-      @failure = Failure.new(message, self) unless error?
+      @failure = Failure.new(message, self) unless errored?
     end
 
-    def failure?; !@failure.nil?; end
-    def error?; !@raised.nil?; end
-    def passed?; !(failure? || error?); end
+    def failed?; !@failure.nil?; end
+    def errored?; !@raised.nil?; end
+    def passed?; !(failed? || errored?); end
     def result; @failure || error; end
   private
     def actualize(situation, &block)
@@ -29,7 +29,7 @@ module Protest
     end
 
     def error
-      Error.new("errored with #{@raised}", self, @raised) if error?
+      Error.new("errored with #{@raised}", self, @raised) if errored?
     end
   end # Assertion
 end # Protest

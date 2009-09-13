@@ -12,11 +12,11 @@ context "basic assertion:" do
   end
 
   asserts "failure? is true when assertion does not pass" do
-    Protest::Assertion.new("i will pass", fake_context) { false }.failure?
+    Protest::Assertion.new("i will pass", fake_context) { false }.failed?
   end
 
   asserts "error? is true when an unexpected Exception is raised" do
-    Protest::Assertion.new("error", fake_context) { raise Exception, "blah" }.error?
+    Protest::Assertion.new("error", fake_context) { raise Exception, "blah" }.errored?
   end
 end
 

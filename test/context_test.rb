@@ -23,8 +23,7 @@ context "any context" do
   context "when running setup:" do
     setup { @context.setup { "foo" } }
 
-    asserts("result is the new topic") { @context.topic }.equals("foo")
-    asserts "topic becomes available to test" do
+    asserts "topic becomes available to test as result of setup" do
       @context.should("bar") { topic }.actual
     end.equals("foo")
   end # when running setup

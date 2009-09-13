@@ -73,9 +73,6 @@ module Protest
   end # TextReport
 
   class NilReport < Report
-    def passed; end
-    def failed(failure); end
-    def errored(error); end
     def results; end
     def time(&block); yield; end
   end # NilReport

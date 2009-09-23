@@ -2,6 +2,27 @@
 
 An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.
 
+### Note on speed
+
+I have done a really simple benchmarking, but right now, Protest is running about **10-times** faster than Test::unit and thusly Shoulda:
+
+    $ ruby test/benchmark/simple_context_and_assertions.rb
+
+    Rehearsal ----------------------------------------------
+    Protest      0.140000   0.010000   0.150000 (  0.156170)
+    Test::Unit   1.460000   0.000000   1.460000 (  1.495990)
+    Shoulda      1.490000   0.010000   1.500000 (  1.514745)
+    ------------------------------------- total: 3.110000sec
+
+                     user     system      total        real
+    Protest      0.130000   0.000000   0.130000 (  0.139770)
+    Test::Unit   1.600000   0.010000   1.610000 (  1.627493)
+    Shoulda      1.610000   0.010000   1.620000 (  1.655394)
+
+    Loaded suite test/benchmark/simple_context_and_assertions
+
+"Is it valid?", you ask. *I* think it is. I ain't no cheater, but I might be delusional.
+
 #### Example: Basic booleans
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.

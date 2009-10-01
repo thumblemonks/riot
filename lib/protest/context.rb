@@ -1,4 +1,7 @@
 module Protest
+  class Situation
+  end
+
   class Context
     # The protein
     attr_reader :description, :assertions, :situation
@@ -6,7 +9,7 @@ module Protest
       @description, @reporter = description, reporter
       @assertions = []
       @parent = parent
-      @situation = Object.new
+      @situation = Situation.new
       bootstrap(@situation)
     end
 

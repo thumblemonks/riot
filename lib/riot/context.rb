@@ -1,6 +1,5 @@
-module Protest
-  class Situation
-  end
+module Riot
+  class Situation; end
 
   class Context
     # The protein
@@ -25,7 +24,7 @@ module Protest
     end
 
     # DSLee stuff
-    def context(description, &block) Protest.context(description, @reporter, self, &block); end
+    def context(description, &block) Riot.context(description, @reporter, self, &block); end
     def asserts(description, &block) new_assertion("asserts #{description}", &block); end
     def should(description, &block) new_assertion("should #{description}", &block); end
 
@@ -57,4 +56,4 @@ module Protest
       situation.instance_eval { def topic; @topic; end }
     end
   end # Context
-end # Protest
+end # Riot

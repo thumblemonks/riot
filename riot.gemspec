@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
-  s.name     = "protest"
-  s.version  = "0.0.8.1"
-  s.date     = "2009-09-30"
+  s.name     = "riot"
+  s.version  = "0.9.0"
+  s.date     = "2009-10-03"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"
@@ -16,11 +16,11 @@ Gem::Specification.new do |s|
   s.files = %w[
     MIT-LICENSE
     README.markdown
-    lib/protest.rb
-    lib/protest/assertion.rb
-    lib/protest/context.rb
-    lib/protest/macros.rb
-    lib/protest/report.rb
+    lib/riot.rb
+    lib/riot/assertion.rb
+    lib/riot/context.rb
+    lib/riot/macros.rb
+    lib/riot/report.rb
     protest.gemspec
   ]
   

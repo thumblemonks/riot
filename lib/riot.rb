@@ -1,9 +1,9 @@
-require 'protest/report'
-require 'protest/context'
-require 'protest/assertion'
-require 'protest/macros'
+require 'riot/report'
+require 'riot/context'
+require 'riot/assertion'
+require 'riot/macros'
 
-module Protest
+module Riot
   #
   # Initializing logic
   def self.contexts
@@ -59,10 +59,10 @@ module Protest
     end
     def print_stacktrace?; true; end
   end
-end # Protest
+end # Riot
 
 module Kernel
   def context(*args, &block)
-    Protest.context(*args, &block)
+    Riot.context(*args, &block)
   end
 end # Kernel

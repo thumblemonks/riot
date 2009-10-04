@@ -1,10 +1,10 @@
-require 'protest'
+require 'riot'
 require 'stringio'
 
 context "any context" do
   setup do
-    @reporter = Protest::NilReport.new
-    @context = Protest::Context.new("a", @reporter)
+    @reporter = Riot::NilReport.new
+    @context = Riot::Context.new("a", @reporter)
   end
 
   context "that doesn't have passing tests" do
@@ -32,14 +32,14 @@ end # any context
 # 
 # Test Context
 
-test_context = context("foo", Protest::NilReport.new) do
+test_context = context("foo", Riot::NilReport.new) do
   setup { @test_counter = 0 }
   asserts("truthiness") { @test_counter += 1; true }
   asserts("more truthiness") { @test_counter += 1; true }
 end # A CONTEXT THAT IS DEQUEUED
 
 context "test context" do
-  setup { Protest.dequeue_context(test_context) }
+  setup { Riot.dequeue_context(test_context) }
   should("confirm context description") { test_context.to_s }.equals("foo")
   should("confirm assertion count") { test_context.assertions.length }.equals(2)
 
@@ -52,7 +52,7 @@ end # test context
 # Nested Context
 
 inner_nested_context, other_nested_context = nil, nil
-nested_context = context("foo", Protest::NilReport.new) do
+nested_context = context("foo", Riot::NilReport.new) do
   setup do
     @test_counter = 0
     @foo = "bar"
@@ -69,7 +69,7 @@ end # A CONTEXT THAT IS DEQUEUED
 context "nested context" do
   setup do
     [nested_context, inner_nested_context, other_nested_context].each do |c|
-      Protest.dequeue_context(c)
+      Riot.dequeue_context(c)
     end
   end
   

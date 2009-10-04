@@ -1,4 +1,4 @@
-module Protest
+module Riot
   module AssertionMacros
     # Asserts that the result of the test equals the expected value
     #   asserts("test") { "foo" }.equals("foo")
@@ -38,6 +38,6 @@ module Protest
       actual.kind_of?(expected) || fail("expected kind of #{expected}, not #{actual.inspect}")
     end
   end # AssertionMacros
-end # Protest
+end # Riot
 
-Protest::Assertion.instance_eval { include Protest::AssertionMacros }
+Riot::Assertion.instance_eval { include Riot::AssertionMacros }

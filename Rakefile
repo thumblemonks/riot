@@ -7,7 +7,7 @@ desc "Run tests"
 task :test do
   $:.concat ['./test', './lib']
   Dir.glob("./test/*_test.rb").each { |test| require test }
-  Protest.report
+  Riot.report
 end
 
 desc "Run Flog against library (except tests)"

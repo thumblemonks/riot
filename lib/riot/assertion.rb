@@ -1,4 +1,4 @@
-module Protest
+module Riot
 
   class Assertion
     attr_reader :raised, :to_s, :description
@@ -32,4 +32,4 @@ module Protest
       Error.new("errored with #{@raised}", self, @raised) if errored?
     end
   end # Assertion
-end # Protest
+end # Riot

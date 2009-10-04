@@ -12,10 +12,10 @@ class Room
 end
 
 #
-# Protest
+# Riot
 
-require 'protest'
-Protest.silently! # Do this before any contexts are defined
+require 'riot'
+Riot.silently! # Do this before any contexts are defined
 
 context "a room" do
   setup { @room = Room.new("bed") }
@@ -61,8 +61,8 @@ end
 n = 100 * 100
 
 Benchmark.bmbm do |x|
-  x.report("Protest") do
-    n.times { Protest.report }
+  x.report("Riot") do
+    n.times { Riot.report }
   end
 
   x.report("Test::Unit") do

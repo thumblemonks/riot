@@ -115,6 +115,13 @@ Sometimes, your test raises an exception that you actually expected.
       asserts("invalid data") { @user.save! }.raises(ActiveRecord::RecordInvalid)
     end
 
+And if you wanted to check that the exception and message match what you expect:
+
+    context "a new user" do
+      setup { @user = User.new }
+      asserts("invalid data") { @user.save! }.raises(ActiveRecord::RecordInvalid, /has errors/)
+    end
+
 #### Example: Kind Of
 
 When you want to test that an expression returns an object of an expected type:

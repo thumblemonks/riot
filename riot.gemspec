@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     lib/riot/context.rb
     lib/riot/macros.rb
     lib/riot/report.rb
-    protest.gemspec
+    riot.gemspec
   ]
   
   s.test_files = %w[

@@ -1,4 +1,4 @@
-require 'riot'
+require 'teststrap'
 require 'stringio'
 
 context "any context" do

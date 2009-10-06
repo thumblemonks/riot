@@ -24,6 +24,9 @@ module Riot
     def actualize(situation, &block)
       @actual = situation.instance_eval(&block)
       @default_failure = fail("expected true, not #{@actual.inspect}") unless @actual == true
+    rescue Failure => e
+      @failure = e
+      @failure.assertion = self
     rescue Exception => e
       @raised = e
     end

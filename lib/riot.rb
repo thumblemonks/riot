@@ -39,8 +39,8 @@ module Riot
   # Exception
 
   class Failure < Exception
-    attr_reader :assertion, :context
-    def initialize(message, assertion)
+    attr_accessor :assertion, :context
+    def initialize(message, assertion=nil)
       super(message)
       @assertion = assertion
     end

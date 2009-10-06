@@ -1,5 +1,9 @@
 module Riot
-  class Situation; end
+  class Situation
+    def fail(message)
+      raise Failure.new(message)
+    end
+  end
 
   class Context
     # The protein

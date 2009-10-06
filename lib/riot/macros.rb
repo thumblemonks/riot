@@ -44,6 +44,24 @@ module Riot
     def kind_of(expected)
       actual.kind_of?(expected) || fail("expected kind of #{expected}, not #{actual.inspect}")
     end
+
+    # Asserts that an instance variable is defined for the result of the assertion. Value of instance
+    # variable is expected to not be nil
+    #   setup { User.new(:email => "foo@bar.baz") }
+    #   asserts("foo") { topic }.assigns(:email)
+    #
+    # If a value is provided in addition to the variable name, the actual value of the instance variable
+    # must equal the expected value
+    #   setup { User.new(:emmail => "foo@bar.baz") }
+    #   asserts("foo") { topic }.assigns(:email, "foo@bar.baz")
+    def assigns(variable, expected_value=nil)
+      actual_value = actual.instance_variable_get("@#{variable}")
+      return fail("expected @#{variable} to be assigned a value") if actual_value.nil?
+      unless expected_value.nil? || expected_value == actual_value
+        return fail(%Q[expected @#{variable} to be equal to '#{expected_value}', not '#{actual_value}'])
+      end
+      true
+    end
   end # AssertionMacros
 end # Riot
 

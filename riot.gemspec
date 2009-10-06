@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "riot"
-  s.version  = "0.9.1"
-  s.date     = "2009-10-03"
+  s.version  = "0.9.2"
+  s.date     = "2009-10-05"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"
@@ -29,5 +29,6 @@ Gem::Specification.new do |s|
     test/assertion_test.rb
     test/benchmark/simple_context_and_assertions.rb
     test/context_test.rb
+    test/teststrap.rb
   ]
 end

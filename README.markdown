@@ -131,6 +131,28 @@ When you want to test that an expression returns an object of an expected type:
       asserts("its balance") { @user.balance }.kind_of(Currency)
     end
 
+#### Example: Assigns
+
+Sometimes you want to check and see if an instance variable is defined.
+
+    context "a new user" do
+      setup do
+        User.new(:email => "foo@bar.baz", :first_name => nil)
+      end
+      asserts("has an email address") { topic }.assigns(:email)
+      asserts("has a first name") { topic }.assigns(:first_name) # This will fail
+    end
+
+While other times you also want to make sure the value of the instance variable is what you expect it to be.
+
+    context "a new user" do
+      setup do
+        User.new(:email => "foo@bar.baz", :first_name => "John")
+      end
+      asserts("has an email address") { topic }.assigns(:email, "foo@bar.baz")
+      asserts("has a first name") { topic }.assigns(:first_name, "Joe") # This will fail
+    end
+
 #### Example: Nested contexts
 
 Oh yeah, Riot does those, too. The `setup` from each parent is "loaded" into the context and then the context is executed as normal. Test naming is a composite of the parent contexts' names. Here, we'll do a little Sinatra testing (see below for instructions on how to make it Riot work seamlessly with Sinatra tests).

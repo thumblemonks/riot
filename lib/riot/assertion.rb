@@ -1,9 +1,10 @@
 module Riot
 
   class Assertion
-    attr_reader :raised, :to_s, :description
+    attr_reader :raised, :to_s, :description, :situation
     def initialize(description, situation, &block)
       @description = @to_s = description
+      @situation = situation
       actualize(situation, &block)
     end
 

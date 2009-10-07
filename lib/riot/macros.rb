@@ -14,6 +14,16 @@ module Riot
       actual.nil? || fail("expected nil, not #{actual.inspect}")
     end
 
+    # Asserts that the result of the test is a non-nil value. This is useful in the case where you don't want
+    # to translate the result of the test into a boolean value
+    #   asserts("test") { "foo" }.exists
+    #   should("test") { 123 }.exists
+    #   asserts("test") { "" }.exists
+    #   asserts("test") { nil }.exists # This would fail
+    def exists
+      !actual.nil? || fail("expected a non-nil value")
+    end
+
     # Asserts that the test raises the expected Exception
     #   asserts("test") { raise My::Exception }.raises(My::Exception)
     #   should("test") { raise My::Exception }.raises(My::Exception)

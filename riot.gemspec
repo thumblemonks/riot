@@ -1,11 +1,11 @@
 Gem::Specification.new do |s|
   s.name     = "riot"
-  s.version  = "0.9.2"
-  s.date     = "2009-10-05"
+  s.version  = "0.9.3"
+  s.date     = "2009-10-06"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"
-  s.description = "An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks"
+  s.description = "An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test."
   s.authors  = %w[Justin\ Knowlden]
 
   s.has_rdoc = false

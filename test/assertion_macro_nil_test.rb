@@ -11,4 +11,3 @@ context "nil assertion:" do
     Riot::Assertion.new("foo", topic) { "a" }.nil
   end.kind_of(Riot::Failure)
 end # nil assertion
-

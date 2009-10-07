@@ -1,5 +1,4 @@
 require 'teststrap'
-require 'stringio'
 
 context "any context" do
   setup do
@@ -30,56 +29,46 @@ context "any context" do
 end # any context
 
 # 
-# Test Context
+# Basic Context
 
-test_context = context("foo", Riot::NilReport.new) do
-  setup { @test_counter = 0 }
-  asserts("truthiness") { @test_counter += 1; true }
-  asserts("more truthiness") { @test_counter += 1; true }
-end # A CONTEXT THAT IS DEQUEUED
+context "basic context" do
+  setup do
+    test_context = Riot::Context.new("foo", Riot::NilReport.new)
+    test_context.setup { @test_counter = 0 }
+    test_context.asserts("truthiness") { @test_counter += 1; true }
+    test_context.asserts("more truthiness") { @test_counter += 1; true }
+    test_context
+  end
 
-context "test context" do
-  setup { Riot.dequeue_context(test_context) }
-  should("confirm context description") { test_context.to_s }.equals("foo")
-  should("confirm assertion count") { test_context.assertions.length }.equals(2)
-
-  should("call setup once per context") do
-    test_context.situation.instance_variable_get(:@test_counter) # yuck
-  end.equals(2)
-end # test context
+  asserts("context description") { topic.to_s }.equals("foo")
+  asserts("assertion count") { topic.assertions.length }.equals(2)
+  should("call setup once per context") { topic.situation }.assigns(:test_counter, 2)
+end # basic context
 
 # 
 # Nested Context
 
-inner_nested_context, other_nested_context = nil, nil
-nested_context = context("foo", Riot::NilReport.new) do
-  setup do
-    @test_counter = 0
-    @foo = "bar"
-  end
-  asserts("truthiness") { @test_counter += 1; true }
-  
-  inner_nested_context = context("baz") do
-    setup { @test_counter += 10 }
-  end # A CONTEXT THAT IS DEQUEUED
-
-  other_nested_context = context("bum") {} # A CONTEXT THAT IS DEQUEUED
-end # A CONTEXT THAT IS DEQUEUED
-
 context "nested context" do
   setup do
-    [nested_context, inner_nested_context, other_nested_context].each do |c|
-      Riot.dequeue_context(c)
-    end
+    @parent_context = Riot::Context.new("foo", Riot::NilReport.new)
+    @parent_context.setup { @test_counter = 0; @foo = "bar" }
+    @parent_context.asserts("truthiness") { @test_counter += 1; true }
+    @parent_context
   end
   
-  should("inherit parent context") do
-    inner_nested_context.situation.instance_variable_get(:@test_counter)
-  end.equals(10)
+  context "inner context with own setup" do
+    setup do
+      test_context = @parent_context.context("baz")
+      test_context.setup { @test_counter += 10 }
+      test_context
+    end
+  
+    should("inherit parent context") { topic.situation }.assigns(:test_counter, 10)
+    should("chain context names") { topic.to_s }.equals("foo baz")
+  end
 
-  should("chain context names") { inner_nested_context.to_s }.equals("foo baz")
-
-  asserts "parent setup is called even if setup not defined for self" do
-    other_nested_context.situation.instance_variable_get(:@foo)
-  end.equals("bar")
+  context "inner context without its own setup" do
+    setup { @parent_context.context("bum") }
+    asserts("parent setup is called") { topic.situation }.assigns(:foo, "bar")
+  end
 end

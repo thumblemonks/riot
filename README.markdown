@@ -4,20 +4,20 @@ An extremely fast, expressive, and context-driven unit-testing framework. Protes
 
 ### Note on speed
 
-I have done a really simple benchmarking, but right now, Riot is running about **10-times** faster than Test::unit and thusly Shoulda:
+I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
 
     $ ruby test/benchmark/simple_context_and_assertions.rb
 
     Rehearsal ----------------------------------------------
-    Riot         0.140000   0.010000   0.150000 (  0.156170)
-    Test::Unit   1.460000   0.000000   1.460000 (  1.495990)
-    Shoulda      1.490000   0.010000   1.500000 (  1.514745)
-    ------------------------------------- total: 3.110000sec
+    Riot         0.670000   0.010000   0.680000 (  0.688571)
+    Test::Unit   1.380000   0.010000   1.390000 (  1.395437)
+    Shoulda      1.380000   0.000000   1.380000 (  1.391839)
+    ------------------------------------- total: 3.450000sec
 
                      user     system      total        real
-    Riot         0.130000   0.000000   0.130000 (  0.139770)
-    Test::Unit   1.600000   0.010000   1.610000 (  1.627493)
-    Shoulda      1.610000   0.010000   1.620000 (  1.655394)
+    Riot         0.650000   0.010000   0.660000 (  0.657817)
+    Test::Unit   1.350000   0.000000   1.350000 (  1.362907)
+    Shoulda      1.380000   0.010000   1.390000 (  1.388928)
 
     Loaded suite test/benchmark/simple_context_and_assertions
 

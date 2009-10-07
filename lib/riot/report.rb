@@ -33,7 +33,7 @@ module Riot
   class TextReport < Report
     def initialize(writer=nil)
       super()
-      @writer ||= (Riot.silently? ? StringIO.new : STDOUT)
+      @writer ||= STDOUT
     end
 
     def passed

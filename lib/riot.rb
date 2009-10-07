@@ -4,22 +4,15 @@ require 'riot/assertion'
 require 'riot/macros'
 
 module Riot
-  #
-  # Initializing logic
-  def self.contexts
-    @contexts ||= []
-  end
 
   def self.context(description, reporter = nil, parent = nil, &block)
     reporter ||= self.reporter
     context = Context.new(description, reporter, parent)
-    reporter.time { context.instance_eval(&block) }
-    context.report # Results get buffered this way, not necessarily the best
-    (contexts << context).last
-  end
-
-  def self.dequeue_context(context)
-    contexts.delete(context)
+    if block_given?
+      reporter.time { context.instance_eval(&block) }
+      context.report # Results get buffered this way, not necessarily the best
+    end
+    context
   end
 
   def self.report
@@ -30,13 +23,13 @@ module Riot
   #
   # Reporter
 
-  def self.reporter; @reporter ||= TextReport.new; end
+  def self.reporter; @reporter ||= (Riot.silently? ? NilReport.new : TextReport.new); end
   def self.reporter=(report); @reporter = report; end
   def self.silently!; @silently = true; end
   def self.silently?; @silently || false; end
 
   #
-  # Exception
+  # Exceptions
 
   class Failure < Exception
     attr_accessor :assertion, :context
@@ -52,6 +45,7 @@ module Riot
     
     def print_stacktrace?; false; end
   end
+
   class Error < Failure
     def initialize(message, assertion, error)
       super(message, assertion)

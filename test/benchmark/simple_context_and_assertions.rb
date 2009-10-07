@@ -12,22 +12,10 @@ class Room
 end
 
 #
-# Riot
-
-require 'riot'
-Riot.silently! # Do this before any contexts are defined
-
-context "a room" do
-  setup { @room = Room.new("bed") }
-
-  asserts("name") { @room.name }.equals("bed")
-end # a room
- 
-#
 # Test::Unit
 
 require 'test/unit'
-Test::Unit.run = false
+Test::Unit.run = true
 
 require 'test/unit/ui/console/testrunner'
 
@@ -56,13 +44,25 @@ class ShouldaRoomTest < Test::Unit::TestCase
 end
 
 #
+# Riot
+
+require 'riot'
+Riot.silently!
+
+#
 # Benchmarking
 
 n = 100 * 100
 
 Benchmark.bmbm do |x|
   x.report("Riot") do
-    n.times { Riot.report }
+    n.times do
+      context "a room" do
+        setup { @room = Room.new("bed") }
+
+        asserts("name") { @room.name }.equals("bed")
+      end # a room
+    end
   end
 
   x.report("Test::Unit") do

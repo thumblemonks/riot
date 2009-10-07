@@ -27,14 +27,18 @@ module Riot
     # Asserts that the test raises the expected Exception
     #   asserts("test") { raise My::Exception }.raises(My::Exception)
     #   should("test") { raise My::Exception }.raises(My::Exception)
+    #
+    # You can also check to see if the provided message equals or matches your expectations. The message from
+    # the actual raised exception will be converted to a string before any comparison is executed.
     #   asserts("test") { raise My::Exception, "Foo" }.raises(My::Exception, "Foo")
     #   asserts("test") { raise My::Exception, "Foo Bar" }.raises(My::Exception, /Bar/)
+    #   asserts("test") { raise My::Exception, ["a", "b"] }.raises(My::Exception, "ab")
     def raises(expected, expected_message=nil)
       actual_error = raised
       @raised = nil
       return fail("should have raised #{expected}, but raised nothing") unless actual_error
       return fail("should have raised #{expected}, not #{error.class}") unless expected == actual_error.class
-      if expected_message && !(actual_error.message =~ %r[#{expected_message}])
+      if expected_message && !(actual_error.message.to_s =~ %r[#{expected_message}])
         return fail("expected #{expected_message} for message, not #{actual_error.message}")
       end
       true

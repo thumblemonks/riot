@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "riot"
-  s.version  = "0.9.5"
-  s.date     = "2009-10-06"
+  s.version  = "0.9.6"
+  s.date     = "2009-10-07"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/protest"

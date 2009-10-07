@@ -2,6 +2,16 @@
 
 An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.
 
+#### Installation
+
+The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned of gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:
+
+    sudo gem sources -a http://gemcutter.org
+
+Then, simply install the Riot gem like so:
+
+    sudo gem install riot
+
 ### Note on speed
 
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:

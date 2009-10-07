@@ -26,6 +26,13 @@ Gem::Specification.new do |s|
   
   s.test_files = %w[
     Rakefile
+    test/assertion_macro_assigns_test.rb
+    test/assertion_macro_equals_test.rb
+    test/assertion_macro_exists_test.rb
+    test/assertion_macro_kind_of_test.rb
+    test/assertion_macro_matching_test.rb
+    test/assertion_macro_nil_test.rb
+    test/assertion_macro_raises_test.rb
     test/assertion_test.rb
     test/benchmark/simple_context_and_assertions.rb
     test/context_test.rb

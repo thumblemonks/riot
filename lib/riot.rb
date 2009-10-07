@@ -15,11 +15,6 @@ module Riot
     context
   end
 
-  def self.report
-    reporter.results
-    at_exit { exit false unless reporter.passed? }
-  end
-
   #
   # Reporter
 
@@ -27,6 +22,13 @@ module Riot
   def self.reporter=(report); @reporter = report; end
   def self.silently!; @silently = true; end
   def self.silently?; @silently || false; end
+
+  def self.report
+    reporter.results
+    at_exit { exit false unless reporter.passed? }
+  end
+
+  at_exit { Riot.report unless Riot.silently? }
 
   #
   # Exceptions

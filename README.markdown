@@ -239,10 +239,8 @@ Create or modify your existing Rakefile to define a test task like so:
     
     desc "Run all tests"
     task :test do
-      require 'riot'
       $:.concat ['./lib', './test']
-      Dir.glob("./test/*_test.rb").each { |test| require test }
-      Riot.report
+      Dir.glob("./test/**/*_test.rb").each { |test| require test }
     end
 
 Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.

@@ -30,6 +30,11 @@ module Riot
     end
   end # Report
 
+  class NilReport < Report
+    def results; end
+    def time(&block); yield; end
+  end # NilReport
+
   class TextReport < Report
     def initialize(writer=nil)
       super()
@@ -71,9 +76,4 @@ module Riot
       "#%d - %s %s: %s" % format_args
     end
   end # TextReport
-
-  class NilReport < Report
-    def results; end
-    def time(&block); yield; end
-  end # NilReport
 end # Riot

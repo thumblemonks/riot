@@ -32,23 +32,14 @@ module Riot
     def asserts(description, &block) new_assertion("asserts #{description}", &block); end
     def should(description, &block) new_assertion("should #{description}", &block); end
 
-    # In conclusion
     def report
-       # we should just be passing assertions to the reporter and building better descriptions earlier
-      assertions.each do |assertion|
-        if assertion.passed?
-          @reporter.passed
-        else
-          result = assertion.result.contextualize(self)
-          @reporter.send( (assertion.errored? ? :errored : :failed), result)
-        end
-      end
+      assertions.each { |assertion| @reporter.process_assertion(assertion) }
     end
 
     def to_s; @to_s ||= [@parent.to_s, @description].join(' ').strip; end
   private
     def new_assertion(description, &block)
-      (assertions << Assertion.new(description, @situation, &block)).last
+      (assertions << Assertion.new("#{to_s} #{description}", @situation, &block)).last
     end
 
     def induce_local_setup(a_situation)

@@ -34,23 +34,12 @@ module Riot
   # Exceptions
 
   class Failure < Exception
-    attr_accessor :assertion, :context
-    def initialize(message, assertion=nil)
-      super(message)
-      @assertion = assertion
-    end
-
-    def contextualize(ctx)
-      @context = ctx
-      self
-    end
-    
     def print_stacktrace?; false; end
   end
 
   class Error < Failure
-    def initialize(message, assertion, error)
-      super(message, assertion)
+    def initialize(message, error)
+      super(message)
       set_backtrace(error.backtrace)
     end
     def print_stacktrace?; true; end

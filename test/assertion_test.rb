@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "basic assertion:" do
+context "basic assertion" do
   setup { Riot::Situation.new }
 
   should "have a description" do
@@ -19,7 +19,7 @@ context "basic assertion:" do
     Riot::Assertion.new("error", topic) { raise Exception, "blah" }.errored?
   end
 
-  context "that fails while executing test" do
+  context "that fails while executing a test" do
     setup do
       fake_situation = Riot::Situation.new
       Riot::Assertion.new("error", fake_situation) { fail("I'm a bum") }
@@ -27,6 +27,5 @@ context "basic assertion:" do
 
     should("be considered a failing assertion") { topic.failed? }
     should("use failed message in description") { topic.result.message }.matches(/I'm a bum/)
-    should("assign assertion to failure") { topic.result }.assigns(:assertion)
   end # that fails while executing test
 end # basic assertion

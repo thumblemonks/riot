@@ -17,6 +17,14 @@ module Riot
       @time_taken += (Time.now - @start).to_f
     end
 
+    def process_assertion(assertion)
+      if assertion.passed?
+        passed
+      else
+        send((assertion.errored? ? :errored : :failed), assertion.result)
+      end
+    end
+
     def passed; @passes += 1; end
     
     def failed(failure)
@@ -42,18 +50,15 @@ module Riot
     end
 
     def passed
-      super
-      @writer.print('.')
+      super && @writer.print('.')
     end
 
     def failed(failure)
-      super
-      @writer.print('F')
+      super && @writer.print('F')
     end
 
     def errored(error)
-      super
-      @writer.print('E')
+      super && @writer.print('E')
     end
 
     def results
@@ -71,9 +76,6 @@ module Riot
       end
     end
 
-    def render_result(idx, result)
-      format_args = [idx, result.context.to_s, result.assertion.to_s, result.to_s]
-      "#%d - %s %s: %s" % format_args
-    end
+    def render_result(idx, result) "#%d - %s" % [idx, result.to_s]; end
   end # TextReport
 end # Riot

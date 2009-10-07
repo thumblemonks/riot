@@ -14,7 +14,7 @@ module Riot
     end
 
     def fail(message)
-      @failure = Failure.new(message, self) unless errored?
+      @failure = Failure.new("#{description}: #{message}") unless errored?
     end
 
     def failed?; !@failure.nil?; end
@@ -27,13 +27,12 @@ module Riot
       @default_failure = fail("expected true, not #{@actual.inspect}") unless @actual == true
     rescue Failure => e
       @failure = e
-      @failure.assertion = self
     rescue Exception => e
       @raised = e
     end
 
     def error
-      Error.new("errored with #{@raised}", self, @raised) if errored?
+      Error.new("#{description}: errored with #{@raised}", @raised) if errored?
     end
   end # Assertion
 end # Riot

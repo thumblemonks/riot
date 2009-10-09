@@ -59,6 +59,13 @@ module Riot
       actual.kind_of?(expected) || fail("expected kind of #{expected}, not #{actual.inspect}")
     end
 
+    # Asserts that the result of the test is an object that responds to the given method
+    #   asserts("test") { "foo" }.respond_to(:to_s)
+    #   should("test") { "foo" }.respond_to(:to_s)
+    def respond_to(expected)
+      actual.respond_to?(expected) || fail("expected method #{expected}, but none exists")
+    end
+
     # Asserts that an instance variable is defined for the result of the assertion. Value of instance
     # variable is expected to not be nil
     #   setup { User.new(:email => "foo@bar.baz") }

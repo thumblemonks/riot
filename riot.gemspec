@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "riot"
-  s.version  = "0.9.6"
+  s.version  = "0.9.7"
   s.date     = "2009-10-07"
   s.summary  = "An extremely fast, expressive, and context-driven unit-testing framework"
   s.email    = %w[gus@gusg.us]
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
     test/assertion_macros/assertion_macro_matching_test.rb
     test/assertion_macros/assertion_macro_nil_test.rb
     test/assertion_macros/assertion_macro_raises_test.rb
+    test/assertion_macros/assertion_macro_respond_to_test.rb
     test/assertion_test.rb
     test/benchmark/simple_context_and_assertions.rb
     test/context_test.rb

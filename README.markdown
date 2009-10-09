@@ -44,8 +44,8 @@ For instance, given a test file named `foo_test.rb`, you might have the followin
     require 'riot'
     
     context "a new user" do
-      setup { @user = User.new }
-      asserts("that it is not yet created") { @user.new_record? }
+      setup { User.new }
+      asserts("that it is not yet created") { topic.new_record? }
     end
 
 Notice that you do not define a class anywhere. That would be the entire contents of that test file. If you wanted to use a `should` instead, you could say this:
@@ -53,8 +53,8 @@ Notice that you do not define a class anywhere. That would be the entire content
     require 'riot'
 
     context "a new user" do
-      setup { @user = User.new }
-      should("not be created") { @user.new_record? }
+      setup { User.new }
+      should("not be created") { topic.new_record? }
     end
 
 Sometimes it's more clear to say "this **should** be that" and sometimes it's better to say "**asserts** this is that". I promise you that Riot will get no more redundant than this, but also that besides speed, Riot will aim at being expressive with a minimal amount of syntax.
@@ -68,8 +68,8 @@ One of the most common assertions you will (or do already) utilize is that of eq
 For example:
 
     context "a new user" do
-      setup { @user = User.new(:email => 'foo@bar.com') }
-      asserts("email address") { @user.email }.equals('foo@bar.com')
+      setup { User.new(:email => 'foo@bar.com') }
+      asserts("email address") { topic.email }.equals('foo@bar.com')
     end
 
 Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `@user.email`, the assertion would have failed.
@@ -77,8 +77,8 @@ Here, you should begin to notice that tests themselves return the actual value. 
 The `equals` modifier works with any type of value, including nil's. However, if you wanted to test for nil explicitly, you could simply do this:
 
     context "a new user" do
-      setup { @user = User.new }
-      asserts("email address") { @user.email }.nil
+      setup { User.new }
+      asserts("email address") { topic.email }.nil
     end
 
 Notice the `nil` modifier added to asserts. Also notice how the test almost reads as "a new user asserts email address *is* nil". With Test::Unit, you would have probably written:
@@ -110,10 +110,10 @@ In my opinion, the same redundancy exists. Sure, I could write a macro like `sho
 If you need to assert that a test result matches a regular expression, use the `matches` modifier like so:
 
     context "a new user" do
-      setup { @user = User.new }
+      setup { User.new }
 
       # I'm a contrived example
-      asserts("random phone number") { @user.random_phone_number }.matches(/^\d{3}-\d{3}-\d{4}$/)
+      asserts("random phone number") { topic.random_phone_number }.matches(/^\d{3}-\d{3}-\d{4}$/)
     end
 
 #### Example: Raises
@@ -121,15 +121,15 @@ If you need to assert that a test result matches a regular expression, use the `
 Sometimes, your test raises an exception that you actually expected.
 
     context "a new user" do
-      setup { @user = User.new }
-      asserts("invalid data") { @user.save! }.raises(ActiveRecord::RecordInvalid)
+      setup { User.new }
+      asserts("invalid data") { topic.save! }.raises(ActiveRecord::RecordInvalid)
     end
 
 And if you wanted to check that the exception and message match what you expect:
 
     context "a new user" do
-      setup { @user = User.new }
-      asserts("invalid data") { @user.save! }.raises(ActiveRecord::RecordInvalid, /has errors/)
+      setup { User.new }
+      asserts("invalid data") { topic.save! }.raises(ActiveRecord::RecordInvalid, /has errors/)
     end
 
 #### Example: Kind Of
@@ -137,8 +137,17 @@ And if you wanted to check that the exception and message match what you expect:
 When you want to test that an expression returns an object of an expected type:
 
     context "a new user" do
-      setup { @user = User.new }
-      asserts("its balance") { @user.balance }.kind_of(Currency)
+      setup { User.new }
+      asserts("its balance") { topic.balance }.kind_of(Currency)
+    end
+
+#### Example: Respond To
+
+When you want to test that an object responds to a specific method:
+
+    context "a new user" do
+      setup { User.new }
+      asserts("email is defined") { topic }.respond_to(:email)
     end
 
 #### Example: Assigns

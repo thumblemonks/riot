@@ -1,13 +1,16 @@
 require 'teststrap'
 
-context "respond_to assertion:" do
-  setup { Riot::Situation.new }
-
-  asserts "specific result quacks kind of like a String" do
-    Riot::Assertion.new("foo", topic) { "a" }.respond_to(:to_s)
+context "respond to" do
+  setup do
+    Riot::Situation.new
   end
 
-  should "raise a Failure if does not quack enough like a duck for you" do
-    Riot::Assertion.new("foo", topic) { 0 }.respond_to(:split)
-  end.kind_of(Riot::Failure)
-end # respond_to assertion
+  should "pass when object responds to expected method" do
+    Riot::Assertion.new("foo", topic) { "foo" }.respond_to(:each_byte)
+  end
+
+  should "fail when object does not respond to expected method" do
+    Riot::Assertion.new("foo", topic) { "foo" }.respond_to(:goofballs).message
+  end.equals("foo: expected method :goofballs is not defined")
+
+end # respond to

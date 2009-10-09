@@ -63,7 +63,7 @@ module Riot
     #   asserts("test") { "foo" }.respond_to(:to_s)
     #   should("test") { "foo" }.respond_to(:to_s)
     def respond_to(expected)
-      actual.respond_to?(expected) || fail("expected method #{expected}, but none exists")
+      actual.respond_to?(expected) || fail("expected method #{expected.inspect} is not defined")
     end
 
     # Asserts that an instance variable is defined for the result of the assertion. Value of instance

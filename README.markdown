@@ -256,13 +256,14 @@ Create or modify your existing Rakefile to define a test task like so:
     desc 'Default task: run all tests'
     task :default => [:test]
     
-    desc "Run all tests"
-    task :test do
-      $:.concat ['./lib', './test']
-      Dir.glob("./test/**/*_test.rb").each { |test| require test }
+    require 'rake/testtask'
+    Rake::TestTask.new(:test) do |test|
+      test.libs << 'lib' << 'test'
+      test.pattern = 'test/**/*_test.rb'
+      test.verbose = false
     end
 
-Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.
+Basically, it's like setting up any other test runner. Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.
 
 ### With Sinatra
 

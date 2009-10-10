@@ -1,10 +1,10 @@
+require 'riot/errors'
 require 'riot/report'
 require 'riot/context'
 require 'riot/assertion'
 require 'riot/macros'
 
 module Riot
-
   def self.context(description, reporter = nil, parent = nil, &block)
     reporter ||= self.reporter
     context = Context.new(description, reporter, parent)
@@ -23,27 +23,10 @@ module Riot
   def self.silently!; @silently = true; end
   def self.silently?; @silently || false; end
 
-  def self.report
-    reporter.results
-    at_exit { exit false unless reporter.passed? }
-  end
-
-  at_exit { Riot.report unless Riot.silently? }
-
-  #
-  # Exceptions
-
-  class Failure < Exception
-    def print_stacktrace?; false; end
-  end
-
-  class Error < Failure
-    def initialize(message, error)
-      super(message)
-      set_backtrace(error.backtrace)
-    end
-    def print_stacktrace?; true; end
-  end
+  at_exit do
+    Riot.reporter.results
+    exit false unless reporter.passed?
+  end unless Riot.silently?
 end # Riot
 
 module Kernel

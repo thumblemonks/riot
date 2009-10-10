@@ -13,8 +13,9 @@ module Riot
 
     def time(&block)
       @start = Time.now
-      yield
+      result = yield
       @time_taken += (Time.now - @start).to_f
+      result
     end
 
     def process_assertion(assertion)
@@ -72,7 +73,7 @@ module Riot
       bad_results.each_with_index do |result, idx|
         @writer.puts render_result(idx + 1, result)
         @writer.puts "  " + result.backtrace.join("\n  ") if result.print_stacktrace?
-        @writer.puts "\n\n"
+        @writer.puts "\n"
       end
     end
 

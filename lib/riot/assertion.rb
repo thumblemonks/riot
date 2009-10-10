@@ -1,5 +1,4 @@
 module Riot
-
   class Assertion
     attr_reader :raised, :to_s, :description, :situation
     def initialize(description, situation, &block)
@@ -9,7 +8,7 @@ module Riot
     end
 
     def actual
-      @default_failure = @failure = nil if @default_failure
+      no_failure_if_default_failure_recorded
       @actual
     end
 
@@ -17,10 +16,10 @@ module Riot
       @failure = Failure.new("#{description}: #{message}") unless errored?
     end
 
+    def passed?; !(failed? || errored?); end
     def failed?; !@failure.nil?; end
     def errored?; !@raised.nil?; end
-    def passed?; !(failed? || errored?); end
-    def result; @failure || error; end
+    def result; @failure || @raised; end
   private
     def actualize(situation, &block)
       @actual = situation.instance_eval(&block)
@@ -28,11 +27,11 @@ module Riot
     rescue Failure => e
       @failure = e
     rescue Exception => e
-      @raised = e
+      @raised = Error.new("#{description}: errored with #{e}", e)
     end
 
-    def error
-      Error.new("#{description}: errored with #{@raised}", @raised) if errored?
+    def no_failure_if_default_failure_recorded
+      @default_failure = @failure = nil if @default_failure
     end
   end # Assertion
 end # Riot

@@ -12,7 +12,7 @@ Then, simply install the Riot gem like so:
 
     sudo gem install riot
 
-### Note on speed
+#### Note on speed
 
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
 
@@ -47,6 +47,8 @@ To compare against MiniTest, I had to run the benchmark separately.
 Riot is currently only slightly faster, but I haven't done any optimization yet. Riot is also half the code of MiniTest (`313 loc < 674 loc` :)
 
 All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9]`.
+
+## Examples
 
 #### Example: Basic booleans
 

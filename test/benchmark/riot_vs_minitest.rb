@@ -1,4 +1,3 @@
-require 'rubygems'
 $:.concat ['./lib']
 require 'benchmark'
 
@@ -13,8 +12,15 @@ class Room
 end
 
 #
+# Riot
+
+require 'riot'
+Riot.silently!
+
+#
 # MiniTest::Unit
 
+require 'rubygems'
 require 'minitest/unit'
 
 class RoomTest < MiniTest::Unit::TestCase
@@ -26,12 +32,6 @@ class RoomTest < MiniTest::Unit::TestCase
     assert_equal "bed", @room.name
   end
 end
-
-#
-# Riot
-
-require 'riot'
-Riot.silently!
 
 #
 # Benchmarking

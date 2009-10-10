@@ -34,7 +34,7 @@ module Riot
     #   asserts("test") { raise My::Exception, "Foo Bar" }.raises(My::Exception, /Bar/)
     #   asserts("test") { raise My::Exception, ["a", "b"] }.raises(My::Exception, "ab")
     def raises(expected, expected_message=nil)
-      actual_error = raised
+      actual_error = raised.original_exception
       @raised = nil
       return fail("should have raised #{expected}, but raised nothing") unless actual_error
       return fail("should have raised #{expected}, not #{error.class}") unless expected == actual_error.class

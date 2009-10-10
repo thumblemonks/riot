@@ -33,6 +33,21 @@ I have done a really simple benchmarking (10,000 runs), but right now, Riot is r
 
 "Is it valid?", you ask. *I* think it is. I ain't no cheater, but I might be delusional.
 
+To compare against MiniTest, I had to run the benchmark separately.
+
+    Rehearsal --------------------------------------------
+    Riot       0.690000   0.010000   0.700000 (  0.705550)
+    MiniTest   0.760000   0.070000   0.830000 (  0.837458)
+    ----------------------------------- total: 1.530000sec
+
+                   user     system      total        real
+    Riot       0.690000   0.000000   0.690000 (  0.696404)
+    MiniTest   0.720000   0.070000   0.790000 (  0.799462)
+
+Riot is currently only slightly faster, but I haven't done any optimization yet. Riot is also half the code of MiniTest (`313 loc < 674 loc` :)
+
+All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9]`.
+
 #### Example: Basic booleans
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.

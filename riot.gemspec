@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.9.7"
+  s.version = "0.9.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
@@ -23,9 +23,11 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/riot.rb",
      "lib/riot/assertion.rb",
+     "lib/riot/assertion_macros.rb",
      "lib/riot/context.rb",
-     "lib/riot/macros.rb",
+     "lib/riot/errors.rb",
      "lib/riot/report.rb",
+     "lib/riot/situation.rb",
      "riot.gemspec",
      "test/assertion_macros/assertion_macro_assigns_test.rb",
      "test/assertion_macros/assertion_macro_equals_test.rb",
@@ -36,6 +38,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/assertion_macro_raises_test.rb",
      "test/assertion_macros/assertion_macro_respond_to_test.rb",
      "test/assertion_test.rb",
+     "test/benchmark/riot_vs_minitest.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
      "test/teststrap.rb"
@@ -55,6 +58,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/assertion_macro_raises_test.rb",
      "test/assertion_macros/assertion_macro_respond_to_test.rb",
      "test/assertion_test.rb",
+     "test/benchmark/riot_vs_minitest.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
      "test/teststrap.rb"

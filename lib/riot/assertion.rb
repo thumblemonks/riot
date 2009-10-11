@@ -4,11 +4,11 @@ module Riot
     def initialize(description, situation, &block)
       @description = @to_s = description
       @situation = situation
-      actualize(situation, &block)
+      run(situation, &block)
     end
 
     def actual
-      no_failure_if_default_failure_recorded
+      unfail_if_default_failure_recorded
       @actual
     end
 
@@ -21,7 +21,7 @@ module Riot
     def errored?; !@raised.nil?; end
     def result; @failure || @raised; end
   private
-    def actualize(situation, &block)
+    def run(situation, &block)
       @actual = situation.instance_eval(&block)
       @default_failure = fail("expected true, not #{@actual.inspect}") unless @actual == true
     rescue Failure => e
@@ -30,7 +30,7 @@ module Riot
       @raised = Error.new("#{description}: errored with #{e}", e)
     end
 
-    def no_failure_if_default_failure_recorded
+    def unfail_if_default_failure_recorded
       @default_failure = @failure = nil if @default_failure
     end
   end # Assertion

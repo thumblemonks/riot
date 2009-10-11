@@ -5,18 +5,8 @@ require 'riot/assertion'
 require 'riot/macros'
 
 module Riot
-  def self.context(description, reporter = nil, parent = nil, &block)
-    reporter ||= self.reporter
-    context = Context.new(description, reporter, parent)
-    if block_given?
-      reporter.time { context.instance_eval(&block) }
-      context.report # Results get buffered this way, not necessarily the best
-    end
-    context
-  end
 
-  #
-  # Reporter
+  # Configuration
 
   def self.reporter; @reporter ||= (Riot.silently? ? NilReport.new : TextReport.new); end
   def self.reporter=(report); @reporter = report; end
@@ -30,7 +20,8 @@ module Riot
 end # Riot
 
 module Kernel
-  def context(*args, &block)
-    Riot.context(*args, &block)
+  def context(description, reporter = nil, parent = nil, &block)
+    reporter ||= Riot.reporter
+    reporter.time { Riot::Context.new(description, reporter, parent, &block) }
   end
 end # Kernel

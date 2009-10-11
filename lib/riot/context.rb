@@ -8,12 +8,13 @@ module Riot
   class Context
     # The protein
     attr_reader :description, :assertions, :situation
-    def initialize(description, reporter, parent=nil)
-      @description, @reporter = description, reporter
+    def initialize(description, reporter, parent=nil, &block)
+      @description, @reporter, @parent = description, reporter, parent
       @assertions = []
-      @parent = parent
       @situation = Situation.new
       bootstrap(@situation)
+      instance_eval(&block) if block_given? # running the context
+      report
     end
 
     def bootstrap(a_situation)
@@ -28,7 +29,7 @@ module Riot
     end
 
     # DSLee stuff
-    def context(description, &block) Riot.context(description, @reporter, self, &block); end
+    def context(description, &block) Context.new(description, @reporter, self, &block); end
     def asserts(description, &block) new_assertion("asserts #{description}", &block); end
     def should(description, &block) new_assertion("should #{description}", &block); end
 
@@ -39,7 +40,9 @@ module Riot
     def to_s; @to_s ||= [@parent.to_s, @description].join(' ').strip; end
   private
     def new_assertion(description, &block)
-      (assertions << Assertion.new("#{to_s} #{description}", @situation, &block)).last
+      assertion = Assertion.new("#{to_s} #{description}", @situation, &block)
+      assertions << assertion
+      assertion
     end
 
     def induce_local_setup(a_situation)

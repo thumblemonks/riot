@@ -16,33 +16,29 @@ Then, simply install the Riot gem like so:
 
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
 
-    $ ruby test/benchmark/simple_context_and_assertions.rb
-
     Rehearsal ----------------------------------------------
-    Riot         0.670000   0.010000   0.680000 (  0.688571)
-    Test::Unit   1.380000   0.010000   1.390000 (  1.395437)
-    Shoulda      1.380000   0.000000   1.380000 (  1.391839)
-    ------------------------------------- total: 3.450000sec
+    Riot         0.620000   0.010000   0.630000 (  0.647318)
+    Test::Unit   1.500000   0.010000   1.510000 (  1.508144)
+    Shoulda      1.490000   0.000000   1.490000 (  1.501468)
+    ------------------------------------- total: 3.630000sec
 
                      user     system      total        real
-    Riot         0.650000   0.010000   0.660000 (  0.657817)
-    Test::Unit   1.350000   0.000000   1.350000 (  1.362907)
-    Shoulda      1.380000   0.010000   1.390000 (  1.388928)
-
-    Loaded suite test/benchmark/simple_context_and_assertions
+    Riot         0.630000   0.010000   0.640000 (  0.640481)
+    Test::Unit   1.460000   0.000000   1.460000 (  1.476454)
+    Shoulda      1.480000   0.010000   1.490000 (  1.490633)
 
 "Is it valid?", you ask. *I* think it is. I ain't no cheater, but I might be delusional.
 
 To compare against MiniTest, I had to run the benchmark separately.
 
     Rehearsal --------------------------------------------
-    Riot       0.690000   0.010000   0.700000 (  0.705550)
-    MiniTest   0.760000   0.070000   0.830000 (  0.837458)
-    ----------------------------------- total: 1.530000sec
+    Riot       0.630000   0.010000   0.640000 (  0.641285)
+    MiniTest   0.770000   0.070000   0.840000 (  0.846447)
+    ----------------------------------- total: 1.480000sec
 
                    user     system      total        real
-    Riot       0.690000   0.000000   0.690000 (  0.696404)
-    MiniTest   0.720000   0.070000   0.790000 (  0.799462)
+    Riot       0.630000   0.000000   0.630000 (  0.632337)
+    MiniTest   0.730000   0.070000   0.800000 (  0.798107)
 
 Riot is currently only slightly faster, but I haven't done any optimization yet. Riot is also half the code of MiniTest (`313 loc < 674 loc` :)
 

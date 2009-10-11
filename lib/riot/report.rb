@@ -64,19 +64,19 @@ module Riot
 
     def results
       @writer.puts "\n\n"
-      print_result_stack
+      print_bad_results
       format = "%d assertions, %d failures, %d errors in %s seconds"
       @writer.puts format % [assertions, failures, errors, ("%0.6f" % time_taken)]
     end
   private
-    def print_result_stack
+    def print_bad_results
       bad_results.each_with_index do |result, idx|
-        @writer.puts render_result(idx + 1, result)
+        @writer.puts format_result(idx + 1, result)
         @writer.puts "  " + result.backtrace.join("\n  ") if result.print_stacktrace?
         @writer.puts "\n"
       end
     end
 
-    def render_result(idx, result) "#%d - %s" % [idx, result.to_s]; end
+    def format_result(idx, result) "#%d - %s" % [idx, result.to_s]; end
   end # TextReport
 end # Riot

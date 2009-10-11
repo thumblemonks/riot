@@ -1,8 +1,9 @@
 require 'riot/errors'
 require 'riot/report'
+require 'riot/situation'
 require 'riot/context'
 require 'riot/assertion'
-require 'riot/macros'
+require 'riot/assertion_macros'
 
 module Riot
 

@@ -344,7 +344,7 @@ For instance, let's say you wanted to add a macro for verifying that the result 
     module Custom
       module AssertionMacros
         def kind_of(expected_class)
-          actual.kind_of?(expected) || failure("expected kind of #{expected}, not #{actual.inspect}")
+          actual.kind_of?(expected) || fail("expected kind of #{expected}, not #{actual.inspect}")
         end
       end # AssertionMacros
     end # Custom

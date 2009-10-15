@@ -72,7 +72,26 @@ Notice that you do not define a class anywhere. That would be the entire content
 
 Sometimes it's more clear to say "this **should** be that" and sometimes it's better to say "**asserts** this is that". I promise you that Riot will get no more redundant than this, but also that besides speed, Riot will aim at being expressive with a minimal amount of syntax.
 
+The other important thing to note in the examples above is the use of the `topic`. Calling `topic` within any assertion will actually return the value of whatever was evaluated and returned from calling setup in the given context. In the examples above, `User.new` was returned, and is therefor accessible as the `topic`.
+
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
+
+#### Example: Shortcut - Asserting the topic itself
+
+Over the course of developing Riot it became somewhat obvious to some of us that we were creating assertions that returned the `topic` just so we could assert things about the topic itself. For instance, were doing this:
+
+    context "a billionaire" do
+      setup { MoneyMaker.build(:billionaire) }
+      
+      should("be a Billionaire") { topic }.kind_of(Billionaire)
+    end
+
+This is awfully redundant - not to mention, contrived. So, we wrote a shortcut to generate an assertion that returns topic. This means we can now do this:
+
+    context "a billionaire" do
+      setup { MoneyMaker.build(:billionaire) }
+      topic.kind_of(Billionaire)
+    end
 
 #### Example: Equality
 

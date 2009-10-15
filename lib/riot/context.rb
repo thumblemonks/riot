@@ -32,6 +32,7 @@ module Riot
     def context(description, &block) Context.new(description, @reporter, self, &block); end
     def asserts(what, &block) add_assertion("asserts #{what}", &block); end
     def should(what, &block) add_assertion("should #{what}", &block); end
+    def topic; asserts("topic") { topic }; end
   private
     def add_assertion(what, &block)
       (assertions << Assertion.new("#{to_s} #{what}", @situation, &block)).last

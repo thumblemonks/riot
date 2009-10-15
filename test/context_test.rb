@@ -25,6 +25,10 @@ context "any context" do
     asserts "topic becomes available to test as result of setup" do
       @context.should("bar") { topic }.actual
     end.equals("foo")
+
+    asserts "calling topic in context will return assertion that returns topic as the actual" do
+      @context.topic.actual
+    end.equals("foo")
   end # when running setup
 end # any context
 

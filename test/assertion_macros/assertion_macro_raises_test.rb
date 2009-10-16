@@ -1,9 +1,15 @@
 require 'teststrap'
 
+class MyException < Exception; end
+
 context "raises assertion:" do
   setup { Riot::Situation.new }
 
   should("raise an Exception") { raise Exception }.raises(Exception)
+
+  should "fail if Exception classes do not match" do
+    Riot::Assertion.new("foo", topic) { raise MyException }.raises(Exception)
+  end.kind_of(Riot::Failure)
 
   should "pass if provided message equals expectation" do
     Riot::Assertion.new("foo", topic) { raise Exception, "I'm a nerd" }.raises(Exception, "I'm a nerd")

@@ -36,9 +36,11 @@ module Riot
     def raises(expected, expected_message=nil)
       actual_error = raised.original_exception
       @raised = nil
-      return fail("should have raised #{expected}, but raised nothing") unless actual_error
-      return fail("should have raised #{expected}, not #{error.class}") unless expected == actual_error.class
-      if expected_message && !(actual_error.message.to_s =~ %r[#{expected_message}])
+      if actual_error.nil?
+        return fail("should have raised #{expected}, but raised nothing")
+      elsif expected != actual_error.class
+        return fail("should have raised #{expected}, not #{actual_error.class}")
+      elsif expected_message && !(actual_error.message.to_s =~ %r[#{expected_message}])
         return fail("expected #{expected_message} for message, not #{actual_error.message}")
       end
       true

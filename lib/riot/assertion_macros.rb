@@ -71,12 +71,12 @@ module Riot
     # Asserts that an instance variable is defined for the result of the assertion. Value of instance
     # variable is expected to not be nil
     #   setup { User.new(:email => "foo@bar.baz") }
-    #   asserts("foo") { topic }.assigns(:email)
+    #   topic.assigns(:email)
     #
     # If a value is provided in addition to the variable name, the actual value of the instance variable
     # must equal the expected value
-    #   setup { User.new(:emmail => "foo@bar.baz") }
-    #   asserts("foo") { topic }.assigns(:email, "foo@bar.baz")
+    #   setup { User.new(:email => "foo@bar.baz") }
+    #   topic.assigns(:email, "foo@bar.baz")
     def assigns(variable, expected_value=nil)
       actual_value = actual.instance_variable_get("@#{variable}")
       return fail("expected @#{variable} to be assigned a value") if actual_value.nil?

@@ -54,15 +54,15 @@ end # basic context
 
 context "nested context" do
   setup do
-    @parent_context = Riot::Context.new("foo", Riot::NilReport.new)
-    @parent_context.setup { @test_counter = 0; @foo = "bar" }
-    @parent_context.asserts("truthiness") { @test_counter += 1; true }
-    @parent_context
+    test_context = Riot::Context.new("foo", Riot::NilReport.new)
+    test_context.setup { @test_counter = 0; @foo = "bar" }
+    test_context.asserts("truthiness") { @test_counter += 1; true }
+    test_context
   end
   
   context "inner context with own setup" do
     setup do
-      test_context = @parent_context.context("baz")
+      test_context = topic.context("baz")
       test_context.setup { @test_counter += 10 }
       test_context
     end
@@ -72,7 +72,34 @@ context "nested context" do
   end
 
   context "inner context without its own setup" do
-    setup { @parent_context.context("bum") }
+    setup { topic.context("bum") }
     asserts("parent setup is called") { topic.situation }.assigns(:foo, "bar")
   end
 end
+
+# 
+# Multiple setups in a context
+
+context "multiple setups" do
+  setup do
+    test_context = Riot::Context.new("foo", Riot::NilReport.new)
+    test_context.setup { @foo = "bar" }
+    test_context.setup { @baz = "boo" }
+    test_context
+  end
+
+  asserts("foo") { topic.situation }.assigns(:foo, "bar")
+  asserts("bar") { topic.situation }.assigns(:baz, "boo")
+
+  context "in the parent of a nested context" do
+    setup do
+      test_context = topic.context("goo")
+      test_context.setup { @goo = "car" }
+      test_context
+    end
+
+    asserts("foo") { topic.situation }.assigns(:foo, "bar")
+    asserts("bar") { topic.situation }.assigns(:baz, "boo")
+    asserts("goo") { topic.situation }.assigns(:goo, "car")
+  end # in the parent of a nested context
+end # multiple setups

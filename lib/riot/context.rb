@@ -4,7 +4,7 @@ module Riot
     attr_reader :description, :assertions, :situation
     def initialize(description, reporter, parent=nil, &context_block)
       @description, @reporter, @parent = description, reporter, parent
-      @assertions = []
+      @setups, @assertions = [], []
       @situation = Situation.new
       bootstrap(@situation)
       instance_eval(&context_block) if block_given? # running the context
@@ -13,8 +13,10 @@ module Riot
 
     # Walk it out. Call setup from parent first
     def bootstrap(a_situation)
-      run_setup(a_situation, &@parent.bootstrap(a_situation)) if @parent
-      @setup
+      @parent.bootstrap(a_situation).each do |setup_block|
+        run_setup(a_situation, &setup_block)
+      end if @parent
+      @setups
     end
 
     def report
@@ -26,7 +28,8 @@ module Riot
     # DSLee stuff
 
     def setup(&block)
-      run_setup(situation, &(@setup = block))
+      @setups << block
+      run_setup(situation, &block)
     end
 
     def context(description, &block) Context.new(description, @reporter, self, &block); end

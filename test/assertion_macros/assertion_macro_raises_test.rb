@@ -7,6 +7,12 @@ context "raises assertion:" do
 
   should("raise an Exception") { raise Exception }.raises(Exception)
 
+  should "fail if nothing was raised" do
+    assertion = Riot::Assertion.new("foo", topic) { "barf" }
+    assertion.raises(Exception)
+    assertion.result.message
+  end.matches(/should have raised Exception, but raised nothing/)
+
   should "fail if Exception classes do not match" do
     Riot::Assertion.new("foo", topic) { raise MyException }.raises(Exception)
   end.kind_of(Riot::Failure)

@@ -2,6 +2,11 @@
 
 An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.
 
+When you're done reading here, take a gander at:
+
+* [Riot Rails](http://github.com/thumblemonks/riot_rails): Rails support for Riot testing. A definite work in progress (help welcomed). See [evoke-app](http://github.com/thumblemonks/evoke-app) for live examples.
+* [Riot.js](http://github.com/conflagrationjs/riotjs): for you JavaScript people, a version of Riot just for you. Both implementations will be informing the other. Lots of stuff to learn.
+
 #### Installation
 
 The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned of gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:

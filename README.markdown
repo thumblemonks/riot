@@ -55,7 +55,7 @@ All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9]`.
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
 
-At it's very basic, Riot simply tries to assert that an expression is true or false. Riot does this through its `asserts` or `should` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `should` test does the exact same thing - they are in fact aliases. The only difference is in the way you write the assertion. 
+At it's very basic, Riot simply tries to assert that an expression is true or false. Riot does this through its `asserts` or `should` tests. An `asserts` test will pass if the result of running the test is neither `nil` or `false`. A `should` test does the exact same thing - they are in effect, aliases. The only difference is in the way you write the assertion. 
 
 For instance, given a test file named `foo_test.rb`, you might have the following code in it:
 
@@ -77,7 +77,7 @@ Notice that you do not define a class anywhere. That would be the entire content
 
 Sometimes it's more clear to say "this **should** be that" and sometimes it's better to say "**asserts** this is that". I promise you that Riot will get no more redundant than this, but also that besides speed, Riot will aim at being expressive with a minimal amount of syntax.
 
-The other important thing to note in the examples above is the use of the `topic`. Calling `topic` within any assertion will actually return the value of whatever was evaluated and returned from calling setup in the given context. In the examples above, `User.new` was returned, and is therefor accessible as the `topic`.
+The other important thing to note in the examples above is the use of the `topic`. Calling `topic` within any assertion will actually return the value of whatever was evaluated and returned from calling the last setup in the given context. In the examples above, `User.new` was returned, and is therefor accessible as the `topic`.
 
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
@@ -109,7 +109,7 @@ For example:
       asserts("email address") { topic.email }.equals('foo@bar.com')
     end
 
-Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `@user.email`, the assertion would have failed.
+Here, you should begin to notice that tests themselves return the actual value. You do not write assertions into the test. Assertions are "aspected" onto the test. If the test above did not return 'foo@bar.com' for `topic.email`, the assertion would have failed.
 
 The `equals` modifier works with any type of value, including nil's. However, if you wanted to test for nil explicitly, you could simply do this:
 

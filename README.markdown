@@ -270,7 +270,7 @@ I should say that I love Shoulda in theory and in practice. It changed the way I
 
 ### How Riot is different
 
-Riot differs primarily in that it does not rerun setup for each test in a context. I know this is going to shock and awe a lot of folks. However, over the past several years of my doing TDD in some capacity or another, there are certain habits I have tried to pick up on any many others I have tried to drop.
+Riot differs primarily in that it does not rerun setup for each test in a context. I know this is going to shock a lot of folks. However, over the past several years of my doing TDD in some capacity or another, there are certain habits I have tried to pick up on any many others I have tried to drop.
 
 For instance, I believe that no assertion should mangle the context of the test data it is running in. Following this allows me to require setup be run only once for a collection of related assertions. Even in a nested context where setups are inherited, the setup's are called only once per the specific context.
 

@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'ruby-debug'
+
 module Riot
   module AssertionMacros
     # Asserts that the result of the test equals the expected value
@@ -66,6 +69,22 @@ module Riot
     #   should("test") { "foo" }.respond_to(:to_s)
     def respond_to(expected)
       actual.respond_to?(expected) || fail("expected method #{expected.inspect} is not defined")
+    end
+
+    # Asserts that two arrays contain the same elements, the same number of times.
+    #   asserts("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
+    #   should("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
+    def same_elements(expected)
+      [:select, :inject, :size].each do |meth|
+        [actual, expected].each do |a|
+           unless a.respond_to?(meth)
+             return fail("#{a.inspect} should be an array, but doesn't respond to #{meth.inspect}")
+           end
+        end
+      end
+      expected_elements = expected.inject({}) { |h,e| h[e] = expected.select { |i| i == e }.size; h }
+      actual_elements = actual.inject({}) { |h,e| h[e] = actual.select { |i| i == e }.size; h }
+      expected_elements == actual_elements || fail("expected elements #{expected.inspect} do not match #{actual.inspect}")
     end
 
     # Asserts that an instance variable is defined for the result of the assertion. Value of instance

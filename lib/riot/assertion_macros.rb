@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'ruby-debug'
 
 module Riot
   module AssertionMacros
@@ -108,3 +107,4 @@ module Riot
 end # Riot
 
 Riot::Assertion.instance_eval { include Riot::AssertionMacros }
+

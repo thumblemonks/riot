@@ -307,7 +307,7 @@ Basically, it's like setting up any other test runner. Then, from the command li
 Riot definitely works with the latest Sinatra. I personally use it to run tests for [Chicago](http://github.com/thumblemonks/chicago) and [Slvu](http://github.com/jaknowlden/slvu). Setup is pretty easy and very much like getting your tests to run with Test::Unit. In a test helper file that gets loaded into all of your tests (that need it), enter the following:
 
     require 'riot'
-    class Riot::Context
+    class Riot::Situation
       include Rack::Test::Methods
       def app; @app; end
     end

@@ -47,7 +47,7 @@ module Riot
   class TextReport < Report
     def initialize(writer=nil)
       super()
-      @writer ||= STDOUT
+      @writer = writer || STDOUT
     end
 
     def passed

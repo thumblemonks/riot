@@ -52,23 +52,17 @@ module Riot
     def error(description, e); @writer.write "E".red; end
     def results(time_taken) say "\n\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
   end
-end # Riot
 
-if ENV["TM_MODE"]
-  class String
+  #safely colorize
+  class ::String
     def green; self; end
-    alias_method :yellow, :green
-    alias_method :red, :green
-  end
-else
-  begin
+    alias :red :green
+    alias :yello :green
+  end if ENV["TM_MODE"] || begin
     require 'rubygems'
     require 'colorize'
   rescue LoadError
-    class String
-      def green; self; end
-      alias :red :green
-      alias :yello :green
-    end
+    true
   end
-end
+
+end # Riot

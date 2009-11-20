@@ -1,28 +1,30 @@
-require 'riot/errors'
-require 'riot/report'
-require 'riot/situation'
+require 'riot/reporter'
 require 'riot/context'
-require 'riot/assertion'
+require 'riot/situation'
+require 'riot/runnable'
 require 'riot/assertion_macros'
 
 module Riot
+  def self.context(description, &definition)
+    root_contexts << Context.new(description, &definition)
+  end
 
-  # Configuration
+  def self.root_contexts; @root_contexts ||= []; end
 
-  def self.reporter; @reporter ||= (Riot.silently? ? NilReport.new : TextReport.new); end
-  def self.reporter=(report); @reporter = report; end
-  def self.silently!; @silently = true; end
-  def self.silently?; @silently || false; end
+  def self.run
+    reporter = Riot::StoryReporter.new
+    reporter.summarize do
+      root_contexts.each { |ctx| ctx.run(reporter) }
+    end
+  end
 
   at_exit do
-    Riot.reporter.results
-    exit false unless reporter.passed?
-  end unless Riot.silently?
+    run
+  end
 end # Riot
 
-module Kernel
-  def context(description, reporter = nil, parent = nil, &block)
-    reporter ||= Riot.reporter
-    reporter.time { Riot::Context.new(description, reporter, parent, &block) }
+class Object
+  def context(description, &definition)
+    Riot.context(description, &definition)
   end
-end # Kernel
+end

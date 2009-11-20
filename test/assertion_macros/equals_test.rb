@@ -1,13 +1,18 @@
 require 'teststrap'
 
-context "equals assertion:" do
-  setup { Riot::Situation.new }
-
-  asserts "result equals expectation" do
-    Riot::Assertion.new("i will pass", topic) { "foo bar" }.equals("foo bar")
+context "An equals assertion macro" do
+  setup do
+    Riot::Assertion.new("blue") { "foo" }
   end
 
-  should "raise a Failure if results don't equal each other" do
-    Riot::Assertion.new("failure", topic) { "bar" }.equals("foo")
-  end.kind_of(Riot::Failure)
-end # equals assertion
+  asserts(":pass when expectation met") do
+    topic.equals("foo").run(Riot::Situation.new) == [:pass]
+  end
+
+  context "that is failing" do
+    setup { topic.equals("bar").run(Riot::Situation.new) }
+
+    asserts(":fail") { topic.first == :fail }
+    asserts("message") { topic.last == %Q{expected "foo" to equal "bar"} }
+  end # that is failing
+end # An equals assertion macro

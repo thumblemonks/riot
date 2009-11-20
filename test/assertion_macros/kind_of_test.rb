@@ -1,13 +1,13 @@
 require 'teststrap'
 
-context "kind_of assertion:" do
+context "A kind_of assertion macro" do
   setup { Riot::Situation.new }
 
-  asserts "specific result is a kind of String" do
-    Riot::Assertion.new("foo", topic) { "a" }.kind_of(String)
-  end
+  asserts ":pass when specific result is a kind of String" do
+    Riot::Assertion.new("foo") { "a" }.kind_of(String).run(topic)
+  end.equals([:pass])
 
-  should "raise a Failure if not a kind of String" do
-    Riot::Assertion.new("foo", topic) { 0 }.kind_of(String)
-  end.kind_of(Riot::Failure)
-end # kind_of assertion
+  asserts ":fail when not a kind of String" do
+    Riot::Assertion.new("foo") { 0 }.kind_of(String).run(topic)
+  end.equals([:fail, %Q{expected kind of String, not 0}])
+end # A kind_of assertion macro

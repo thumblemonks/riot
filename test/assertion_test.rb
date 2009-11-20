@@ -1,31 +1,34 @@
 require 'teststrap'
 
-context "basic assertion" do
-  setup { Riot::Situation.new }
+context "An assertion block" do
+  context "that is passing" do
+    setup { Riot::Assertion.new("foo") { true } }
+    asserts("to_s") { topic.to_s == "foo" }
 
-  should "have a description" do
-    Riot::Assertion.new("i will pass", topic).to_s
-  end.equals("i will pass")
+    asserts(":pass is returned when evaluated") do
+      topic.run(Riot::Situation.new) == [:pass]
+    end
+  end # that is passing
 
-  asserts "pass? is true when assertion passed" do
-    Riot::Assertion.new("i will pass", topic) { true }.passed?
-  end
+  context "that is failing" do
+    setup { Riot::Assertion.new("foo") { nil } }
+    asserts("to_s") { topic.to_s == "foo" }
 
-  asserts "failure? is true when assertion does not pass" do
-    Riot::Assertion.new("i will pass", topic) { false }.failed?
-  end
+    asserts(":fail and message are evaluated") do
+      topic.run(Riot::Situation.new) == [:fail, "Expected non-false but got nil instead"]
+    end
+  end # that is failing
 
-  asserts "error? is true when an unexpected Exception is raised" do
-    Riot::Assertion.new("error", topic) { raise Exception, "blah" }.errored?
-  end
-
-  context "that fails while executing a test" do
+  context "that is erroring" do
     setup do
-      fake_situation = Riot::Situation.new
-      Riot::Assertion.new("error", fake_situation) { fail("I'm a bum") }
+      @exception = exception = Exception.new("blah")
+      Riot::Assertion.new("baz") { raise exception }
     end
 
-    should("be considered a failing assertion") { topic.failed? }
-    should("use failed message in description") { topic.result.message }.matches(/I'm a bum/)
-  end # that fails while executing test
-end # basic assertion
+    asserts("to_s") { topic.to_s == "baz" }
+
+    asserts(":error and exception are evaluated") do
+      topic.run(Riot::Situation.new) == [:error, @exception]
+    end
+  end # that is erroring
+end # An assertion block

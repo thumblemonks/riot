@@ -1,17 +1,17 @@
 require 'teststrap'
 
-context "nil assertion:" do
+context "An exists assertion macro" do
   setup { Riot::Situation.new }
 
-  asserts("result has a value") do
-    Riot::Assertion.new("foo", topic) { "foo" }.exists
-  end
+  asserts(":pass when result has a value") do
+    Riot::Assertion.new("foo") { "foo" }.exists.run(topic)
+  end.equals([:pass])
 
-  asserts("empty string is considered a value") do
-    Riot::Assertion.new("foo", topic) { "" }.exists
-  end
+  asserts(":pass because empty string is considered a value") do
+    Riot::Assertion.new("foo") { "" }.exists.run(topic)
+  end.equals([:pass])
 
-  should "raise a Failure if value is nil" do
-    Riot::Assertion.new("foo", topic) { nil }.exists
-  end.kind_of(Riot::Failure)
-end # nil assertion
+  asserts(":fail with message when value is nil") do
+    Riot::Assertion.new("foo") { nil }.exists.run(topic)
+  end.equals([:fail, "expected a non-nil value"])
+end # An exists assertion macro

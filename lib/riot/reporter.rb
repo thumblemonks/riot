@@ -46,7 +46,7 @@ module Riot
     def pass(description) say "  + " + description.green; end
     def fail(description, message) say "  - " + "#{description}: #{message}".yellow; end
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
-    def results(time_taken) say "\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
+    def results(time_taken) say "\n#{@passes} passes, #{@failures} failures, #{@errors} errors\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
   end
 
   class DotMatrixReporter < IOReporter

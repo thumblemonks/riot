@@ -53,16 +53,19 @@ module Riot
     def results(time_taken) say "\n\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
   end
 
-  #safely colorize
-  class ::String
-    def green; self; end
-    alias :red :green
-    alias :yello :green
-  end if ENV["TM_MODE"] || begin
+
+  no_colorize = ENV["TM_MODE"] || begin
     require 'rubygems'
     require 'colorize'
   rescue LoadError
     true
   end
 
+  if no_colorize
+    class ::String
+      def green; self; end
+      alias :red :green
+      alias :yello :green
+    end
+  end
 end # Riot

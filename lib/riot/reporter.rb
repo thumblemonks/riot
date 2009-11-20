@@ -61,6 +61,14 @@ if ENV["TM_MODE"]
     alias_method :red, :green
   end
 else
-  require 'rubygems'
-  require 'colorize'
+  begin
+    require 'rubygems'
+    require 'colorize'
+  rescue LoadError
+    class String
+      def green; self; end
+      alias :red :green
+      alias :yello :green
+    end
+  end
 end

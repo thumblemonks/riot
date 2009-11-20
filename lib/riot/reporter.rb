@@ -68,7 +68,7 @@ module Riot
     class ::String
       def green; self; end
       alias :red :green
-      alias :yello :green
+      alias :yellow :green
     end
   end
 end # Riot

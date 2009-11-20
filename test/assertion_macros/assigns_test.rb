@@ -1,40 +1,39 @@
 require 'teststrap'
 
-# context "An assigns assertion macro" do
-#   setup do
-#     @fake_situation = Riot::Situation.new
-#     object_with_instance_variables = Riot::Situation.new
-#     object_with_instance_variables.instance_eval { @foo = "bar"; @bar = nil}
-#     object_with_instance_variables
-#   end
-# 
-#   asserts("an instance variable was assigned") do
-#     test_object = topic
-#     Riot::Assertion.new("duh", @fake_situation) { test_object }.assigns(:foo)
-#   end
-# 
-#   asserts("an instance variable was never assigned") do
-#     test_object = topic
-#     Riot::Assertion.new("foo", @fake_situation) { test_object }.assigns(:baz)
-#   end.kind_of(Riot::Failure)
-#   
-#   asserts "an instance variable was defined with nil value" do
-#     test_object = topic
-#     Riot::Assertion.new("foo", @fake_situation) { test_object }.assigns(:bar).message
-#   end.matches(/expected @bar to be assigned a value/)
-# 
-#   asserts("an instance variable was assigned a specific value") do
-#     test_object = topic
-#     Riot::Assertion.new("duh", @fake_situation) { test_object }.assigns(:foo, "bar")
-#   end
-# 
-#   asserts("failure when instance never assigned even when a value is expected") do
-#     test_object = topic
-#     Riot::Assertion.new("duh", @fake_situation) { test_object }.assigns(:bar, "bar").message
-#   end.matches(/expected @bar to be assigned a value/)
-# 
-#   asserts("failure when expected value is not assigned to variable with a value") do
-#     test_object = topic
-#     Riot::Assertion.new("duh", @fake_situation) { test_object }.assigns(:foo, "baz").message
-#   end.matches(/expected @foo to be equal to 'baz', not 'bar'/)
-# end # An assigns assertion macro
+context "An assigns assertion macro" do
+  setup do
+    item = Object.new
+    item.instance_eval { @foo = 1; @bar; @nil_val = nil }
+    Riot::Assertion.new("test") { item }
+  end
+
+  context "asserting existing variable without checking value" do
+    setup { topic.assigns(:foo) }
+
+    topic_should_pass
+  end
+
+  context "asserting existing variable by correct value" do
+    setup { topic.assigns(:foo,1) } 
+
+    topic_should_pass
+  end
+
+  context "asserting existing variable by incorrect value" do
+    setup { topic.assigns(:foo, 2) }
+
+    topic_should_fail_with_message "foo"
+  end
+
+  context "asserting missing variable" do
+    setup { topic.assigns(:bar) }
+
+    topic_should_fail_with_message "bar"
+  end
+  
+  context "asserting nil instance variable" do
+    setup { topic.assigns(:nil_var) }
+
+    topic_should_fail_with_message "nil_var", "nil"
+  end
+end

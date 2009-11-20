@@ -35,6 +35,9 @@ module Riot
       super()
       @writer = writer || STDOUT
     end
+    def pass(description)
+      @writer.print(".")
+    end
     def say(message) @writer.puts(message); end
   end
 

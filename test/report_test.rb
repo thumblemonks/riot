@@ -1,7 +1,7 @@
 require 'teststrap'
 require 'stringio'
 
-context "TextReport" do
+context "IOReporter" do
   context "with writer" do
     setup do
       @writer = StringIO.new
@@ -9,7 +9,7 @@ context "TextReport" do
     end
 
     asserts("prints to writer") do
-      topic.passed
+      topic.update('description',[:pass])
       @writer.string
     end.equals(".")
   end

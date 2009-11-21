@@ -1,22 +1,17 @@
-# require 'teststrap'
-# 
-# context "same_elements assertion" do
-#   setup { Riot::Situation.new }
-# 
-#   asserts "result contains same elements" do
-#     Riot::Assertion.new("i will pass", topic) { ["foo", "bar", 69] }.same_elements([69, "foo", "bar"])
-#   end
-# 
-#   should "raise a Failure if result contains different elements" do
-#     Riot::Assertion.new("failure", topic) { ["foo", "bar", 69] }.same_elements([6, 9, "foo", "bar"])
-#   end.kind_of(Riot::Failure)
-# 
-#   should "raise a Failure if actual is not an array" do
-#     Riot::Assertion.new("failure", topic) { 6 }.same_elements([6, 9, "foo", "bar"])
-#   end.kind_of(Riot::Failure)
-# 
-#   should "raise a Failure if expected is not an array" do
-#     Riot::Assertion.new("failure", topic) { ["foo", "bar", 69] }.same_elements(9)
-#   end.kind_of(Riot::Failure)
-# 
-# end # same_elements assertion
+require 'teststrap'
+
+context "A same_elements assertion macro" do
+  setup { Riot::Assertion.new("test") { ["foo", "bar", 69] } }
+
+  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned}) do
+    topic.same_elements([69, "foo", "bar"])
+  end
+
+  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned in any order}) do
+    topic.same_elements(["foo", "bar", 69])
+  end
+
+  assertion_test_fails("when elements do not match", %Q{expected elements ["foo", "bar", 96] to match ["foo", "bar", 69]}) do
+    topic.same_elements(["foo", "bar", 96])
+  end
+end # A same_elements assertion macro

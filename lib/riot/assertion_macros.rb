@@ -67,5 +67,14 @@ module Riot
       actual.respond_to?(expected) ? pass : fail("expected method #{expected.inspect} is not defined")
     end
 
+    # Asserts that two arrays contain the same elements, the same number of times.
+    #   asserts("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
+    #   should("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
+    assertion(:same_elements) do |actual, expected|
+      require 'set'
+      same = (Set.new(expected) == Set.new(actual))
+      same ? pass : fail("expected elements #{expected.inspect} to match #{actual.inspect}")
+    end
+
   end # Assertion
 end # Riot

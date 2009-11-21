@@ -35,9 +35,6 @@ module Riot
       super()
       @writer = writer || STDOUT
     end
-    def pass(description)
-      @writer.print(".")
-    end
     def say(message) @writer.puts(message); end
   end
 
@@ -46,29 +43,31 @@ module Riot
     def pass(description) say "  + " + description.green; end
     def fail(description, message) say "  - " + "#{description}: #{message}".yellow; end
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
-    def results(time_taken) say "\n#{@passes} passes, #{@failures} failures, #{@errors} errors\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
+    def results(time_taken)
+      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
+      say "\n%d passes, %d failures, %d errors in %s seconds" % values
+    end
   end
 
   class DotMatrixReporter < IOReporter
     def pass(description); @writer.write ".".green; end
     def fail(description, message); @writer.write "F".yellow; end
     def error(description, e); @writer.write "E".red; end
-    def results(time_taken) say "\n\nFinished in %s seconds" % [("%0.6f" % time_taken)]; end
-  end
-
-
-  no_colorize = ENV["TM_MODE"] || begin
-    require 'rubygems'
-    require 'colorize'
-  rescue LoadError
-    true
-  end
-
-  if no_colorize
-    class ::String
-      def green; self; end
-      alias :red :green
-      alias :yellow :green
+    def results(time_taken)
+      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
+      say "\n\n%d passes, %d failures, %d errors in %s seconds" % values
     end
   end
 end # Riot
+
+begin
+  raise LoadError if ENV["TM_MODE"]
+  require 'rubygems'
+  require 'colorize'
+rescue LoadError
+  class ::String
+    def green; self; end
+    alias :red :green
+    alias :yellow :green
+  end
+end

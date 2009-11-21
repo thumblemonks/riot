@@ -9,6 +9,7 @@ module AssertionContextMacros
   def topic_should_fail(description="fails")
     asserts(description) { topic.run(Riot::Situation.new)[0] }.equals(:fail)
   end
+
   def topic_should_fail_with_message(*msgs)
     topic_should_fail
     msgs.each do |msg|

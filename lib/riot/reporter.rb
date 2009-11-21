@@ -36,6 +36,11 @@ module Riot
       @writer = writer || STDOUT
     end
     def say(message) @writer.puts(message); end
+
+    def results(time_taken)
+      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
+      say "\n%d passes, %d failures, %d errors in %s seconds" % values
+    end
   end
 
   class StoryReporter < IOReporter
@@ -43,20 +48,12 @@ module Riot
     def pass(description) say "  + " + description.green; end
     def fail(description, message) say "  - " + "#{description}: #{message}".yellow; end
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
-    def results(time_taken)
-      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
-      say "\n%d passes, %d failures, %d errors in %s seconds" % values
-    end
   end
 
   class DotMatrixReporter < IOReporter
     def pass(description); @writer.write ".".green; end
     def fail(description, message); @writer.write "F".yellow; end
     def error(description, e); @writer.write "E".red; end
-    def results(time_taken)
-      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
-      say "\n\n%d passes, %d failures, %d errors in %s seconds" % values
-    end
   end
 end # Riot
 

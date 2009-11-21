@@ -12,15 +12,18 @@ module Riot
   def self.root_contexts; @root_contexts ||= []; end
 
   def self.run
-    reporter = Riot::StoryReporter.new
-    reporter.summarize do
-      root_contexts.each { |ctx| ctx.run(reporter) }
+    the_reporter = reporter.new
+    the_reporter.summarize do
+      root_contexts.each { |ctx| ctx.run(the_reporter) }
     end
   end
 
-  at_exit do
-    run
-  end
+
+  def self.reporter; @reporter_class ||= Riot::StoryReporter; end
+  def self.reporter=(reporter_class) @reporter_class = reporter_class; end
+  def self.dots; self.reporter = Riot::DotMatrixReporter; end
+
+  at_exit { run }
 end # Riot
 
 class Object

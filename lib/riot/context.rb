@@ -21,10 +21,10 @@ module Riot
     
     def run(reporter)
       runnables = @setups + @assertions
-      reporter.start_context(@description) unless runnables.empty?
+      reporter.describe_context(@description) unless @assertions.empty?
       situation = Situation.new
       runnables.each do |runnable|
-        reporter.update(runnable.to_s, runnable.run(situation))
+        reporter.report(runnable.to_s, runnable.run(situation))
       end
       @contexts.each { |ctx| ctx.run(reporter) }
       reporter

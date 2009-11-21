@@ -12,9 +12,9 @@ module Riot
       results(Time.now - started)
     end
 
-    def start_context(msg); end
+    def describe_context(msg); end
 
-    def update(description, response)
+    def report(description, response)
       code, result = *response
       case code
       when :pass then
@@ -44,7 +44,7 @@ module Riot
   end
 
   class StoryReporter < IOReporter
-    def start_context(description) say description; end
+    def describe_context(description) say description; end
     def pass(description) say "  + " + description.green; end
     def fail(description, message) say "  - " + "#{description}: #{message}".yellow; end
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end

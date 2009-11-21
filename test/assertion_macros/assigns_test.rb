@@ -7,33 +7,18 @@ context "An assigns assertion macro" do
     Riot::Assertion.new("test") { item }
   end
 
-  context "asserting existing variable without checking value" do
-    setup { topic.assigns(:foo) }
+  assertion_test_passes("when foo is defined") { topic.assigns(:foo) }
+  assertion_test_passes("when foo is defined with expected value") { topic.assigns(:foo, 1) }
 
-    topic_should_pass
+  assertion_test_fails("when foo does not match expectation", "expected @foo to be equal to 2, not 1") do
+    topic.assigns(:foo, 2)
   end
 
-  context "asserting existing variable by correct value" do
-    setup { topic.assigns(:foo,1) } 
-
-    topic_should_pass
+  assertion_test_fails("when bar is not define", "expected @bar to be assigned a value") do
+    topic.assigns(:bar)
   end
 
-  context "asserting existing variable by incorrect value" do
-    setup { topic.assigns(:foo, 2) }
-
-    topic_should_fail_with_message "foo"
+  assertion_test_fails("when var assigned nil value", "expected @nil_val to be assigned a value") do
+    topic.assigns(:nil_val)
   end
-
-  context "asserting missing variable" do
-    setup { topic.assigns(:bar) }
-
-    topic_should_fail_with_message "bar"
-  end
-  
-  context "asserting nil instance variable" do
-    setup { topic.assigns(:nil_var) }
-
-    topic_should_fail_with_message "nil_var", "nil"
-  end
-end
+end # An assigns assertion macro

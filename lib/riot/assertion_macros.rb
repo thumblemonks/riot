@@ -46,7 +46,7 @@ module Riot
       if actual_value.nil?
         fail("expected @#{variable} to be assigned a value")
       elsif !expected_value.nil? && expected_value != actual_value
-        fail(%Q[expected @#{variable} to be equal to '#{expected_value}', not '#{actual_value}'])
+        fail(%Q[expected @#{variable} to be equal to #{expected_value.inspect}, not #{actual_value.inspect}])
       else
         pass
       end

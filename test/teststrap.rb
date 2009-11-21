@@ -1,24 +1,28 @@
 $: << File.join(File.dirname(__FILE__), "..", "lib")
 require 'riot'
 
-module AssertionContextMacros
-  def topic_should_pass
-    asserts("passes") { topic.run(Riot::Situation.new)[0] }.equals(:pass)
-  end
+module Riot
+  module AssertionTestContextMacros
 
-  def topic_should_fail(description="fails")
-    asserts(description) { topic.run(Riot::Situation.new)[0] }.equals(:fail)
-  end
-
-  def topic_should_fail_with_message(*msgs)
-    topic_should_fail
-    msgs.each do |msg|
-      asserts("should include #{msg} in error message") { topic.run(Riot::Situation.new)[1].include? msg }
+    def assertion_test_passes(description, &block)
+      context(description) do
+        setup(&block)
+        asserts("passes") { topic.run(Riot::Situation.new) }.equals([:pass])
+      end
     end
-  end
-end
 
-Riot::Context.instance_eval { include AssertionContextMacros }
+    def assertion_test_fails(description, failure_message, &block)
+      context(description) do
+        setup(&block)
+        asserts("failure") { topic.run(Riot::Situation.new).first }.equals(:fail)
+        asserts("failure message") { topic.run(Riot::Situation.new).last }.equals(failure_message)
+      end
+    end
+
+  end # AssertionTestContextMacros
+end # Riot
+
+Riot::Context.instance_eval { include Riot::AssertionTestContextMacros }
 
 class MockReporter < Riot::Reporter
   def pass(description); end

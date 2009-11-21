@@ -51,5 +51,14 @@ module Riot
         pass
       end
     end
+
+    # Asserts that the result of the test equals matches against the proved expression
+    #   asserts("test") { "12345" }.matches(/\d+/)
+    #   should("test") { "12345" }.matches(/\d+/)
+    assertion(:matches) do |actual, expected|
+      expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
+      actual =~ expected ? pass : fail("expected #{expected.inspect} to match #{actual.inspect}")
+    end
+
   end # Assertion
 end # Riot

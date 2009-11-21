@@ -60,5 +60,12 @@ module Riot
       actual =~ expected ? pass : fail("expected #{expected.inspect} to match #{actual.inspect}")
     end
 
+    # Asserts that the result of the test is an object that responds to the given method
+    #   asserts("test") { "foo" }.respond_to(:to_s)
+    #   should("test") { "foo" }.respond_to(:to_s)
+    assertion(:respond_to) do |actual, expected|
+      actual.respond_to?(expected) ? pass : fail("expected method #{expected.inspect} is not defined")
+    end
+
   end # Assertion
 end # Riot

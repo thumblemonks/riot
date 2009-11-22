@@ -1,7 +1,7 @@
 module Riot
   class RunnableBlock
     def initialize(description, &definition)
-      @description, @definition = description, definition
+      @description, @definition = description, definition || Proc.new { topic }
     end
 
     def to_s

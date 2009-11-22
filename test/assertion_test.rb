@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "An assertion block" do
+context "An assertion" do
   context "that is passing" do
     setup { Riot::Assertion.new("foo") { true } }
     asserts("to_s") { topic.to_s == "foo" }
@@ -31,4 +31,20 @@ context "An assertion block" do
       topic.run(Riot::Situation.new) == [:error, @exception]
     end
   end # that is erroring
+  context "with no block" do
+    
+    #allow syntax like this:
+    #context "Hi"
+    #setup { User.new }
+    #asserts("has a first name").respond_to(:first_name)
+    setup do
+      @situation = Riot::Situation.new
+      @situation.topic = "hello"
+      assertion = Riot::Assertion.new("test")
+    end
+    should("use block returning topic as default") do
+      topic.equals("hello")
+      result = topic.run(@situation)
+    end.equals([:pass])
+  end
 end # An assertion block

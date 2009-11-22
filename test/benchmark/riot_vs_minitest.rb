@@ -15,7 +15,12 @@ end
 # Riot
 
 require 'riot'
-Riot.silently!
+
+context "a room" do
+  setup { Room.new("bed") }
+
+  asserts("name") { topic.name }.equals("bed")
+end # a room
 
 #
 # MiniTest::Unit
@@ -40,13 +45,8 @@ n = 100 * 100
 
 Benchmark.bmbm do |x|
   x.report("Riot") do
-    n.times do
-      context "a room" do
-        setup { Room.new("bed") }
-
-        asserts("name") { topic.name }.equals("bed")
-      end # a room
-    end
+    Riot.silently!
+    n.times { Riot.run }
   end
 
   x.report("MiniTest") do

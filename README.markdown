@@ -22,32 +22,34 @@ Then, simply install the Riot gem like so:
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
 
     Rehearsal ----------------------------------------------
-    Riot         0.620000   0.010000   0.630000 (  0.647318)
-    Test::Unit   1.500000   0.010000   1.510000 (  1.508144)
-    Shoulda      1.490000   0.000000   1.490000 (  1.501468)
-    ------------------------------------- total: 3.630000sec
+    Riot         0.360000   0.000000   0.360000 (  0.364236)
+    Test::Unit   1.250000   0.000000   1.250000 (  1.258466)
+    Shoulda      1.270000   0.010000   1.280000 (  1.277429)
+    ------------------------------------- total: 2.890000sec
 
                      user     system      total        real
-    Riot         0.630000   0.010000   0.640000 (  0.640481)
-    Test::Unit   1.460000   0.000000   1.460000 (  1.476454)
-    Shoulda      1.480000   0.010000   1.490000 (  1.490633)
+    Riot         0.360000   0.000000   0.360000 (  0.353360)
+    Test::Unit   1.260000   0.000000   1.260000 (  1.263777)
+    Shoulda      1.270000   0.000000   1.270000 (  1.270957)
 
 "Is it valid?", you ask. *I* think it is. I ain't no cheater, but I might be delusional.
 
 To compare against MiniTest, I had to run the benchmark separately.
 
     Rehearsal --------------------------------------------
-    Riot       0.630000   0.010000   0.640000 (  0.641285)
-    MiniTest   0.770000   0.070000   0.840000 (  0.846447)
-    ----------------------------------- total: 1.480000sec
+    Riot       0.350000   0.000000   0.350000 (  0.354331)
+    MiniTest   0.720000   0.070000   0.790000 (  0.793093)
+    ----------------------------------- total: 1.140000sec
 
                    user     system      total        real
-    Riot       0.630000   0.000000   0.630000 (  0.632337)
-    MiniTest   0.730000   0.070000   0.800000 (  0.798107)
+    Riot       0.350000   0.000000   0.350000 (  0.348796)
+    MiniTest   0.730000   0.060000   0.790000 (  0.801629)
 
-Riot is currently only slightly faster, but I haven't done any optimization yet. Riot is also half the code of MiniTest (`313 loc < 674 loc` :)
+Riot is currently about twice as fast as minitest. Riot is also half the code of MiniTest (`310 loc < 674 loc` :)
 
-All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9]`.
+All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9.8.0], MBARI 0x8770, Ruby Enterprise Edition 2009.10`.
+
+Riot also works very well with Ruby 1.9. The same benchmarks from above run through ruby-1.9 show Riot to be twice as fast as it is already. See our [benchmarks gist](http://gist.github.com/240353) for more details.
 
 ## Examples
 
@@ -361,18 +363,19 @@ And then in your actual test, you might do the following:
 
 #### Assertion macros
 
-If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Similar to Context macros, Assertion macros are included into the Assertion class.
+If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Assertion macros, however, have a special mechanism for adding themselves onto an assertion. Thus, you will want to open the Riot::Assertion class and then define your assertion macro.
 
 For instance, let's say you wanted to add a macro for verifying that the result of an assertion is the same kind\_of object as you would expect. You would define the macro like so:
 
-    module Custom
-      module AssertionMacros
-        def kind_of(expected_class)
-          actual.kind_of?(expected) || fail("expected kind of #{expected}, not #{actual.inspect}")
+    module Riot
+      class Assertion
+
+        assertion(:kind_of) do |actual, expected|
+          actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.inspect}")
         end
-      end # AssertionMacros
-    end # Custom
-    Riot::Assertion.instance_eval { include Custom::AssertionMacros }
+
+      end # Assertion
+    end # Riot
 
 And in your context, you would use it like so:
 
@@ -380,20 +383,4 @@ And in your context, you would use it like so:
       asserts("a hash is defined") { {:foo => 'bar'} }.kind_of(Hash)
     end
 
-Notice in the new macro we defined the use of the magical **actual** variable. `actual` is evaluated when the assertion is defined and made available to any Assertion macro. If you think you might want to chain assertions checks together, know that only the last failure will get recorded.
-
-## TODO
-
-TONS OF STUFF
-
-1. Documentation about the `topic` method
-1. Better documentation for everything
-1. Refactor reporting; some abstracting is needed for recording a result (for instance)
-1. Need to know where in backtrace a test failed (line number, etc.); i.e. backtrace filtering for clarity
-1. More assertion macros: throws, etc.
-1. Aliases for context "with, without, when, ..."; add those words to test description
-1. Optimization and simplification (ex. flog is complaining print\_result\_stack)
-1. Better error messages?
-1. Perhaps: Multiple setup blocks in one context
-1. Perhaps: association macro chaining
-1. Perhaps: Uhhhhh ... a teardown method (only maybe. not sold :)
+If you think you might want to chain assertions checks together, this won't work out the box. The reason for this is that your assertion macro should call out to pass or fail, which each return a signal that will be used by the reporter. You could conceivably write an assertion as a filter macro instead, that would return `self`, but I can't decide why you would do that yet (in theory it would work, though).

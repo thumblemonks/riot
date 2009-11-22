@@ -55,6 +55,13 @@ module Riot
     def fail(description, message); @writer.write "F".yellow; end
     def error(description, e); @writer.write "E".red; end
   end
+
+  class SilentReporter < Reporter
+    def pass(description); end
+    def fail(description, message); end
+    def error(description, e); end
+    def results(time_taken); end
+  end
 end # Riot
 
 begin

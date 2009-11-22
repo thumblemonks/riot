@@ -18,12 +18,16 @@ module Riot
     end
   end
 
+  def self.silently!; @silent = true; end
+  def self.silently?; @silent == true; end
 
-  def self.reporter; @reporter_class ||= Riot::StoryReporter; end
+  def self.reporter
+    Riot.silently? ? Riot::SilentReporter : (@reporter_class || Riot::StoryReporter)
+  end
   def self.reporter=(reporter_class) @reporter_class = reporter_class; end
-  def self.dots; self.reporter = Riot::DotMatrixReporter; end
+  def self.dots; Riot.reporter = Riot::DotMatrixReporter; end
 
-  at_exit { run }
+  at_exit { run unless Riot.silently? }
 end # Riot
 
 class Object

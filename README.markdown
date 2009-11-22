@@ -97,7 +97,7 @@ This is awfully redundant - not to mention, contrived. So, we wrote a shortcut t
 
     context "a billionaire" do
       setup { MoneyMaker.build(:billionaire) }
-      topic.kind_of(Billionaire)
+      asserts_topic.kind_of(Billionaire)
     end
 
 #### Example: Equality

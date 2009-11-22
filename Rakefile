@@ -47,6 +47,7 @@ begin
     gem.email = "gus@gusg.us"
     gem.homepage = "http://github.com/thumblemonks/riot"
     gem.authors = ["Justin 'Gus' Knowlden"]
+    gem.add_dependency 'colorize'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -1,43 +1,33 @@
-# require 'teststrap'
-# 
-# class MyException < Exception; end
-# 
-# context "raises assertion:" do
-#   setup { Riot::Situation.new }
-# 
-#   should("raise an Exception") { raise Exception }.raises(Exception)
-# 
-#   should "fail if nothing was raised" do
-#     assertion = Riot::Assertion.new("foo", topic) { "barf" }
-#     assertion.raises(Exception)
-#     assertion.result.message
-#   end.matches(/should have raised Exception, but raised nothing/)
-# 
-#   should "fail if Exception classes do not match" do
-#     Riot::Assertion.new("foo", topic) { raise MyException }.raises(Exception)
-#   end.kind_of(Riot::Failure)
-# 
-#   should "pass if provided message equals expectation" do
-#     Riot::Assertion.new("foo", topic) { raise Exception, "I'm a nerd" }.raises(Exception, "I'm a nerd")
-#   end
-# 
-#   should "fail if provided message does not equal expectation" do
-#     Riot::Assertion.new("foo", topic) { raise(Exception, "I'm a nerd") }.raises(Exception, "But I'm not")
-#   end.kind_of(Riot::Failure)
-# 
-#   should "pass if provided message matches expectation" do
-#     Riot::Assertion.new("foo", topic) { raise(Exception, "I'm a nerd") }.raises(Exception, /nerd/)
-#   end
-# 
-#   should "fail if provided message does not match expectation" do
-#     Riot::Assertion.new("foo", topic) { raise(Exception, "I'm a nerd") }.raises(Exception, /foo/)
-#   end.kind_of(Riot::Failure)
-# 
-#   should "pass if provided message as array equals expectation" do
-#     Riot::Assertion.new("foo", topic) { raise(Exception, ["foo", "bar"]) }.raises(Exception, "foobar")
-#   end
-# 
-#   should "pass if provided message as array matches expectation" do
-#     Riot::Assertion.new("foo", topic) { raise(Exception, ["foo", "bar"]) }.raises(Exception, /oba/)
-#   end
-# end # raises assertion
+require 'teststrap'
+
+class Whoops < Exception; end
+
+context "A raises assertion macro" do
+  assertion_test_passes("when expected exception is raised") do
+    Riot::Assertion.new("foo") { raise Whoops }.raises(Whoops)
+  end
+
+  assertion_test_fails("when unexpected exception is raised", "should have raised Exception, not Whoops") do
+    Riot::Assertion.new("foo") { raise Whoops }.raises(Exception)
+  end
+
+  assertion_test_fails("when nothing was raised", "should have raised Whoops, but raised nothing") do
+    assertion = Riot::Assertion.new("foo") { "barf" }.raises(Whoops)
+  end
+  
+  assertion_test_passes("when provided message equals expected message") do
+    Riot::Assertion.new("foo") { raise Whoops, "Mom" }.raises(Whoops, "Mom")
+  end
+
+  assertion_test_fails("when messages aren't equal", %Q{expected "Mom" for message, not "Dad"}) do
+    Riot::Assertion.new("foo") { raise Whoops, "Dad" }.raises(Whoops, "Mom")
+  end
+
+  assertion_test_passes("when provided message matches expected message") do
+    Riot::Assertion.new("foo") { raise Whoops, "Mom" }.raises(Whoops, /Mom/)
+  end
+
+  assertion_test_fails("when messages don't match", %Q{expected /Mom/ for message, not "Dad"}) do
+    Riot::Assertion.new("foo") { raise Whoops, "Dad" }.raises(Whoops, /Mom/)
+  end
+end # A raises assertion macro

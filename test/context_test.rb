@@ -75,3 +75,16 @@ context "Using should" do
   asserts("one failed test") { topic.failures == 1 }
   asserts("one errored test") { topic.errors == 1 }
 end # Using should
+
+context "The asserts_topic shortcut" do
+  setup do
+    Riot::Context.new("foo") {}.asserts_topic
+  end
+
+  should("return an Assertion") { topic }.kind_of(Riot::Assertion)
+
+  should("return the actual topic as the result of evaling the assertion") do
+    (situation = Riot::Situation.new).topic = "bar"
+    topic.equals("bar").run(situation)
+  end.equals([:pass])
+end # The asserts_topic shortcut

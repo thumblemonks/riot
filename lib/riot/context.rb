@@ -13,6 +13,8 @@ module Riot
     def asserts(what, &definition) new_assertion("asserts", what, &definition); end
     def should(what, &definition) new_assertion("should", what, &definition); end
 
+    def asserts_topic; asserts("topic") { topic }; end
+
     def context(description, &definition)
       # not liking the dup
       @contexts << Context.new("#{@description} #{description}", @setups.dup, &definition)

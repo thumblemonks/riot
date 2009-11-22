@@ -10,9 +10,8 @@ module Riot
       @setups << Setup.new(&definition)
     end
 
-    def asserts(what, &definition)
-      (@assertions << Assertion.new("asserts #{what}", &definition)).last
-    end
+    def asserts(what, &definition) new_assertion("asserts", what, &definition); end
+    def should(what, &definition) new_assertion("should", what, &definition); end
 
     def context(description, &definition)
       # not liking the dup
@@ -28,6 +27,10 @@ module Riot
       end
       @contexts.each { |ctx| ctx.run(reporter) }
       reporter
+    end
+  private
+    def new_assertion(scope, what, &definition)
+      (@assertions << Assertion.new("#{scope} #{what}", &definition)).last
     end
   end # Context
 end # Riot

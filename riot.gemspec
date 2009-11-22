@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-10-22}
+  s.date = %q{2009-11-21}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -22,25 +22,29 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/riot.rb",
-     "lib/riot/assertion.rb",
      "lib/riot/assertion_macros.rb",
      "lib/riot/context.rb",
-     "lib/riot/errors.rb",
-     "lib/riot/report.rb",
+     "lib/riot/reporter.rb",
+     "lib/riot/runnable.rb",
      "lib/riot/situation.rb",
      "riot.gemspec",
-     "test/assertion_macros/assertion_macro_assigns_test.rb",
-     "test/assertion_macros/assertion_macro_equals_test.rb",
-     "test/assertion_macros/assertion_macro_exists_test.rb",
-     "test/assertion_macros/assertion_macro_kind_of_test.rb",
-     "test/assertion_macros/assertion_macro_matching_test.rb",
-     "test/assertion_macros/assertion_macro_nil_test.rb",
-     "test/assertion_macros/assertion_macro_raises_test.rb",
-     "test/assertion_macros/assertion_macro_respond_to_test.rb",
+     "test/assertion_macros/assigns_test.rb",
+     "test/assertion_macros/equals_test.rb",
+     "test/assertion_macros/exists_test.rb",
+     "test/assertion_macros/kind_of_test.rb",
+     "test/assertion_macros/matching_test.rb",
+     "test/assertion_macros/nil_test.rb",
+     "test/assertion_macros/raises_test.rb",
+     "test/assertion_macros/respond_to_test.rb",
+     "test/assertion_macros/same_elements_test.rb",
      "test/assertion_test.rb",
      "test/benchmark/riot_vs_minitest.rb",
+     "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
+     "test/report_test.rb",
+     "test/setup_test.rb",
+     "test/situation_test.rb",
      "test/teststrap.rb"
   ]
   s.homepage = %q{http://github.com/thumblemonks/riot}
@@ -49,18 +53,23 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.}
   s.test_files = [
-    "test/assertion_macros/assertion_macro_assigns_test.rb",
-     "test/assertion_macros/assertion_macro_equals_test.rb",
-     "test/assertion_macros/assertion_macro_exists_test.rb",
-     "test/assertion_macros/assertion_macro_kind_of_test.rb",
-     "test/assertion_macros/assertion_macro_matching_test.rb",
-     "test/assertion_macros/assertion_macro_nil_test.rb",
-     "test/assertion_macros/assertion_macro_raises_test.rb",
-     "test/assertion_macros/assertion_macro_respond_to_test.rb",
+    "test/assertion_macros/assigns_test.rb",
+     "test/assertion_macros/equals_test.rb",
+     "test/assertion_macros/exists_test.rb",
+     "test/assertion_macros/kind_of_test.rb",
+     "test/assertion_macros/matching_test.rb",
+     "test/assertion_macros/nil_test.rb",
+     "test/assertion_macros/raises_test.rb",
+     "test/assertion_macros/respond_to_test.rb",
+     "test/assertion_macros/same_elements_test.rb",
      "test/assertion_test.rb",
      "test/benchmark/riot_vs_minitest.rb",
+     "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
+     "test/report_test.rb",
+     "test/setup_test.rb",
+     "test/situation_test.rb",
      "test/teststrap.rb"
   ]
 

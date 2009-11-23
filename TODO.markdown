@@ -1,1 +1,0 @@
-- document the asserts("has name").respond_to(:name) 

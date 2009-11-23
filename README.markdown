@@ -9,7 +9,7 @@ When you're done reading here, take a gander at:
 
 #### Installation
 
-The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned of gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:
+The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned off gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:
 
     sudo gem sources -a http://gemcutter.org
 
@@ -98,6 +98,16 @@ This is awfully redundant - not to mention, contrived. So, we wrote a shortcut t
     context "a billionaire" do
       setup { MoneyMaker.build(:billionaire) }
       asserts_topic.kind_of(Billionaire)
+    end
+
+If you'd like to add a description to your assertion about the topic,
+but still would like to avoid the redundancy of an assertion simply
+returning the topic from it's block, you can omit the block all
+together as follows:
+
+    context "a trazillionaire" do
+      setup { MoneyMaker.build(:trazillionaire) }
+      asserts("is a trazillionaire").kind_of(Trazillionaire)
     end
 
 #### Example: Equality

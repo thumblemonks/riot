@@ -96,6 +96,10 @@ module Riot
         pass
       end
     end
+    
+    assertion(:empty) do |actual|
+      actual.length == 0 ? pass : fail("expected #{actual} to be empty")
+    end
 
   end # Assertion
 end # Riot

@@ -31,16 +31,12 @@ context "An assertion" do
       topic.run(Riot::Situation.new) == [:error, @exception]
     end
   end # that is erroring
+
   context "with no block" do
-    
-    #allow syntax like this:
-    #context "Hi"
-    #setup { User.new }
-    #asserts("has a first name").respond_to(:first_name)
     setup do
       @situation = Riot::Situation.new
       @situation.topic = "hello"
-      assertion = Riot::Assertion.new("test")
+      Riot::Assertion.new("test")
     end
     should("use block returning topic as default") do
       topic.equals("hello")

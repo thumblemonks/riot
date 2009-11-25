@@ -4,7 +4,7 @@ module Riot
     #   asserts("test") { "foo" }.equals("foo")
     #   should("test") { "foo" }.equals("foo")
     assertion(:equals) do |actual, expected|
-      expected == actual ? pass : fail("expected #{actual.inspect} to equal #{expected.inspect}")
+      expected == actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
     end
 
     # Asserts that the result of the test is nil
@@ -28,7 +28,7 @@ module Riot
     #   asserts("test") { "foo" }.kind_of(String)
     #   should("test") { "foo" }.kind_of(String)
     assertion(:kind_of) do |actual, expected|
-      actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.inspect}")
+      actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.class.inspect}")
     end
 
     # Asserts that an instance variable is defined for the result of the assertion. Value of instance

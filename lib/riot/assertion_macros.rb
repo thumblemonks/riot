@@ -102,7 +102,7 @@ module Riot
     #   asserts("an array") { [] }.empty
     #   asserts("a hash") { Hash.new }.empty
     assertion(:empty) do |actual|
-      actual.length == 0 ? pass : fail("expected #{actual} to be empty")
+      actual.length == 0 ? pass : fail("expected #{actual.inspect} to be empty")
     end
 
   end # Assertion

@@ -190,6 +190,21 @@ When you want to test that an expression returns an object of an expected type:
       asserts("its balance") { topic.balance }.kind_of(Currency)
     end
 
+#### Example: Empty
+
+When you want to assert a test result is empty (length == 0):
+
+     context "a new user" do
+       setup { User.new }
+       should("have no first name") { topic.first_name }.empty
+         
+       #let's imagine phone numbers is an array
+       should("have no phone numbers") { topic.phone_numbers }.empty
+         
+       #let's imagine attributes is a hash
+       should("have no attributes") { topic.attributes }.empty
+     end
+
 #### Example: Respond To
 
 When you want to test that an object responds to a specific method:

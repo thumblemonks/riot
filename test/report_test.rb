@@ -42,3 +42,35 @@ context "A reporter" do
     topic.report("break it down", [:error, "error time"])
   end.equals("errored(break it down, error time)")
 end # A reporter
+
+require 'stringio'
+context "StoryReporter" do
+  setup {
+    @out = StringIO.new
+    Riot::StoryReporter.new(@out)
+  }
+
+  context 'reporting on an empty context' do
+    setup do
+      context = Riot::Context.new('empty context') do
+        context "a nested empty context" do
+        end
+      end
+      context.run(topic)
+    end
+    should("not output context name") { @out.string }.empty
+  end
+  
+  context "reporting on a non-empty context" do
+    setup do
+      context = Riot::Context.new('supercontext') do
+        asserts("truth") { true }
+      end
+      context.run(topic)
+    end
+    
+    should('output context name') { @out.string }.matches(/supercontext/)
+    should('output name of passed assertion') { @out.string }.matches(/truth/)
+  end
+
+end

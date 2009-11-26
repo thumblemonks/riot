@@ -2,12 +2,28 @@
 
 An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.
 
+## Contents
+
+- [Installation](#installation)
+- [Note on speed](#speed)
+- [Examples](#examples)
+  - [Boolean](#examples-boolean)
+  - [Shortcuts](#examples-shortcut)
+  - [Equality](#examples-equality)
+  - [Matches](#examples-matches)
+  - [Raises](#examples-raises)
+  - [Kind Of](#examples-kind-of)
+  - [Empty](#examples-empty)
+  - [Respond To](#examples-respond-to)
+  - [Assigns](#examples-assigns)
+
 When you're done reading here, take a gander at:
 
 * [Riot Rails](http://github.com/thumblemonks/riot_rails): Rails support for Riot testing. A definite work in progress (help welcomed). See [evoke-app](http://github.com/thumblemonks/evoke-app) for live examples.
 * [Riot.js](http://github.com/alexyoung/riotjs): for you JavaScript people, a version of Riot just for you. Both implementations will be informing the other. Lots of stuff to learn.
 
-#### Installation
+<a id="installation" />
+#### Installation 
 
 The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned off gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:
 
@@ -17,6 +33,7 @@ Then, simply install the Riot gem like so:
 
     sudo gem install riot
 
+<a id="speed" />
 #### Note on speed
 
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
@@ -51,8 +68,10 @@ All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9.8.0], M
 
 Riot also works very well with Ruby 1.9. The same benchmarks from above run through ruby-1.9 show Riot to be twice as fast as it is already. See our [benchmarks gist](http://gist.github.com/240353) for more details.
 
+<a id="examples" />
 ## Examples
 
+<a id="examples-boolean" />
 #### Example: Basic booleans
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
@@ -83,6 +102,7 @@ The other important thing to note in the examples above is the use of the `topic
 
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
+<a id="examples-shortcut" />
 #### Example: Shortcut - Asserting the topic itself
 
 Over the course of developing Riot it became somewhat obvious to some of us that we were creating assertions that returned the `topic` just so we could assert things about the topic itself. For instance, were doing this:
@@ -110,6 +130,7 @@ together as follows:
       asserts("is a trazillionaire").kind_of(Trazillionaire)
     end
 
+<a id="examples-equality" />
 #### Example: Equality
 
 One of the most common assertions you will (or do already) utilize is that of equality; is this equal to that? Riot supports this in a slightly different manner than most other frameworks. With Riot, you add the expectation to the assertion itself.
@@ -154,6 +175,7 @@ Which, to me, seems like a redundancy. The test already says it's nil! Maybe Sho
 
 In my opinion, the same redundancy exists. Sure, I could write a macro like `should_be_nil {@user.email}`, but the redundancy exists in the framework itself.
 
+<a id="examples-matches" />
 #### Example: Matches
 
 If you need to assert that a test result matches a regular expression, use the `matches` modifier like so:
@@ -165,6 +187,7 @@ If you need to assert that a test result matches a regular expression, use the `
       asserts("random phone number") { topic.random_phone_number }.matches(/^\d{3}-\d{3}-\d{4}$/)
     end
 
+<a id="examples-raises" />
 #### Example: Raises
 
 Sometimes, your test raises an exception that you actually expected.
@@ -181,6 +204,7 @@ And if you wanted to check that the exception and message match what you expect:
       asserts("invalid data") { topic.save! }.raises(ActiveRecord::RecordInvalid, /has errors/)
     end
 
+<a id="examples-kind-of" />
 #### Example: Kind Of
 
 When you want to test that an expression returns an object of an expected type:
@@ -190,6 +214,7 @@ When you want to test that an expression returns an object of an expected type:
       asserts("its balance") { topic.balance }.kind_of(Currency)
     end
 
+<a id="examples-empty" />
 #### Example: Empty
 
 When you want to assert a test result is empty (length == 0):
@@ -205,6 +230,7 @@ When you want to assert a test result is empty (length == 0):
        should("have no attributes") { topic.attributes }.empty
      end
 
+<a id="examples-respond-to" />
 #### Example: Respond To
 
 When you want to test that an object responds to a specific method:
@@ -214,6 +240,7 @@ When you want to test that an object responds to a specific method:
       asserts("email is defined") { topic }.respond_to(:email)
     end
 
+<a id="examples-assigns" />
 #### Example: Assigns
 
 Sometimes you want to check and see if an instance variable is defined.

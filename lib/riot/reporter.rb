@@ -50,6 +50,14 @@ module Riot
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
   end
 
+  class VerboseReporter < StoryReporter
+    def error(description, e)
+      say "  ! " + "#{description}: #{e.message}".red
+      say "#{e.class.name} occured".red
+      e.backtrace.each { |line| say "  at #{line}".red }
+    end
+  end
+
   class DotMatrixReporter < IOReporter
     def pass(description); @writer.write ".".green; end
     def fail(description, message); @writer.write "F".yellow; end

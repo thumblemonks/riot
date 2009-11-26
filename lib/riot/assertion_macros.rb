@@ -105,5 +105,13 @@ module Riot
       actual.length == 0 ? pass : fail("expected #{actual.inspect} to be empty")
     end
 
+    # Asserts the result contains the expected element
+    #   asserts("a string") { "world" }.includes('o')
+    #   asserts("an array") { [1,2,3] }.includes(2)
+    #   asserts("a range") { (1..15) }.includes(10)
+    assertion(:includes) do |actual, expected|
+      actual.include?(expected) ? pass : fail("expected #{actual.inspect} to include #{expected.inspect}")
+    end
+
   end # Assertion
 end # Riot

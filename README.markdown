@@ -30,7 +30,7 @@ When you're done reading here, take a gander at:
 * [Riot.js](http://github.com/alexyoung/riotjs): for you JavaScript people, a version of Riot just for you. Both implementations will be informing the other. Lots of stuff to learn.
 
 
-<a id="installation"></a>
+<a name="installation"></a>
 
 
 #### Installation 
@@ -44,7 +44,7 @@ Then, simply install the Riot gem like so:
     sudo gem install riot
 
 
-<a id="speed"></a>
+<a name="speed"></a>
 
 
 #### Note on speed
@@ -82,13 +82,13 @@ All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9.8.0], M
 Riot also works very well with Ruby 1.9. The same benchmarks from above run through ruby-1.9 show Riot to be twice as fast as it is already. See our [benchmarks gist](http://gist.github.com/240353) for more details.
 
 
-<a id="examples"></a>
+<a name="examples"></a>
 
 
 ## Examples
 
 
-<a id="examples-boolean"></a>
+<a name="examples-boolean"></a>
 
 
 #### Example: Basic booleans
@@ -122,7 +122,7 @@ The other important thing to note in the examples above is the use of the `topic
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
 
-<a id="examples-shortcut"></a>
+<a name="examples-shortcut"></a>
 
 
 #### Example: Shortcut - Asserting the topic itself
@@ -153,7 +153,7 @@ together as follows:
     end
 
 
-<a id="examples-equality"></a>
+<a name="examples-equality"></a>
 
 
 #### Example: Equality
@@ -201,7 +201,7 @@ Which, to me, seems like a redundancy. The test already says it's nil! Maybe Sho
 In my opinion, the same redundancy exists. Sure, I could write a macro like `should_be_nil {@user.email}`, but the redundancy exists in the framework itself.
 
 
-<a id="examples-matches"></a>
+<a name="examples-matches"></a>
 
 
 #### Example: Matches
@@ -216,7 +216,7 @@ If you need to assert that a test result matches a regular expression, use the `
     end
 
 
-<a id="examples-raises"></a>
+<a name="examples-raises"></a>
 
 
 #### Example: Raises
@@ -236,7 +236,7 @@ And if you wanted to check that the exception and message match what you expect:
     end
 
 
-<a id="examples-kind-of"></a>
+<a name="examples-kind-of"></a>
 
 
 #### Example: Kind Of
@@ -249,7 +249,7 @@ When you want to test that an expression returns an object of an expected type:
     end
 
 
-<a id="examples-empty"></a>
+<a name="examples-empty"></a>
 
 
 #### Example: Empty
@@ -268,7 +268,7 @@ When you want to assert a test result is empty (length == 0):
      end
 
      
-<a id="examples-respond-to"></a>
+<a name="examples-respond-to"></a>
 
 
 #### Example: Respond To
@@ -281,7 +281,7 @@ When you want to test that an object responds to a specific method:
     end
 
 
-<a id="examples-assigns"></a>
+<a name="examples-assigns"></a>
 
 
 #### Example: Assigns
@@ -307,7 +307,7 @@ While other times you also want to make sure the value of the instance variable 
     end
 
 
-<a id="examples-nested"></a>
+<a name="examples-nested"></a>
 
 
 #### Example: Nested contexts
@@ -345,7 +345,7 @@ See the TODO section for everything that's missing.
 Also, see [the wiki](http://wiki.github.com/thumblemonks/riot) for more examples and documentation.
 
 
-<a id="omg"></a>
+<a name="omg"></a>
 
 
 ## You say, "OMG! Why did you write this?"
@@ -384,7 +384,7 @@ Riot differs primarily in that it does not rerun setup for each test in a contex
 **COMING SOON:** Riot will look into test/riot\_macros, but not today.
 
 
-<a id="assertion-macros"></a>
+<a name="assertion-macros"></a>
 
 
 #### Assertion macros

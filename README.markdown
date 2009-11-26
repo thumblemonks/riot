@@ -16,6 +16,13 @@ An extremely fast, expressive, and context-driven unit-testing framework. Protes
   - [Empty](#examples-empty)
   - [Respond To](#examples-respond-to)
   - [Assigns](#examples-assigns)
+  - [Nested contexts](#examples-nested)
+- [OMG! Why did you write this](#omg)
+- [Running tests](#running)
+- [With Sinatra](#sinatra)
+- [With Rails](#rails)
+- [Extending Riot with Macros](#extending)
+  - [Assertion macros](#assertion-macros)
 
 When you're done reading here, take a gander at:
 
@@ -263,6 +270,7 @@ While other times you also want to make sure the value of the instance variable 
       asserts("has a first name") { topic }.assigns(:first_name, "Joe") # This will fail
     end
 
+<a id="examples-nested" />
 #### Example: Nested contexts
 
 Oh yeah, Riot does those, too. The `setup` from each parent is "loaded" into the context and then the context is executed as normal. Test naming is a composite of the parent contexts' names. Here, we'll do a little Sinatra testing (see below for instructions on how to make it Riot work seamlessly with Sinatra tests).
@@ -297,6 +305,7 @@ See the TODO section for everything that's missing.
 
 Also, see [the wiki](http://wiki.github.com/thumblemonks/riot) for more examples and documentation.
 
+<a id="omg" />
 ## You say, "OMG! Why did you write this?"
 
 ### Some background, I guess
@@ -340,6 +349,7 @@ I like this approach because I only want to test one thing, but that one thing m
 
 I imagine this approach will persuade many of you to avoid Riot altogether. I don't blame you. A few years ago I would have avoided it, too. As of this writing though, I have ported Chicago and Slvu (which were previously written in Test::Unit + Shoulda) to Riot, cut the number of lines of code in almost half, definitely more than halved the amount of time the tests took to run, and did so in less than half a day (I was building Riot while porting them :).
 
+<a id="running" />
 ## Running tests
 
 Create or modify your existing Rakefile to define a test task like so:
@@ -356,6 +366,7 @@ Create or modify your existing Rakefile to define a test task like so:
 
 Basically, it's like setting up any other test runner. Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.
 
+<a id="sinatra" />
 ### With Sinatra
 
 Riot definitely works with the latest Sinatra. I personally use it to run tests for [Chicago](http://github.com/thumblemonks/chicago) and [Slvu](http://github.com/jaknowlden/slvu). Setup is pretty easy and very much like getting your tests to run with Test::Unit. In a test helper file that gets loaded into all of your tests (that need it), enter the following:
@@ -381,10 +392,12 @@ And then define a context (or many) for testing your Sinatra app. For instance:
 
 Make sure to check out the Riot + Sinatra testing macros in Chicago.
 
+<a id="rails" />
 ### With Rails
     
 It's doubtful that Riot works with Rails very easily as Riot completely replaces Test::Unit. I haven't tried it yet, but intend to with my next new Rails project. Porting would probably take some time unless you only have a few test cases. Porting is made somewhat easier if you're already using Shoulda; you can replace the `TestCase` definition with a `context` of the same name as the class under test I suppose.
 
+<a id="extending" />
 ## Extending Riot with Macros
 
 To extend Riot, similar to how you would with Shoulda, you simply need to include your methods into the `Riot::Context` class. For example, let's say you wanted to add a helpful macro for asserting the response status of some HTTP result in Sinatra. You could do this easily by defining your macro like so:
@@ -413,6 +426,7 @@ And then in your actual test, you might do the following:
 
 **COMING SOON:** Riot will look into test/riot\_macros, but not today.
 
+<a id="assertion-macros" />
 #### Assertion macros
 
 If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Assertion macros, however, have a special mechanism for adding themselves onto an assertion. Thus, you will want to open the Riot::Assertion class and then define your assertion macro.

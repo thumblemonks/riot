@@ -29,7 +29,7 @@ When you're done reading here, take a gander at:
 * [Riot Rails](http://github.com/thumblemonks/riot_rails): Rails support for Riot testing. A definite work in progress (help welcomed). See [evoke-app](http://github.com/thumblemonks/evoke-app) for live examples.
 * [Riot.js](http://github.com/alexyoung/riotjs): for you JavaScript people, a version of Riot just for you. Both implementations will be informing the other. Lots of stuff to learn.
 
-<a id="installation" />
+<a name="installation"></a>
 #### Installation 
 
 The Riot gem is hosted on gemcutter.org. It used to be hosted on GitHub, but they turned off gem support while moving to Rackspace, so we moved to gemcutter. If you have not already done so, add gemcutter.org to your list of gem sources like so:
@@ -40,7 +40,7 @@ Then, simply install the Riot gem like so:
 
     sudo gem install riot
 
-<a id="speed" />
+<a name="speed"></a>
 #### Note on speed
 
 I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
@@ -75,10 +75,10 @@ All tests ran with `ruby 1.8.7 (2009-06-12 patchlevel 174) [i686-darwin9.8.0], M
 
 Riot also works very well with Ruby 1.9. The same benchmarks from above run through ruby-1.9 show Riot to be twice as fast as it is already. See our [benchmarks gist](http://gist.github.com/240353) for more details.
 
-<a id="examples" />
+<a name="examples"></a>
 ## Examples
 
-<a id="examples-boolean" />
+<a name="examples-boolean"></a>
 #### Example: Basic booleans
 
 **NOTE:** For no specific reason, I'm going to use an ActiveRecord model in the following examples.
@@ -109,7 +109,7 @@ The other important thing to note in the examples above is the use of the `topic
 
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
-<a id="examples-shortcut" />
+<a name="examples-shortcut"></a>
 #### Example: Shortcut - Asserting the topic itself
 
 Over the course of developing Riot it became somewhat obvious to some of us that we were creating assertions that returned the `topic` just so we could assert things about the topic itself. For instance, were doing this:
@@ -137,7 +137,7 @@ together as follows:
       asserts("is a trazillionaire").kind_of(Trazillionaire)
     end
 
-<a id="examples-equality" />
+<a name="examples-equality"></a>
 #### Example: Equality
 
 One of the most common assertions you will (or do already) utilize is that of equality; is this equal to that? Riot supports this in a slightly different manner than most other frameworks. With Riot, you add the expectation to the assertion itself.
@@ -182,7 +182,7 @@ Which, to me, seems like a redundancy. The test already says it's nil! Maybe Sho
 
 In my opinion, the same redundancy exists. Sure, I could write a macro like `should_be_nil {@user.email}`, but the redundancy exists in the framework itself.
 
-<a name="examples-matches" />
+<a name="examples-matches"></a>
 #### Example: Matches
 
 If you need to assert that a test result matches a regular expression, use the `matches` modifier like so:
@@ -194,7 +194,7 @@ If you need to assert that a test result matches a regular expression, use the `
       asserts("random phone number") { topic.random_phone_number }.matches(/^\d{3}-\d{3}-\d{4}$/)
     end
 
-<a name="examples-raises" />
+<a name="examples-raises"></a>
 #### Example: Raises
 
 Sometimes, your test raises an exception that you actually expected.
@@ -211,7 +211,7 @@ And if you wanted to check that the exception and message match what you expect:
       asserts("invalid data") { topic.save! }.raises(ActiveRecord::RecordInvalid, /has errors/)
     end
 
-<a name="examples-kind-of" />
+<a name="examples-kind-of"></a>
 #### Example: Kind Of
 
 When you want to test that an expression returns an object of an expected type:
@@ -221,7 +221,7 @@ When you want to test that an expression returns an object of an expected type:
       asserts("its balance") { topic.balance }.kind_of(Currency)
     end
 
-<a name="examples-empty" />
+<a name="examples-empty"></a>
 #### Example: Empty
 
 When you want to assert a test result is empty (length == 0):
@@ -237,7 +237,7 @@ When you want to assert a test result is empty (length == 0):
        should("have no attributes") { topic.attributes }.empty
      end
 
-<a name="examples-respond-to" />
+<a name="examples-respond-to"></a>
 #### Example: Respond To
 
 When you want to test that an object responds to a specific method:
@@ -247,7 +247,7 @@ When you want to test that an object responds to a specific method:
       asserts("email is defined") { topic }.respond_to(:email)
     end
 
-<a name="examples-assigns" />
+<a name="examples-assigns"></a>
 #### Example: Assigns
 
 Sometimes you want to check and see if an instance variable is defined.
@@ -270,7 +270,7 @@ While other times you also want to make sure the value of the instance variable 
       asserts("has a first name") { topic }.assigns(:first_name, "Joe") # This will fail
     end
 
-<a name="examples-nested" />
+<a name="examples-nested"></a>
 #### Example: Nested contexts
 
 Oh yeah, Riot does those, too. The `setup` from each parent is "loaded" into the context and then the context is executed as normal. Test naming is a composite of the parent contexts' names. Here, we'll do a little Sinatra testing (see below for instructions on how to make it Riot work seamlessly with Sinatra tests).
@@ -305,7 +305,7 @@ See the TODO section for everything that's missing.
 
 Also, see [the wiki](http://wiki.github.com/thumblemonks/riot) for more examples and documentation.
 
-<a name="omg" />
+<a name="omg"></a>
 ## You say, "OMG! Why did you write this?"
 
 ### Some background, I guess
@@ -349,7 +349,7 @@ I like this approach because I only want to test one thing, but that one thing m
 
 I imagine this approach will persuade many of you to avoid Riot altogether. I don't blame you. A few years ago I would have avoided it, too. As of this writing though, I have ported Chicago and Slvu (which were previously written in Test::Unit + Shoulda) to Riot, cut the number of lines of code in almost half, definitely more than halved the amount of time the tests took to run, and did so in less than half a day (I was building Riot while porting them :).
 
-<a name="running" />
+<a name="running"></a>
 ## Running tests
 
 Create or modify your existing Rakefile to define a test task like so:
@@ -366,7 +366,7 @@ Create or modify your existing Rakefile to define a test task like so:
 
 Basically, it's like setting up any other test runner. Then, from the command line, you only need to run `rake` or `rake test`. Please make sure to remove all references to any other testing frameworks before running tests. For instance, do not require `test/unit`, `shoulda`, `minitest`, or anything else like it.
 
-<a name="sinatra" />
+<a name="sinatra"></a>
 ### With Sinatra
 
 Riot definitely works with the latest Sinatra. I personally use it to run tests for [Chicago](http://github.com/thumblemonks/chicago) and [Slvu](http://github.com/jaknowlden/slvu). Setup is pretty easy and very much like getting your tests to run with Test::Unit. In a test helper file that gets loaded into all of your tests (that need it), enter the following:
@@ -392,12 +392,12 @@ And then define a context (or many) for testing your Sinatra app. For instance:
 
 Make sure to check out the Riot + Sinatra testing macros in Chicago.
 
-<a name="rails" />
+<a name="rails"></a>
 ### With Rails
     
 It's doubtful that Riot works with Rails very easily as Riot completely replaces Test::Unit. I haven't tried it yet, but intend to with my next new Rails project. Porting would probably take some time unless you only have a few test cases. Porting is made somewhat easier if you're already using Shoulda; you can replace the `TestCase` definition with a `context` of the same name as the class under test I suppose.
 
-<a name="extending" />
+<a name="extending"></a>
 ## Extending Riot with Macros
 
 To extend Riot, similar to how you would with Shoulda, you simply need to include your methods into the `Riot::Context` class. For example, let's say you wanted to add a helpful macro for asserting the response status of some HTTP result in Sinatra. You could do this easily by defining your macro like so:
@@ -426,7 +426,7 @@ And then in your actual test, you might do the following:
 
 **COMING SOON:** Riot will look into test/riot\_macros, but not today.
 
-<a name="assertion-macros" />
+<a name="assertion-macros"></a>
 #### Assertion macros
 
 If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Assertion macros, however, have a special mechanism for adding themselves onto an assertion. Thus, you will want to open the Riot::Assertion class and then define your assertion macro.

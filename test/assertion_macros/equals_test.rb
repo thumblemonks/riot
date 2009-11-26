@@ -13,6 +13,6 @@ context "An equals assertion macro" do
     setup { topic.equals("bar").run(Riot::Situation.new) }
 
     asserts(":fail") { topic.first == :fail }
-    asserts("message") { topic.last == %Q{expected "foo" to equal "bar"} }
+    asserts("message") { topic.last == %Q{expected "bar", not "foo"} }
   end # that is failing
 end # An equals assertion macro

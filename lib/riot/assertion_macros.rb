@@ -1,10 +1,10 @@
 module Riot
   class Assertion
-    # Asserts that the result of the test equals the expected value
+    # Asserts that the result of the test equals the expected value. Using the +===+ operator to assert
+    # equality.
     #   asserts("test") { "foo" }.equals("foo")
     #   should("test") { "foo" }.equals("foo")
-    #
-    # Using the +===+ operator to assert equality.
+    #   asserts("test") { "foo" }.equals { "foo" }
     assertion(:equals) do |actual, expected|
       expected === actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
     end

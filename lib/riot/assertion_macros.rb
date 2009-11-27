@@ -4,7 +4,7 @@ module Riot
     #   asserts("test") { "foo" }.equals("foo")
     #   should("test") { "foo" }.equals("foo")
     assertion(:equals) do |actual, expected|
-      expected == actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
+      expected === actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
     end
 
     # Asserts that the result of the test is nil

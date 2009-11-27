@@ -32,9 +32,9 @@ module Riot
     end
 
     def self.assertion(name, expect_exception=false, &assertion_block)
-      define_method(name) do |*expectings, &block|
+      define_method(name) do |*expectings, &expectation_block|
         (class << self; self; end).send(:define_method, :run) do |situation|
-          expectings << situation.instance_eval(&block) if block
+          expectings << situation.evaluate(&expectation_block) if expectation_block
           process_macro(situation, expect_exception) { |actual| assertion_block.call(actual, *expectings) }
         end # redefine run method when the assertion is called
         self

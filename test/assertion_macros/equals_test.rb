@@ -9,6 +9,10 @@ context "An equals assertion macro" do
     topic.equals("foo").run(Riot::Situation.new) == [:pass]
   end
 
+  asserts(":pass when block expectation met") do
+    topic.equals { "foo" }.run(Riot::Situation.new) == [:pass]
+  end
+
   context "that is failing" do
     setup { topic.equals("bar").run(Riot::Situation.new) }
 

@@ -7,7 +7,7 @@ require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs    << 'test'
   test.pattern =  'test/**/*_test.rb'
-  test.warning =  true
+  # test.warning =  true # Turn back on when colorize is updated
   test.verbose =  false
 end
 

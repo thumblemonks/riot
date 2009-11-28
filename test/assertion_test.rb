@@ -50,9 +50,15 @@ context "An assertion" do
       @situation.topic = "hello"
       Riot::Assertion.new("test")
     end
+
     should("use block returning topic as default") do
       topic.equals { "hello" }
       result = topic.run(@situation)
+    end.equals([:pass])
+
+    asserts("block expectation has access to the situation items") do
+      topic.equals { @topic }
+      topic.run(@situation)
     end.equals([:pass])
   end
 end # An assertion block

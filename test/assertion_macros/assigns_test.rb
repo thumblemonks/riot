@@ -3,7 +3,7 @@ require 'teststrap'
 context "An assigns assertion macro" do
   setup do
     item = Object.new
-    item.instance_eval { @foo = 1; @bar; @nil_val = nil }
+    item.instance_eval { @foo = 1; @nil_val = nil }
     Riot::Assertion.new("test") { item }
   end
 

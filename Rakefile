@@ -5,9 +5,10 @@ task :default => [:test]
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = false
+  test.libs    << 'test'
+  test.pattern =  'test/**/*_test.rb'
+  test.warning =  true
+  test.verbose =  false
 end
 
 desc "Run Flog against library (except tests)"

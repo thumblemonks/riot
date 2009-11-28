@@ -1,10 +1,10 @@
 module Riot
   class Assertion
-    # Asserts that the result of the test equals the expected value
+    # Asserts that the result of the test equals the expected value. Using the +===+ operator to assert
+    # equality.
     #   asserts("test") { "foo" }.equals("foo")
     #   should("test") { "foo" }.equals("foo")
-    #
-    # Using the +===+ operator to assert equality.
+    #   asserts("test") { "foo" }.equals { "foo" }
     assertion(:equals) do |actual, expected|
       expected === actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
     end
@@ -44,7 +44,8 @@ module Riot
     #   topic.assigns(:email, "foo@bar.baz")
     assertion(:assigns) do |actual, *expectings|
       variable, expected_value = expectings
-      actual_value = actual.instance_variable_get("@#{variable}")
+      variable_name            = "@#{variable}"
+      actual_value             = actual.instance_variable_defined?(variable_name) ? actual.instance_variable_get(variable_name) : nil
       if actual_value.nil?
         fail("expected @#{variable} to be assigned a value")
       elsif !expected_value.nil? && expected_value != actual_value

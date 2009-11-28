@@ -18,13 +18,16 @@ module Riot
     end
   end
 
-  def self.silently!; @silent = true; end
-  def self.silently?; @silent == true; end
+  def self.silently!; @silent = true                         end
+  def self.silently?; defined?(@silently) && @silent == true end
 
   def self.reporter
-    Riot.silently? ? Riot::SilentReporter : (@reporter_class || Riot::StoryReporter)
+    Riot.silently? ? Riot::SilentReporter :
+                     ( (defined?(@reporter_class) && @reporter_class) ||
+                       Riot::StoryReporter )
   end
   def self.reporter=(reporter_class) @reporter_class = reporter_class; end
+  # TODO: make this a flag that DotMatrix and Story respect and cause them to print errors/failures
   def self.verbose; Riot.reporter = Riot::VerboseReporter; end
   def self.dots; Riot.reporter = Riot::DotMatrixReporter; end
 

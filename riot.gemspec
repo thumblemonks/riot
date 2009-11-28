@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.10.1"
+  s.version = "0.10.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-11-23}
+  s.date = %q{2009-11-27}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -30,8 +30,10 @@ Gem::Specification.new do |s|
      "lib/riot/situation.rb",
      "riot.gemspec",
      "test/assertion_macros/assigns_test.rb",
+     "test/assertion_macros/empty_test.rb",
      "test/assertion_macros/equals_test.rb",
      "test/assertion_macros/exists_test.rb",
+     "test/assertion_macros/includes_test.rb",
      "test/assertion_macros/kind_of_test.rb",
      "test/assertion_macros/matching_test.rb",
      "test/assertion_macros/nil_test.rb",
@@ -55,8 +57,10 @@ Gem::Specification.new do |s|
   s.summary = %q{An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.}
   s.test_files = [
     "test/assertion_macros/assigns_test.rb",
+     "test/assertion_macros/empty_test.rb",
      "test/assertion_macros/equals_test.rb",
      "test/assertion_macros/exists_test.rb",
+     "test/assertion_macros/includes_test.rb",
      "test/assertion_macros/kind_of_test.rb",
      "test/assertion_macros/matching_test.rb",
      "test/assertion_macros/nil_test.rb",

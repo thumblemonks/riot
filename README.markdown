@@ -17,6 +17,7 @@ An extremely fast, expressive, and context-driven unit-testing framework. Protes
   - [Respond To](#examples-respond-to)
   - [Assigns](#examples-assigns)
   - [Nested contexts](#examples-nested)
+  - [Block expectations](#examples-block)
 - [OMG! Why did you write this](#omg)
 - [Running tests](#running)
 - [With Sinatra](#sinatra)
@@ -295,6 +296,18 @@ Oh yeah, Riot does those, too. The `setup` from each parent is "loaded" into the
         # ...
         # assertions
       end
+    end
+
+<a name="examples-block"></a>
+#### Example: Block expectations
+
+You can use a block to create the expected value for your assertion,
+which might come in useful if it takes a bit of work to generate your
+expected value.  My apologies for the incredibly contrived example as so:
+
+    context "block expectations" do
+      setup { 2 }
+      asserts_topic.equals { 1 + 1 }
     end
 
 #### More examples/documentation

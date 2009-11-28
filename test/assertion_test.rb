@@ -32,18 +32,18 @@ context "An assertion" do
     end
   end # that is erroring
 
-  context "with no block" do
+  context "with no block to provide the actual" do
     setup do
       @situation = Riot::Situation.new
       @situation.topic = "hello"
       Riot::Assertion.new("test")
     end
-    should("use block returning topic as default") do
+    should("uses block returning topic as default") do
       topic.equals("hello")
       result = topic.run(@situation)
     end.equals([:pass])
   end
-
+  
   context "with block expectation" do
     setup do
       @situation = Riot::Situation.new

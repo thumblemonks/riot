@@ -1,5 +1,6 @@
 module Riot
   class RunnableBlock
+    attr_reader :definition
     def initialize(description, &definition)
       @description, @definition = description, definition || Proc.new { topic }
     end
@@ -15,7 +16,7 @@ module Riot
     end
 
     def run(situation)
-      situation.setup(&@definition)
+      situation.setup(&definition)
       [:setup]
     end
   end # Setup
@@ -42,7 +43,7 @@ module Riot
     end
   private
     def process_macro(situation, expect_exception)
-      actual = situation.evaluate(&@definition)
+      actual = situation.evaluate(&definition)
       yield(expect_exception ? nil : actual)
     rescue Exception => e
       expect_exception ? yield(e) : Assertion.error(e)

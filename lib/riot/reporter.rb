@@ -31,14 +31,15 @@ module Riot
   end # Reporter
 
   class IOReporter < Reporter
+    attr_reader :writer
     def initialize(writer=nil)
       super()
       @writer = writer || STDOUT
     end
-    def say(message) @writer.puts(message); end
+    def say(message) writer.puts(message); end
 
     def results(time_taken)
-      values = [@passes, @failures, @errors, ("%0.6f" % time_taken)]
+      values = [passes, failures, errors, ("%0.6f" % time_taken)]
       say "\n%d passes, %d failures, %d errors in %s seconds" % values
     end
   end
@@ -59,9 +60,9 @@ module Riot
   end
 
   class DotMatrixReporter < IOReporter
-    def pass(description); @writer.write ".".green; end
-    def fail(description, message); @writer.write "F".yellow; end
-    def error(description, e); @writer.write "E".red; end
+    def pass(description); writer.write ".".green; end
+    def fail(description, message); writer.write "F".yellow; end
+    def error(description, e); writer.write "E".red; end
     # TODO: Print the failures and errors at the end. Sorry :|
   end
 

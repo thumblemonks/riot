@@ -7,7 +7,7 @@ require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs    << 'test'
   test.pattern =  'test/**/*_test.rb'
-  # test.warning =  true # Turn back on when colorize is updated
+  test.warning =  true
   test.verbose =  false
 end
 
@@ -48,7 +48,7 @@ begin
     gem.email = "gus@gusg.us"
     gem.homepage = "http://github.com/thumblemonks/riot"
     gem.authors = ["Justin 'Gus' Knowlden"]
-    gem.add_dependency 'colorize'
+    gem.add_dependency 'term-ansicolor'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

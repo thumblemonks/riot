@@ -73,12 +73,14 @@ module Riot
   end
 end # Riot
 
-begin
-  raise LoadError if ENV["TM_MODE"]
-  require 'rubygems'
-  require 'colorize'
-rescue LoadError
-  class ::String
+# Colorize strings
+class ::String
+  begin
+    raise LoadError if ENV["TM_MODE"]
+    require 'rubygems'
+    require 'term/ansicolor'
+    include Term::ANSIColor
+  rescue LoadError
     def green; self; end
     alias :red :green
     alias :yellow :green

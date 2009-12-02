@@ -1,4 +1,4 @@
-
+require 'rubygems'
 require 'benchmark'
 require 'colorize'
 require 'term/ansicolor'

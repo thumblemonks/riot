@@ -41,6 +41,12 @@ context "A reporter" do
   asserts("description sent to #error") do
     topic.report("break it down", [:error, "error time"])
   end.equals("errored(break it down, error time)")
+
+  context "instance" do
+    setup { Riot::Reporter.new }
+
+    should("return self invoking new") { topic.new }.equals { topic }
+  end
 end # A reporter
 
 require 'stringio'

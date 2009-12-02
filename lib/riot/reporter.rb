@@ -28,6 +28,10 @@ module Riot
         error(description, result)
       end
     end
+
+    def new(*args, &block)
+      self
+    end
   end # Reporter
 
   class IOReporter < Reporter

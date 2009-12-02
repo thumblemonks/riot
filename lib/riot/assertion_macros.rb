@@ -115,6 +115,15 @@ module Riot
       actual.any? ? pass : fail("expected #{actual.inspect} to have items")
     end
 
+    # Asserts that result's size is as expected. Expected size can be specified as
+    # a number or a range.
+    #   asserts("a string") { 'washington' }.size(9..12)
+    #   asserts("an array") { [1, 2, 3] }.size(3)
+    #   asserts("a hash") { {:name => 'washington'} }.size(1)
+    assertion(:size) do |actual, expected|
+      expected === actual.size ? pass : fail("size of #{actual.inspect} expected to be #{expected} but is #{actual.size}")
+    end
+
     # Asserts the result contains the expected element
     #   asserts("a string") { "world" }.includes('o')
     #   asserts("an array") { [1,2,3] }.includes(2)

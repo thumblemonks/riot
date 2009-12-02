@@ -108,6 +108,13 @@ module Riot
       actual.length == 0 ? pass : fail("expected #{actual.inspect} to be empty")
     end
 
+    # Asserts the result has items
+    #   asserts("an array") { [1] }.any
+    #   asserts("a hash") { {:name => 'washington'} }.any
+    assertion(:any) do |actual|
+      actual.any? ? pass : fail("expected #{actual.inspect} to have items")
+    end
+
     # Asserts the result contains the expected element
     #   asserts("a string") { "world" }.includes('o')
     #   asserts("an array") { [1,2,3] }.includes(2)

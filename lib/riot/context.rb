@@ -1,15 +1,23 @@
 module Riot
-  RootContext = Struct.new(:setups)
+  RootContext = Struct.new(:setups, :teardowns)
   class Context
-    def initialize(description, parent=RootContext.new([]), &definition)
+    def initialize(description, parent=RootContext.new([],[]), &definition)
       @parent = parent
       @description = description
-      @contexts, @setups, @assertions = [], [], []
+      @contexts, @setups, @assertions, @teardowns = [], [], [], []
       self.instance_eval(&definition)
     end
     
     def setup(&definition)
       @setups << Setup.new(&definition)
+    end
+    
+    def teardown(&definition)
+      @teardowns << Setup.new(&definition)
+    end
+    
+    def teardowns
+      @parent.teardowns + @teardowns
     end
 
     def setups
@@ -26,7 +34,7 @@ module Riot
     end
     
     def run(reporter)
-      runnables = setups + @assertions
+      runnables = setups + @assertions + teardowns
       reporter.describe_context(@description) unless @assertions.empty?
       situation = Situation.new
       runnables.each do |runnable|

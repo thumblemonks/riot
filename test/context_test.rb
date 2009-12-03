@@ -17,14 +17,14 @@ end # Reporting a context
 
 context "Defining a context with multiple setups" do
   setup do
-    a_context = Riot::Context.new("foobar") do
+    @a_context = Riot::Context.new("foobar") do
       setup { "foo" }
       setup { topic + "bar" }
       asserts("blah") { topic == "foobar" }
     end
-    a_context.run(MockReporter.new)
+    @a_context.run(MockReporter.new)
   end
-
+  asserts("has setups") { @a_context.setups.count }.equals(2)
   asserts("all tests pass") { topic.passes == 1 }
 end # Defining a context with multiple setups
 

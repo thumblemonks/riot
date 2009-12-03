@@ -1,13 +1,19 @@
 module Riot
+  RootContext = Struct.new(:setups)
   class Context
-    def initialize(description, setups=[], &definition)
+    def initialize(description, parent=RootContext.new([]), &definition)
+      @parent = parent
       @description = description
-      @contexts, @setups, @assertions = [], setups, []
+      @contexts, @setups, @assertions = [], [], []
       self.instance_eval(&definition)
     end
     
     def setup(&definition)
       @setups << Setup.new(&definition)
+    end
+
+    def setups
+      @parent.setups + @setups
     end
 
     def asserts(what, &definition) new_assertion("asserts", what, &definition); end
@@ -16,12 +22,11 @@ module Riot
     def asserts_topic; asserts("topic") { topic }; end
 
     def context(description, &definition)
-      # not liking the dup
-      @contexts << Context.new("#{@description} #{description}", @setups.dup, &definition)
+      @contexts << Context.new("#{@description} #{description}", self, &definition)
     end
     
     def run(reporter)
-      runnables = @setups + @assertions
+      runnables = setups + @assertions
       reporter.describe_context(@description) unless @assertions.empty?
       situation = Situation.new
       runnables.each do |runnable|

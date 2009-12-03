@@ -46,27 +46,38 @@ module Riot
       values = [passes, failures, errors, ("%0.6f" % time_taken)]
       say "\n%d passes, %d failures, %d errors in %s seconds" % values
     end
+
+    begin
+      raise LoadError if ENV["TM_MODE"]
+      require 'rubygems'
+      require 'term/ansicolor'
+      include Term::ANSIColor
+    rescue LoadError
+      def green(str); str; end
+      alias :red :green
+      alias :yellow :green
+    end
   end
 
   class StoryReporter < IOReporter
     def describe_context(description) say description; end
-    def pass(description) say "  + " + description.green; end
-    def fail(description, message) say "  - " + "#{description}: #{message}".yellow; end
-    def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
+    def pass(description) say "  + " + green(description); end
+    def fail(description, message) say "  - " + yellow("#{description}: #{message}"); end
+    def error(description, e) say "  ! " + red("#{description}: #{e.message}"); end
   end
 
   class VerboseStoryReporter < StoryReporter
     def error(description, e)
       super(description, e)
-      say "    #{e.class.name} occured".red
-      e.backtrace.each { |line| say "      at #{line}".red }
+      say red("    #{e.class.name} occured")
+      e.backtrace.each { |line| say red("      at #{line}") }
     end
   end
 
   class DotMatrixReporter < IOReporter
-    def pass(description); writer.write ".".green; end
-    def fail(description, message); writer.write "F".yellow; end
-    def error(description, e); writer.write "E".red; end
+    def pass(description); writer.write green("."); end
+    def fail(description, message); writer.write yellow("F"); end
+    def error(description, e); writer.write red("E"); end
     # TODO: Print the failures and errors at the end. Sorry :|
   end
 
@@ -77,17 +88,3 @@ module Riot
     def results(time_taken); end
   end
 end # Riot
-
-# Colorize strings
-class ::String
-  begin
-    raise LoadError if ENV["TM_MODE"]
-    require 'rubygems'
-    require 'term/ansicolor'
-    include Term::ANSIColor
-  rescue LoadError
-    def green; self; end
-    alias :red :green
-    alias :yellow :green
-  end
-end

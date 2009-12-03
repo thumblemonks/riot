@@ -33,7 +33,7 @@ module Riot
   end
 
   # TODO: make this a flag that DotMatrix and Story respect and cause them to print errors/failures
-  def self.verbose; Riot.reporter = Riot::VerboseReporter; end
+  def self.verbose; Riot.reporter = Riot::VerboseStoryReporter; end
   def self.dots; Riot.reporter = Riot::DotMatrixReporter; end
 
   at_exit { run unless Riot.silently? }

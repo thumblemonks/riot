@@ -55,7 +55,7 @@ module Riot
     def error(description, e) say "  ! " + "#{description}: #{e.message}".red; end
   end
 
-  class VerboseReporter < StoryReporter
+  class VerboseStoryReporter < StoryReporter
     def error(description, e)
       super(description, e)
       say "    #{e.class.name} occured".red

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.10.2"
+  s.version = "0.10.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-11-27}
+  s.date = %q{2009-12-02}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "TODO.markdown",
      "VERSION",
      "lib/riot.rb",
+     "lib/riot/assertion.rb",
      "lib/riot/assertion_macros.rb",
      "lib/riot/context.rb",
      "lib/riot/reporter.rb",
@@ -41,6 +42,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",
      "test/assertion_test.rb",
+     "test/benchmark/colorize.rb",
      "test/benchmark/riot_vs_minitest.rb",
      "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
@@ -68,6 +70,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",
      "test/assertion_test.rb",
+     "test/benchmark/colorize.rb",
      "test/benchmark/riot_vs_minitest.rb",
      "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
@@ -83,12 +86,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<colorize>, [">= 0"])
+      s.add_runtime_dependency(%q<term-ansicolor>, [">= 0"])
     else
-      s.add_dependency(%q<colorize>, [">= 0"])
+      s.add_dependency(%q<term-ansicolor>, [">= 0"])
     end
   else
-    s.add_dependency(%q<colorize>, [">= 0"])
+    s.add_dependency(%q<term-ansicolor>, [">= 0"])
   end
 end
 

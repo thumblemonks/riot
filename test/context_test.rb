@@ -59,7 +59,7 @@ context "Nesting a context" do
 
     asserts("parent setups are called") { topic.passes == 1 }
   end # with setups
-end # Nestings a context
+end # Nesting a context
 
 context "Using should" do
   setup do

@@ -2,12 +2,10 @@ module Riot
   class RunnableBlock
     attr_reader :definition
     def initialize(description, &definition)
-      @description, @definition = description, definition || Proc.new { topic }
+      @description, @definition = description, definition || lambda { topic }
     end
 
-    def to_s
-      @description
-    end
+    def to_s; @description; end
   end # RunnableBlock
 
   class Setup < RunnableBlock
@@ -20,33 +18,4 @@ module Riot
       [:setup]
     end
   end # Setup
-
-  class Assertion < RunnableBlock
-    def self.pass() [:pass]; end
-    def self.fail(message) [:fail, message]; end
-    def self.error(e) [:error, e]; end
-
-    def run(situation)
-      process_macro(situation, false) do |actual|
-        actual ? Assertion.pass : Assertion.fail("Expected non-false but got #{actual.inspect} instead")
-      end
-    end
-
-    def self.assertion(name, expect_exception=false, &assertion_block)
-      define_method(name) do |*expectings, &expectation_block|
-        (class << self; self; end).send(:define_method, :run) do |situation|
-          expectings << situation.evaluate(&expectation_block) if expectation_block
-          process_macro(situation, expect_exception) { |actual| assertion_block.call(actual, *expectings) }
-        end # redefine run method when the assertion is called
-        self
-      end # define_method for assertion
-    end
-  private
-    def process_macro(situation, expect_exception)
-      actual = situation.evaluate(&definition)
-      yield(expect_exception ? nil : actual)
-    rescue Exception => e
-      expect_exception ? yield(e) : Assertion.error(e)
-    end
-  end # Assertion
 end # Riot

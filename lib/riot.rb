@@ -2,6 +2,7 @@ require 'riot/reporter'
 require 'riot/context'
 require 'riot/situation'
 require 'riot/runnable'
+require 'riot/assertion'
 require 'riot/assertion_macros'
 
 module Riot

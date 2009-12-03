@@ -93,6 +93,7 @@ For instance, given a test file named `foo_test.rb`, you might have the followin
     context "a new user" do
       setup { User.new }
       asserts("that it is not yet created") { topic.new_record? }
+      teardown { #cleanup here }
     end
 
 Notice that you do not define a class anywhere. That would be the entire contents of that test file. If you wanted to use a `should` instead, you could say this:
@@ -348,7 +349,13 @@ I should say that I love Shoulda in theory and in practice. It changed the way I
 
 Riot differs primarily in that it does not rerun setup for each test in a context. I know this is going to shock a lot of folks. However, over the past several years of my doing TDD in some capacity or another, there are certain habits I have tried to pick up on any many others I have tried to drop.
 
-For instance, I believe that no assertion should mangle the context of the test data it is running in. Following this allows me to require setup be run only once for a collection of related assertions. Even in a nested context where setups are inherited, the setup's are called only once per the specific context.
+For instance, I believe that no assertion should mangle the context of
+the test data it is running in. Following this allows me to require
+setup be run only once for a collection of related assertions. Even in
+a nested context where setups are inherited, the setup's are called
+only once per the specific context. Furthermore, teardowns are also
+called only once per the specific context, after all the setups and
+assertions have run.
 
 Following all of this allows me to have very fast tests (so far).
 

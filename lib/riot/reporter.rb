@@ -86,12 +86,15 @@ module Riot
   end
 
   class DotMatrixReporter < IOReporter
-    def pass(description); writer.write green("."); end
-
     def initialize(writer=STDOUT)
       super
       @details = []
     end
+
+    def pass(description)
+      writer.write green(".")
+    end
+
     def fail(description, message)
       writer.write yellow("F")
       @details << "FAILURE - #{current_context.description} #{description} => #{message}"

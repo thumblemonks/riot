@@ -49,11 +49,12 @@ module Riot
     end
 
     def format_error(e)
-      format = "    #{e.class.name} occured"
-      format += "\n#{e.to_s}\n"
-      e.backtrace.each { |line| format += "\n      at #{line}" }
+      format = []
+      format << "    #{e.class.name} occured"
+      format << "#{e.to_s}"
+      e.backtrace.each { |line| format << "      at #{line}" }
 
-      format
+      format.join("\n")
     end
 
     begin
@@ -80,7 +81,7 @@ module Riot
 
   class VerboseStoryReporter < StoryReporter
     def error(description, e)
-      super(description, e)
+      super
       say red(format_error(e))
     end
   end
@@ -106,7 +107,7 @@ module Riot
     end
 
     def results(time_taken)
-      say "\n"
+      say "\n" unless @details.empty?
       @details.each { |detail| say detail }
       super
     end

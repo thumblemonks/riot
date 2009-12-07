@@ -1,6 +1,7 @@
 module Riot
   RootContext = Struct.new(:setups, :teardowns)
   class Context
+    attr_reader :description
     def initialize(description, parent=RootContext.new([],[]), &definition)
       @parent = parent
       @description = description
@@ -23,7 +24,7 @@ module Riot
     end
     
     def run(reporter)
-      reporter.describe_context(@description) unless @assertions.empty?
+      reporter.describe_context(self) unless @assertions.empty?
       local_run(reporter, Situation.new)
       run_sub_contexts(reporter)
       reporter

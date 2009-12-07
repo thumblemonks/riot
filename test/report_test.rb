@@ -49,6 +49,8 @@ context "A reporter" do
   end
 end # A reporter
 
+
+
 require 'stringio'
 context "StoryReporter" do
   setup {
@@ -66,7 +68,7 @@ context "StoryReporter" do
     end
     should("not output context name") { @out.string }.empty
   end
-  
+
   context "reporting on a non-empty context" do
     setup do
       context = Riot::Context.new('supercontext') do
@@ -74,9 +76,56 @@ context "StoryReporter" do
       end
       context.run(topic)
     end
-    
+
     should('output context name') { @out.string }.matches(/supercontext/)
     should('output name of passed assertion') { @out.string }.matches(/truth/)
   end
 
+end
+
+context "DotMatrixReporter" do
+  setup do
+    @out = StringIO.new
+    Riot::DotMatrixReporter.new(@out)
+  end
+
+  context "with a passing test" do
+    setup do
+      context = Riot::Context.new('whatever') do
+        asserts('true') { true }
+      end
+      context.run(topic)
+      @out.string
+    end
+    asserts('puts a dot').matches('.')
+  end
+  
+  context 'with a failing test' do
+    setup do
+      Riot::Context.new('whatever') do
+        asserts('nope!') { false }
+      end.run(topic)
+      topic.results(100)
+      @out.string
+    end
+    
+    asserts('puts an F').matches('F')
+    asserts("puts the full context + assertion name").matches('whatever asserts nope!')
+    asserts("puts the failure reason").matches(/Expected .* but got false instead/)
+  end
+  
+  context 'with an error test' do
+    setup do
+      Riot::Context.new('whatever') do
+        asserts('bang') { raise "BOOM" }
+      end.run(topic)
+      topic.results(100)
+      @out.string
+    end
+    
+    asserts('puts an E').matches('E')
+    asserts('puts the full context + assertion name').matches('whatever asserts bang')
+    asserts('puts the exception message').matches('BOOM')
+    asserts('puts the exception backtrace').matches(__FILE__)
+  end
 end

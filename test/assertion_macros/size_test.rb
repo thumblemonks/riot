@@ -2,8 +2,8 @@ require 'teststrap'
 
 context "A size assertion macro" do
   setup do
-    def assert_size(string, size)
-      Riot::Assertion.new("test") { string }.size(size)
+    def assert_size(sizable, expected_size)
+      Riot::Assertion.new("test") { sizable }.size(expected_size)
     end
   end
 

@@ -49,20 +49,17 @@ context "A reporter" do
   end
 end # A reporter
 
-
-
 require 'stringio'
 context "StoryReporter" do
-  setup {
+  setup do
     @out = StringIO.new
     Riot::StoryReporter.new(@out)
-  }
+  emd
 
   context 'reporting on an empty context' do
     setup do
       context = Riot::Context.new('empty context') do
-        context "a nested empty context" do
-        end
+        context("a nested empty context") {}
       end
       context.run(topic)
     end
@@ -80,7 +77,6 @@ context "StoryReporter" do
     should('output context name') { @out.string }.matches(/supercontext/)
     should('output name of passed assertion') { @out.string }.matches(/truth/)
   end
-
 end
 
 context "DotMatrixReporter" do

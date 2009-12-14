@@ -54,7 +54,7 @@ context "StoryReporter" do
   setup do
     @out = StringIO.new
     Riot::StoryReporter.new(@out)
-  emd
+  end
 
   context 'reporting on an empty context' do
     setup do

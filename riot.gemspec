@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.10.4"
+  s.version = "0.10.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-12-03}
+  s.date = %q{2009-12-14}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "lib/riot/runnable.rb",
      "lib/riot/situation.rb",
      "riot.gemspec",
+     "test/assertion_macros/any_test.rb",
      "test/assertion_macros/assigns_test.rb",
      "test/assertion_macros/empty_test.rb",
      "test/assertion_macros/equals_test.rb",
@@ -41,6 +42,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/raises_test.rb",
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",
+     "test/assertion_macros/size_test.rb",
      "test/assertion_test.rb",
      "test/benchmark/colorize.rb",
      "test/benchmark/riot_vs_minitest.rb",
@@ -50,6 +52,7 @@ Gem::Specification.new do |s|
      "test/report_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",
+     "test/teardown_test.rb",
      "test/teststrap.rb"
   ]
   s.homepage = %q{http://github.com/thumblemonks/riot}
@@ -58,7 +61,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.}
   s.test_files = [
-    "test/assertion_macros/assigns_test.rb",
+    "test/assertion_macros/any_test.rb",
+     "test/assertion_macros/assigns_test.rb",
      "test/assertion_macros/empty_test.rb",
      "test/assertion_macros/equals_test.rb",
      "test/assertion_macros/exists_test.rb",
@@ -69,6 +73,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/raises_test.rb",
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",
+     "test/assertion_macros/size_test.rb",
      "test/assertion_test.rb",
      "test/benchmark/colorize.rb",
      "test/benchmark/riot_vs_minitest.rb",
@@ -78,6 +83,7 @@ Gem::Specification.new do |s|
      "test/report_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",
+     "test/teardown_test.rb",
      "test/teststrap.rb"
   ]
 

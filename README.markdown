@@ -410,7 +410,10 @@ And then define a context (or many) for testing your Sinatra app. For instance:
       end
     end
 
-Make sure to check out the Riot + Sinatra testing macros in Chicago.
+Make sure to check out the Riot + Sinatra testing macros in Chicago. If you do happen to use Chicago, the above `test_helper.rb` setup can be compressed to the following while allowing the same test to work:
+
+    require 'riot'
+    require 'chicago/riot'
 
 <a name="rails"></a>
 ### With Rails

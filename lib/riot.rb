@@ -6,8 +6,8 @@ require 'riot/assertion'
 require 'riot/assertion_macros'
 
 module Riot
-  def self.context(description, &definition)
-    root_contexts << Context.new(description, &definition)
+  def self.context(description, context_class = Context, &definition)
+    root_contexts << context_class.new(description, &definition)
   end
 
   def self.root_contexts; @root_contexts ||= []; end

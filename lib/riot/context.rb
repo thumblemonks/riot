@@ -20,7 +20,7 @@ module Riot
     def asserts_topic; asserts("topic") { topic }; end
 
     def context(description, &definition)
-      @contexts << Context.new("#{@description} #{description}", self, &definition)
+      @contexts << self.class.new("#{@description} #{description}", self, &definition)
     end
     
     def run(reporter)

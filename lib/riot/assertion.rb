@@ -5,7 +5,7 @@ module Riot
       super
       @expectings, @expect_exception, @expectation_block = [], false, nil
       @assertion_block = lambda do |actual|
-        actual ? Assertion.pass : Assertion.fail("Expected non-false but got #{actual.inspect} instead")
+        actual ? self.class.pass : self.class.fail("Expected non-false but got #{actual.inspect} instead")
       end
     end
 
@@ -22,7 +22,7 @@ module Riot
         class_eval <<-EOC
           def #{name}(*expectings, &expectation_block)
             @expectings, @expectation_block = expectings, expectation_block
-            @expect_exception, @assertion_block = Assertion.assertions[#{name.inspect}]
+            @expect_exception, @assertion_block = self.class.assertions[#{name.inspect}]
             self
           end
         EOC
@@ -39,7 +39,7 @@ module Riot
       actual = situation.evaluate(&definition)
       yield(expect_exception ? nil : actual)
     rescue Exception => e
-      expect_exception ? yield(e) : Assertion.error(e)
+      expect_exception ? yield(e) : self.class.error(e)
     end
   end # Assertion
 end # Riot

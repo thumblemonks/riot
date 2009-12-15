@@ -40,7 +40,7 @@ module Riot
 end # Riot
 
 class Object
-  def context(description, &definition)
-    Riot.context(description, &definition)
+  def context(description, context_class = Riot::Context, &definition)
+    Riot.context(description, context_class, &definition)
   end
 end

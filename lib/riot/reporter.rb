@@ -36,16 +36,16 @@ module Riot
   end # Reporter
 
   class IOReporter < Reporter
-    attr_reader :writer
     def initialize(writer=STDOUT)
       super()
       @writer = writer
     end
-    def say(message) writer.puts(message); end
+    def puts(message) @writer.puts(message); end
+    def print(message) @writer.print(message); end
 
     def results(time_taken)
       values = [passes, failures, errors, ("%0.6f" % time_taken)]
-      say "\n%d passes, %d failures, %d errors in %s seconds" % values
+      puts "\n%d passes, %d failures, %d errors in %s seconds" % values
     end
 
     def format_error(e)
@@ -72,17 +72,17 @@ module Riot
   class StoryReporter < IOReporter
     def describe_context(context)
       super
-      say context.description
+      puts context.description
     end
-    def pass(description) say "  + " + green(description); end
-    def fail(description, message) say "  - " + yellow("#{description}: #{message}"); end
-    def error(description, e) say "  ! " + red("#{description}: #{e.message}"); end
+    def pass(description) puts "  + " + green(description); end
+    def fail(description, message) puts "  - " + yellow("#{description}: #{message}"); end
+    def error(description, e) puts "  ! " + red("#{description}: #{e.message}"); end
   end
 
   class VerboseStoryReporter < StoryReporter
     def error(description, e)
       super
-      say red(format_error(e))
+      puts red(format_error(e))
     end
   end
 
@@ -93,22 +93,22 @@ module Riot
     end
 
     def pass(description)
-      writer.write green(".")
+      print green(".")
     end
 
     def fail(description, message)
-      writer.write yellow("F")
+      print yellow("F")
       @details << "FAILURE - #{current_context.description} #{description} => #{message}"
     end
 
     def error(description, e)
-      writer.write red("E")
+      print red("E")
       @details << "ERROR - #{current_context.description} #{description} => #{format_error(e)}"
     end
 
     def results(time_taken)
-      say "\n" unless @details.empty?
-      @details.each { |detail| say detail }
+      puts "\n" unless @details.empty?
+      @details.each { |detail| puts detail }
       super
     end
   end

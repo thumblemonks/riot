@@ -88,3 +88,55 @@ context "The asserts_topic shortcut" do
     topic.equals("bar").run(situation)
   end.equals([:pass])
 end # The asserts_topic shortcut
+
+context "Setting assertion extensions" do
+  fake_mod_one, fake_mod_two = Module.new, Module.new
+
+  setup do
+    Riot::Context.new("foo") do
+      extend_assertions fake_mod_one, fake_mod_two
+    end.asserts_topic
+  end
+
+  should("still return an Assertion") { topic }.kind_of(Riot::Assertion)
+
+  should("have included the given assertion extension modules in the assertion") do
+    topic.class.included_modules.include?(fake_mod_one) && topic.class.included_modules.include?(fake_mod_two)
+  end
+
+  context "involving subcontexts without the subcontext extending assertions" do
+    assertion_one = assertion_two = nil
+
+    setup do 
+      Riot::Context.new "bleh" do
+        extend_assertions Module.new
+        assertion_one = asserts_topic
+        context("foo") { assertion_two = asserts_topic } 
+      end
+    end
+    
+    should "not create separate instances of the assertion class in subcontexts" do
+      assertion_one && assertion_two && assertion_one.class.object_id == assertion_two.class.object_id
+    end
+  end # involving subcontexts without the subcontext extending assertions
+
+  context "involving subcontexts with the subcontext extending assertions" do
+    assertion_one = assertion_two = nil
+    
+    setup do
+      Riot::Context.new "bah" do
+        extend_assertions Module.new
+        assertion_one = asserts_topic
+        context("meh") do
+          extend_assertions Module.new
+          assertion_two = asserts_topic
+        end
+      end
+    end
+
+    should "create separate instances of the assertion class in subcontexts" do
+      assertion_one && assertion_two && assertion_one.class.object_id != assertion_two.class.object_id
+    end
+
+  end # involving subcontexts with the subcontext extending assertions
+end   # Setting assertion extensions

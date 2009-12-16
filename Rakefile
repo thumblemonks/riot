@@ -11,6 +11,14 @@ Rake::TestTask.new(:test) do |test|
   test.verbose =  false
 end
 
+desc "Run all of them fancy benchmarks, Howard!"
+task :benchmarks do
+  Dir["test/benchmark/*.rb"].each do |file|
+    puts ">> Running #{file}"
+    puts %x[ruby #{file}]
+  end
+end
+
 desc "Run Flog against library (except tests)"
 task :flog do
   puts %x[find ./lib -name *.rb | xargs flog]

@@ -100,9 +100,13 @@ context "Setting assertion extensions" do
 
   should("still return an Assertion") { topic }.kind_of(Riot::Assertion)
 
-  should("have included the given assertion extension modules in the assertion") do
-    topic.class.included_modules.include?(fake_mod_one) && topic.class.included_modules.include?(fake_mod_two)
-  end
+  should("have included the fake_mod_one assertion extension module") do
+    topic.class.included_modules
+  end.includes(fake_mod_one)
+
+  should("have included the fake_mod_two assertion extension module") do
+    topic.class.included_modules
+  end.includes(fake_mod_two)
 
   context "involving subcontexts without the subcontext extending assertions" do
     assertion_one = assertion_two = nil
@@ -114,10 +118,13 @@ context "Setting assertion extensions" do
         context("foo") { assertion_two = asserts_topic } 
       end
     end
-    
-    should "not create separate instances of the assertion class in subcontexts" do
-      assertion_one && assertion_two && assertion_one.class.object_id == assertion_two.class.object_id
-    end
+
+    asserts("assertion one") { assertion_one }.exists
+    asserts("assertion two") { assertion_two }.exists
+
+    asserts("assertions are of the same assertion class") do
+      assertion_one.class.object_id
+    end.equals {assertion_two.class.object_id}
   end # involving subcontexts without the subcontext extending assertions
 
   context "involving subcontexts with the subcontext extending assertions" do
@@ -134,8 +141,11 @@ context "Setting assertion extensions" do
       end
     end
 
+    asserts("assertion one") { assertion_one }.exists
+    asserts("assertion two") { assertion_two }.exists
+
     should "create separate instances of the assertion class in subcontexts" do
-      assertion_one && assertion_two && assertion_one.class.object_id != assertion_two.class.object_id
+      assertion_one.class.object_id != assertion_two.class.object_id
     end
 
   end # involving subcontexts with the subcontext extending assertions

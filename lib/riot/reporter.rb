@@ -50,7 +50,7 @@ module Riot
 
     def format_error(e)
       format = []
-      format << "    #{e.class.name} occured"
+      format << "    #{e.class.name} occurred"
       format << "#{e.to_s}"
       e.backtrace.each { |line| format << "      at #{line}" }
 

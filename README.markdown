@@ -452,19 +452,19 @@ And then in your actual test, you might do the following:
 <a name="assertion-macros"></a>
 #### Assertion macros
 
-If you want to add special macros to an Assertion, this is as easy as adding them to a Context. Assertion macros, however, have a special mechanism for adding themselves onto an assertion. Thus, you will want to open the Riot::Assertion class and then define your assertion macro.
+If you want to add special macros to an Assertion, the process is really very easy. You simple need to define a class that extends `AssertionMacro` (or at least quacks like it), be sure to implement the `evaluate` instance method, and then register the macro with `Assertion`.
 
-For instance, let's say you wanted to add a macro for verifying that the result of an assertion is the same kind\_of object as you would expect. You would define the macro like so:
+For instance, let's say you wanted to add a macro for verifying that the result of an assertion is the same `kind\_of` object as you would expect. You would define the macro like so:
 
-    module Riot
-      class Assertion
-
-        assertion(:kind_of) do |actual, expected|
+    module Foo
+      class KindOfMacro < Riot::AssertionMacro
+        def evauluate(actual, expected)
           actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.inspect}")
         end
+      end # KindOfMacro
 
-      end # Assertion
-    end # Riot
+      Riot::Assertion.register_macro :kind_of, KindOfMacro
+    end # Foo
 
 And in your context, you would use it like so:
 

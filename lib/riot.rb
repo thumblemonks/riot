@@ -3,7 +3,7 @@ require 'riot/context'
 require 'riot/situation'
 require 'riot/runnable'
 require 'riot/assertion'
-require 'riot/assertion_macros'
+require 'riot/assertion_macro'
 
 module Riot
   def self.context(description, context_class = Context, &definition)

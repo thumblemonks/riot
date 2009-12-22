@@ -1,6 +1,6 @@
 require 'teststrap'
 
-# Using == to verify the tes because this is the test for :equals itself. Look at assertion_test_passes
+# Using == to verify the test because this is the test for :equals itself. Look at assertion_test_passes
 # and assertion_test_fails for testing other macros.
 
 context "An equals assertion macro" do

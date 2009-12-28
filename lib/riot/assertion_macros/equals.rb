@@ -8,6 +8,10 @@ module Riot
     def evaluate(actual, expected)
       expected === actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
     end
+
+    def template(expected=nil)
+      "%s is equal to #{expected.inspect}"
+    end
   end
   
   Assertion.register_macro :equals, EqualsMacro

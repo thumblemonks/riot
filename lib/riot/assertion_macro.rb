@@ -11,6 +11,10 @@ module Riot
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
     end
+
+    def template(*expectings)
+      "%s"
+    end
   end
 end
 

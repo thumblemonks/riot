@@ -6,6 +6,10 @@ module Riot
     def evaluate(actual, expected)
       actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.class.inspect}")
     end
+
+    def template(kind_of)
+      "%s is #kind_of? #{kind_of.inspect}"
+    end
   end
   
   Assertion.register_macro :kind_of, KindOfMacro

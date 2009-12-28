@@ -7,6 +7,10 @@ module Riot
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
       actual =~ expected ? pass : fail("expected #{expected.inspect} to match #{actual.inspect}")
     end
+
+    def template(expression)
+      "%s matches #{expression.inspect}"
+    end
   end
 
   Assertion.register_macro :matches, MatchesMacro

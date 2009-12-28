@@ -22,6 +22,14 @@ module Riot
         pass
       end
     end
+
+    def template(expected_class, expected_message=nil)
+      if expected_message
+        "%s raises #{expected_class.inspect} with message #{expected_message.inspect}"
+      else
+        "%s raises #{expected_class.inspect}"
+      end
+    end
   end
   
   Assertion.register_macro :raises, RaisesMacro

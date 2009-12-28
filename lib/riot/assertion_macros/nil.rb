@@ -6,6 +6,10 @@ module Riot
     def evaluate(actual)
       actual.nil? ? pass : fail("expected nil, not #{actual.inspect}")
     end
+
+    def template
+      "%s is nil"
+    end
   end
   
   Assertion.register_macro :nil, NilMacro

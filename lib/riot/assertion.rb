@@ -22,6 +22,10 @@ module Riot
       @macro.expects_exception? ? @macro.evaluate(e, *@expectings) : @macro.error(e)
     end
 
+    def to_s
+      @macro.template(*@expectings) % @description
+    end
+
   private
     def enhance_with_macro(name, *expectings, &expectation_block)
       @macro, @expectings, @expectation_block = self.class.macros[name.to_s], expectings, expectation_block

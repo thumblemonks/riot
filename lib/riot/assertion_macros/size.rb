@@ -9,6 +9,10 @@ module Riot
       msg = "size of #{actual.inspect} expected to be #{expected} but is #{actual.size}"
       expected === actual.size ? pass : fail(msg)
     end
+
+    def template(expected)
+      "%s is of size #{expected}"
+    end
   end
   
   Assertion.register_macro :size, SizeMacro

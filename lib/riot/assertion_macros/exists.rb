@@ -9,6 +9,10 @@ module Riot
     def evaluate(actual)
       !actual.nil? ? pass : fail("expected a non-nil value")
     end
+
+    def template
+      "%s is not nil"
+    end
   end
   
   Assertion.register_macro :exists, ExistsMacro

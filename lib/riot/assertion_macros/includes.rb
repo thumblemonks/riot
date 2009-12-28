@@ -7,6 +7,10 @@ module Riot
     def evaluate(actual, expected)
       actual.include?(expected) ? pass : fail("expected #{actual.inspect} to include #{expected.inspect}")
     end
+
+    def template(expected)
+      "%s includes #{expected.inspect}"
+    end
   end
   
   Assertion.register_macro :includes, IncludesMacro

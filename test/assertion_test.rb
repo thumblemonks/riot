@@ -61,4 +61,9 @@ context "An assertion" do
       topic.run(@situation)
     end.equals([:pass])
   end
+
+  context "with symbolic description" do
+    setup { "foo" }
+    asserts(:upcase).equals("FOO")
+  end
 end # An assertion block

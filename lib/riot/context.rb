@@ -56,7 +56,14 @@ module Riot
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end
 
     def new_assertion(scope, what, &definition)
-      (@assertions << assertion_class.new("#{scope} #{what}", &definition)).last
+      if what.kind_of?(Symbol)
+        definition ||= lambda { topic.send(what) }
+        description = "#{scope} ##{what}"
+      else
+        description = "#{scope} #{what}"
+      end
+
+      (@assertions << assertion_class.new(description, &definition)).last
     end
   end # Context
 end # Riot

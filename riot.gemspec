@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.10.10"
+  s.version = "0.10.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
      "lib/riot/assertion_macros/kind_of.rb",
      "lib/riot/assertion_macros/matches.rb",
      "lib/riot/assertion_macros/nil.rb",
+     "lib/riot/assertion_macros/not_borat.rb",
      "lib/riot/assertion_macros/raises.rb",
      "lib/riot/assertion_macros/respond_to.rb",
      "lib/riot/assertion_macros/same_elements.rb",
@@ -53,6 +54,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/kind_of_test.rb",
      "test/assertion_macros/matching_test.rb",
      "test/assertion_macros/nil_test.rb",
+     "test/assertion_macros/not_borat_test.rb",
      "test/assertion_macros/raises_test.rb",
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",
@@ -84,6 +86,7 @@ Gem::Specification.new do |s|
      "test/assertion_macros/kind_of_test.rb",
      "test/assertion_macros/matching_test.rb",
      "test/assertion_macros/nil_test.rb",
+     "test/assertion_macros/not_borat_test.rb",
      "test/assertion_macros/raises_test.rb",
      "test/assertion_macros/respond_to_test.rb",
      "test/assertion_macros/same_elements_test.rb",

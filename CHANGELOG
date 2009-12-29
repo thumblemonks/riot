@@ -1,5 +1,11 @@
 *master*
 
+* Passing assertion macros can now return a custom message [dasch, jaknowlden]
+
+    def evaluate(actual, *expectings)
+      1 == 1 ? pass("1 does equal 1") : fail("1 does not equal 1 in this universe")
+    end
+
 * Removing Context#extend_assertions and related code [jaknowlden]
 
 * Allow the use of symbolic descriptions as shorthands for sending the message to the topic [dasch]

@@ -475,7 +475,11 @@ For instance, let's say you wanted to add a macro for verifying that the result 
     module Foo
       class KindOfMacro < Riot::AssertionMacro
         def evauluate(actual, expected)
-          actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.inspect}")
+          if actual.kind_of?(expected)
+            pass("is a kind of #{expected.inspect}")
+          else
+            fail("expected kind of #{expected}, not #{actual.inspect}")
+          end
         end
       end # KindOfMacro
 

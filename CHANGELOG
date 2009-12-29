@@ -1,5 +1,10 @@
 *master*
 
+* Added not! assertion macro [gabrielg, jaknowlden]
+
+  setup { User.new(:funny? => false) }
+  asserts(:funny?).not!
+
 * Added Context#hookup to add some setup code to an already defined topic [jaknowlden]
 
     context "yo mama" do

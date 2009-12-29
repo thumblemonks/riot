@@ -3,6 +3,8 @@ module Riot
   #   asserts("test") { "12345" }.matches(/\d+/)
   #   should("test") { "12345" }.matches(/\d+/)
   class MatchesMacro < AssertionMacro
+    register :matches
+
     def evaluate(actual, expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
       if actual =~ expected
@@ -12,6 +14,4 @@ module Riot
       end
     end
   end
-
-  Assertion.register_macro :matches, MatchesMacro
 end

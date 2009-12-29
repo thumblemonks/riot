@@ -1,12 +1,18 @@
 module Riot
   class AssertionMacro
-    def self.default; @default_macro ||= new; end
+    class << self
+      attr_reader :expects_exception
+
+      def default; @default_macro ||= new; end
+      def expects_exception!; @expects_exception = true; end
+      def register(name); Assertion.register_macro name, self; end
+    end
 
     def pass(message=nil) [:pass, message]; end
     def fail(message) [:fail, message]; end
     def error(e) [:error, e]; end
 
-    def expects_exception?; false; end
+    def expects_exception?; self.class.expects_exception; end
 
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")

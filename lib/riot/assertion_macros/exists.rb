@@ -6,10 +6,10 @@ module Riot
   #   asserts("test") { "" }.exists
   #   asserts("test") { nil }.exists # This would fail
   class ExistsMacro < AssertionMacro
+    register :exists
+
     def evaluate(actual)
       !actual.nil? ? pass("is not nil") : fail("expected a non-nil value")
     end
   end
-  
-  Assertion.register_macro :exists, ExistsMacro
 end

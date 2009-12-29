@@ -9,6 +9,8 @@ module Riot
   #   setup { User.new(:email => "foo@bar.baz") }
   #   topic.assigns(:email, "foo@bar.baz")
   class AssignsMacro < AssertionMacro
+    register :assigns
+
     def evaluate(actual, *expectings)
       variable, expected_value = expectings
       variable_name = "@#{variable}"
@@ -22,6 +24,4 @@ module Riot
       end
     end
   end
-
-  Assertion.register_macro :assigns, AssignsMacro
 end

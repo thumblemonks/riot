@@ -5,6 +5,8 @@ module Riot
   #   should("test") { "foo" }.equals("foo")
   #   asserts("test") { "foo" }.equals { "foo" }
   class EqualsMacro < AssertionMacro
+    register :equals
+
     def evaluate(actual, expected)
       if expected === actual
         pass("is equal to #{expected.inspect}")
@@ -13,6 +15,4 @@ module Riot
       end
     end
   end
-  
-  Assertion.register_macro :equals, EqualsMacro
 end

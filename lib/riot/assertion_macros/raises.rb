@@ -8,7 +8,8 @@ module Riot
   #   asserts("test") { raise My::Exception, "Foo" }.raises(My::Exception, "Foo")
   #   asserts("test") { raise My::Exception, "Foo Bar" }.raises(My::Exception, /Bar/)
   class RaisesMacro < AssertionMacro
-    def expects_exception?; true; end
+    register :raises
+    expects_exception!
 
     def evaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
@@ -26,8 +27,5 @@ module Riot
         end
       end
     end
-
   end
-  
-  Assertion.register_macro :raises, RaisesMacro
 end

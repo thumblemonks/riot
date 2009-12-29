@@ -5,11 +5,11 @@ module Riot
   #   asserts("an array") { [1, 2, 3] }.size(3)
   #   asserts("a hash") { {:name => 'washington'} }.size(1)
   class SizeMacro < AssertionMacro
+    register :size
+
     def evaluate(actual, expected)
       failure_message = "size of #{actual.inspect} expected to be #{expected} but is #{actual.size}"
       expected === actual.size ? pass("is of size #{expected}") : fail(failure_message)
     end
   end
-  
-  Assertion.register_macro :size, SizeMacro
 end

@@ -3,6 +3,8 @@ module Riot
   #   asserts("test") { "foo" }.respond_to(:to_s)
   #   should("test") { "foo" }.respond_to(:to_s)
   class RespondToMacro < AssertionMacro
+    register :respond_to
+
     def evaluate(actual, expected)
       if actual.respond_to?(expected)
         pass("responds to #{expected.inspect}")
@@ -11,6 +13,4 @@ module Riot
       end
     end
   end
-  
-  Assertion.register_macro :respond_to, RespondToMacro
 end

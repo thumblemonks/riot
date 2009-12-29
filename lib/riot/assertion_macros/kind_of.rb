@@ -3,6 +3,8 @@ module Riot
   #   asserts("test") { "foo" }.kind_of(String)
   #   should("test") { "foo" }.kind_of(String)
   class KindOfMacro < AssertionMacro
+    register :kind_of
+
     def evaluate(actual, expected)
       if actual.kind_of?(expected)
         pass("is a kind of #{expected.inspect}")
@@ -11,6 +13,4 @@ module Riot
       end
     end
   end
-  
-  Assertion.register_macro :kind_of, KindOfMacro
 end

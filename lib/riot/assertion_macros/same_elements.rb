@@ -3,12 +3,12 @@ module Riot
   #   asserts("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
   #   should("test") { ["foo", "bar"] }.same_elements(["bar", "foo"])
   class SameElementsMacro < AssertionMacro
+    register :same_elements
+
     def evaluate(actual, expected)
       require 'set'
       same = (Set.new(expected) == Set.new(actual))
       same ? pass : fail("expected elements #{expected.inspect} to match #{actual.inspect}")
     end
   end
-  
-  Assertion.register_macro :same_elements, SameElementsMacro
 end

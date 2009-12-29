@@ -1,9 +1,5 @@
 module Riot
-  RootContext = Struct.new(:setups, :teardowns) do
-    def assertion_class
-      Assertion
-    end
-  end 
+  RootContext = Struct.new(:setups, :teardowns)
 
   class Context
     attr_reader :description
@@ -28,23 +24,12 @@ module Riot
       @contexts << self.class.new("#{@description} #{description}", self, &definition)
     end
     
-    def extend_assertions(*extension_modules)
-      @assertion_class = Class.new(Assertion) do
-        include *extension_modules
-      end
-    end
-
     def run(reporter)
       reporter.describe_context(self) unless @assertions.empty?
       local_run(reporter, Situation.new)
       run_sub_contexts(reporter)
       reporter
     end
-
-    def assertion_class
-      @assertion_class ||= @parent.assertion_class
-    end
-
   private
 
     def local_run(reporter, situation)
@@ -63,7 +48,7 @@ module Riot
         description = "#{scope} #{what}"
       end
 
-      (@assertions << assertion_class.new(description, &definition)).last
+      (@assertions << Assertion.new(description, &definition)).last
     end
   end # Context
 end # Riot

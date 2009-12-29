@@ -44,7 +44,7 @@ Then, simply install the Riot gem like so:
 <a name="speed"></a>
 #### Note on speed
 
-I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **3 times** faster than Test::unit and thusly Shoulda:
+I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **3 times** faster than Test::Unit and thusly Shoulda:
 
     Rehearsal ----------------------------------------------
     Riot         0.360000   0.000000   0.360000 (  0.364236)

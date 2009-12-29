@@ -1,9 +1,14 @@
-*master*
+*0.10.11*
+
+* Context#asserts_topic now takes an optional description [gabrielg, jaknowlden]
+
+    asserts_topic.exists
+    asserts_topic("some kind of description").exists
 
 * Added not! assertion macro [gabrielg, jaknowlden]
 
-  setup { User.new(:funny? => false) }
-  asserts(:funny?).not!
+    setup { User.new(:funny? => false) }
+    asserts(:funny?).not!
 
 * Added Context#hookup to add some setup code to an already defined topic [jaknowlden]
 

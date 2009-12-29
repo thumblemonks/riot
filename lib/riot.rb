@@ -23,7 +23,7 @@ module Riot
   def self.silently!; @silent = true; end
   def self.silently?; defined?(@silent) && @silent == true end
 
-  # This means you don't want Riot to run tests for you. You will run Riot.run manually.
+  # This means you don't want Riot to run tests for you. You will execute Riot.run manually.
   def self.alone!; @alone = true; end
   def self.alone?; defined?(@alone) && @alone == true end
 
@@ -41,11 +41,7 @@ module Riot
   def self.verbose; Riot.reporter = Riot::VerboseStoryReporter; end
   def self.dots; Riot.reporter = Riot::DotMatrixReporter; end
 
-  at_exit do
-    unless Riot.alone?
-      exit(run.success?)
-    end
-  end
+  at_exit { exit(run.success?) unless Riot.alone? }
 end # Riot
 
 class Object

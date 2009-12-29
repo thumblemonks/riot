@@ -87,6 +87,14 @@ context "The asserts_topic shortcut" do
     (situation = Riot::Situation.new).topic = "bar"
     topic.equals("bar").run(situation)
   end.equals([:pass, %Q{is equal to "bar"}])
+
+  asserts(:to_s).equals("asserts topic")
+
+  context "with an explicit description" do
+    setup { Riot::Context.new("foo") {}.asserts_topic("get some") }
+    asserts(:to_s).equals("asserts get some")
+  end
+
 end # The asserts_topic shortcut
 
 context "Using a hookup" do

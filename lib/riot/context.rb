@@ -34,7 +34,7 @@ module Riot
 
     def asserts(what, &definition) new_assertion("asserts", what, &definition); end
     def should(what, &definition) new_assertion("should", what, &definition); end
-    def asserts_topic; asserts("topic") { topic }; end
+    def asserts_topic(what="topic"); asserts(what) { topic }; end
 
     def context(description, &definition)
       @contexts << self.class.new("#{@description} #{description}", self, &definition)

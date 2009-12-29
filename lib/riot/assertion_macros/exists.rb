@@ -7,11 +7,7 @@ module Riot
   #   asserts("test") { nil }.exists # This would fail
   class ExistsMacro < AssertionMacro
     def evaluate(actual)
-      !actual.nil? ? pass : fail("expected a non-nil value")
-    end
-
-    def template
-      "%s is not nil"
+      !actual.nil? ? pass("is not nil") : fail("expected a non-nil value")
     end
   end
   

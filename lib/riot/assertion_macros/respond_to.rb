@@ -4,11 +4,11 @@ module Riot
   #   should("test") { "foo" }.respond_to(:to_s)
   class RespondToMacro < AssertionMacro
     def evaluate(actual, expected)
-      actual.respond_to?(expected) ? pass : fail("expected method #{expected.inspect} is not defined")
-    end
-
-    def template(expected)
-      "%s responds to #{expected.inspect}"
+      if actual.respond_to?(expected)
+        pass("responds to #{expected.inspect}")
+      else
+        fail("expected method #{expected.inspect} is not defined")
+      end
     end
   end
   

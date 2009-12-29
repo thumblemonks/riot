@@ -5,10 +5,12 @@ Riot.verbose
 module Riot
   module AssertionTestContextMacros
 
-    def assertion_test_passes(description, &block)
+    def assertion_test_passes(description, success_message=nil, &block)
       context(description) do
         setup(&block)
-        asserts("passes") { topic.run(Riot::Situation.new) }.equals([:pass])
+        setup { topic.run(Riot::Situation.new) }
+        asserts("pass") { topic.first }.equals(:pass)
+        asserts("success message") { topic.last }.equals(success_message)
       end
     end
 
@@ -26,8 +28,14 @@ end # Riot
 Riot::Context.instance_eval { include Riot::AssertionTestContextMacros }
 
 class MockReporter < Riot::Reporter
-  def pass(description); end
+  def pass(description, message); end
   def fail(description, message); end
   def error(description, e); end
   def results; end
+end
+
+class ColorHelper
+  require 'rubygems'
+  require 'term/ansicolor'
+  extend Term::ANSIColor
 end

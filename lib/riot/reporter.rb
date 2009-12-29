@@ -20,7 +20,7 @@ module Riot
       case code
       when :pass then
         @passes += 1
-        pass(description)
+        pass(description, result)
       when :fail then
         @failures += 1
         fail(description, result)
@@ -74,7 +74,7 @@ module Riot
       super
       puts context.description
     end
-    def pass(description) puts "  + " + green(description); end
+    def pass(description, message) puts "  + " + green("#{description} #{message}".strip); end
     def fail(description, message) puts "  - " + yellow("#{description}: #{message}"); end
     def error(description, e) puts "  ! " + red("#{description}: #{e.message}"); end
   end
@@ -92,7 +92,7 @@ module Riot
       @details = []
     end
 
-    def pass(description)
+    def pass(description, message)
       print green(".")
     end
 
@@ -114,7 +114,7 @@ module Riot
   end
 
   class SilentReporter < Reporter
-    def pass(description); end
+    def pass(description, message); end
     def fail(description, message); end
     def error(description, e); end
     def results(time_taken); end

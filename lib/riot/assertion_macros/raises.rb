@@ -19,17 +19,14 @@ module Riot
       elsif expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
         fail("expected #{expected_message.inspect} for message, not #{actual_message.inspect}")
       else
-        pass
+        if expected_message
+          pass("raises #{expected_class.inspect} with message #{expected_message.inspect}")
+        else
+          pass("raises #{expected_class.inspect}")
+        end
       end
     end
 
-    def template(expected_class, expected_message=nil)
-      if expected_message
-        "%s raises #{expected_class.inspect} with message #{expected_message.inspect}"
-      else
-        "%s raises #{expected_class.inspect}"
-      end
-    end
   end
   
   Assertion.register_macro :raises, RaisesMacro

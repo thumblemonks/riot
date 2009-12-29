@@ -6,12 +6,8 @@ module Riot
   #   asserts("a hash") { {:name => 'washington'} }.size(1)
   class SizeMacro < AssertionMacro
     def evaluate(actual, expected)
-      msg = "size of #{actual.inspect} expected to be #{expected} but is #{actual.size}"
-      expected === actual.size ? pass : fail(msg)
-    end
-
-    def template(expected)
-      "%s is of size #{expected}"
+      failure_message = "size of #{actual.inspect} expected to be #{expected} but is #{actual.size}"
+      expected === actual.size ? pass("is of size #{expected}") : fail(failure_message)
     end
   end
   

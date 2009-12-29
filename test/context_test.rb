@@ -24,7 +24,7 @@ context "Defining a context with multiple setups" do
     end
     @a_context.run(MockReporter.new)
   end
-  asserts("has setups") { @a_context.setups.count }.equals(2)
+  asserts("has setups") { @a_context.setups.size }.equals(2)
   asserts("all tests pass") { topic.passes == 1 }
 end # Defining a context with multiple setups
 
@@ -86,5 +86,5 @@ context "The asserts_topic shortcut" do
   should("return the actual topic as the result of evaling the assertion") do
     (situation = Riot::Situation.new).topic = "bar"
     topic.equals("bar").run(situation)
-  end.equals([:pass])
+  end.equals([:pass, %Q{is equal to "bar"}])
 end # The asserts_topic shortcut

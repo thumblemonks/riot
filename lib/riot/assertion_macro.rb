@@ -2,7 +2,7 @@ module Riot
   class AssertionMacro
     def self.default; @default_macro ||= new; end
 
-    def pass() [:pass]; end
+    def pass(message=nil) [:pass, message]; end
     def fail(message) [:fail, message]; end
     def error(e) [:error, e]; end
 
@@ -10,10 +10,6 @@ module Riot
 
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
-    end
-
-    def template(*expectings)
-      "%s"
     end
   end
 end

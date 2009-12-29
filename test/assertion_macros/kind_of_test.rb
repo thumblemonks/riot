@@ -5,7 +5,7 @@ context "A kind_of assertion macro" do
 
   asserts ":pass when specific result is a kind of String" do
     Riot::Assertion.new("foo") { "a" }.kind_of(String).run(topic)
-  end.equals([:pass])
+  end.equals([:pass, %Q{is a kind of String}])
 
   asserts ":fail when not a kind of String" do
     Riot::Assertion.new("foo") { 0 }.kind_of(String).run(topic)

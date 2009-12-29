@@ -5,11 +5,11 @@ module Riot
   #   asserts("a range") { (1..15) }.includes(10)
   class IncludesMacro < AssertionMacro
     def evaluate(actual, expected)
-      actual.include?(expected) ? pass : fail("expected #{actual.inspect} to include #{expected.inspect}")
-    end
-
-    def template(expected)
-      "%s includes #{expected.inspect}"
+      if actual.include?(expected)
+        pass("includes #{expected.inspect}")
+      else
+        fail("expected #{actual.inspect} to include #{expected.inspect}")
+      end
     end
   end
   

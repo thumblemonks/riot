@@ -4,11 +4,11 @@ module Riot
   #   should("test") { "foo" }.kind_of(String)
   class KindOfMacro < AssertionMacro
     def evaluate(actual, expected)
-      actual.kind_of?(expected) ? pass : fail("expected kind of #{expected}, not #{actual.class.inspect}")
-    end
-
-    def template(kind_of)
-      "%s is #kind_of? #{kind_of.inspect}"
+      if actual.kind_of?(expected)
+        pass("is a kind of #{expected.inspect}")
+      else
+        fail("expected kind of #{expected}, not #{actual.class.inspect}")
+      end
     end
   end
   

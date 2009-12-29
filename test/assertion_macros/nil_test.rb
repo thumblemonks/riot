@@ -5,7 +5,7 @@ context "A nil assertion macro" do
 
   asserts(":pass when result is nil") do
     Riot::Assertion.new("foo") { nil }.nil.run(topic)
-  end.equals([:pass])
+  end.equals([:pass, "is nil"])
 
   asserts(":fail with message") do
     Riot::Assertion.new("foo") { "a" }.nil.run(topic)

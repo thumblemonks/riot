@@ -5,11 +5,11 @@ context "An exists assertion macro" do
 
   asserts(":pass when result has a value") do
     Riot::Assertion.new("foo") { "foo" }.exists.run(topic)
-  end.equals([:pass])
+  end.equals([:pass, "is not nil"])
 
   asserts(":pass because empty string is considered a value") do
     Riot::Assertion.new("foo") { "" }.exists.run(topic)
-  end.equals([:pass])
+  end.equals([:pass, "is not nil"])
 
   asserts(":fail with message when value is nil") do
     Riot::Assertion.new("foo") { nil }.exists.run(topic)

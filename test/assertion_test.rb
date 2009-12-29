@@ -6,7 +6,7 @@ context "An assertion" do
     asserts("to_s") { topic.to_s == "foo" }
 
     asserts(":pass is returned when evaluated") do
-      topic.run(Riot::Situation.new) == [:pass]
+      topic.run(Riot::Situation.new) == [:pass, nil]
     end
   end # that is passing
 
@@ -32,7 +32,7 @@ context "An assertion" do
     end
   end # that is erroring
 
-  context "with no block to provide the actual" do
+  context "with no block to provide the actual value" do
     setup do
       @situation = Riot::Situation.new
       @situation.topic = "hello"
@@ -41,8 +41,8 @@ context "An assertion" do
     should("uses block returning topic as default") do
       topic.equals("hello")
       result = topic.run(@situation)
-    end.equals([:pass])
-  end
+    end.equals([:pass, %Q{is equal to "hello"}])
+  end # with no block to provide the actual value
   
   context "with block expectation" do
     setup do
@@ -54,13 +54,13 @@ context "An assertion" do
     should("use block returning topic as default") do
       topic.equals { "hello" }
       result = topic.run(@situation)
-    end.equals([:pass])
+    end.equals([:pass, %Q{is equal to "hello"}])
 
     asserts("block expectation has access to the situation items") do
       topic.equals { @topic }
       topic.run(@situation)
-    end.equals([:pass])
-  end
+    end.equals([:pass, %Q{is equal to "hello"}])
+  end # with block expectation
 
   context "with symbolic description" do
     setup { "foo" }

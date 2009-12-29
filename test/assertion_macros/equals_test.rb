@@ -9,7 +9,7 @@ context "An equals assertion macro" do
   end
 
   asserts(":pass when expectation met") do
-    topic.equals("foo").run(Riot::Situation.new) == [:pass]
+    topic.equals("foo").run(Riot::Situation.new) == [:pass, %Q{is equal to "foo"}]
   end
 
   context "that is failing" do
@@ -25,7 +25,7 @@ context "An equals assertion macro" do
     end
 
     asserts(":pass when in expected range") do
-      topic.equals(30000..32000).run(Riot::Situation.new) == [:pass]
+      topic.equals(30000..32000).run(Riot::Situation.new) == [:pass, "is equal to 30000..32000"]
     end
 
     context "when not in expected range" do
@@ -39,7 +39,7 @@ context "An equals assertion macro" do
   context "with block as the expectation" do
     asserts(":pass when block expectation met") do
       topic.equals { "foo" }.run(Riot::Situation.new)
-    end.equals([:pass])
+    end.equals([:pass, %Q{is equal to "foo"}])
 
     asserts(":fail with message when block expectation not met") do
       topic.equals { "bar" }.run(Riot::Situation.new)

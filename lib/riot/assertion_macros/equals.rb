@@ -6,11 +6,11 @@ module Riot
   #   asserts("test") { "foo" }.equals { "foo" }
   class EqualsMacro < AssertionMacro
     def evaluate(actual, expected)
-      expected === actual ? pass : fail("expected #{expected.inspect}, not #{actual.inspect}")
-    end
-
-    def template(expected=nil)
-      "%s is equal to #{expected.inspect}"
+      if expected === actual
+        pass("is equal to #{expected.inspect}")
+      else
+        fail("expected #{expected.inspect}, not #{actual.inspect}")
+      end
     end
   end
   

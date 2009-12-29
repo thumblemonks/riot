@@ -5,11 +5,11 @@ module Riot
   class MatchesMacro < AssertionMacro
     def evaluate(actual, expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
-      actual =~ expected ? pass : fail("expected #{expected.inspect} to match #{actual.inspect}")
-    end
-
-    def template(expression)
-      "%s matches #{expression.inspect}"
+      if actual =~ expected
+        pass("matches #{expected.inspect}")
+      else
+        fail("expected #{expected.inspect} to match #{actual.inspect}")
+      end
     end
   end
 

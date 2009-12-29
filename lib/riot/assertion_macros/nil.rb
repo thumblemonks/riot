@@ -4,11 +4,7 @@ module Riot
   #   should("test") { nil }.nil
   class NilMacro < AssertionMacro
     def evaluate(actual)
-      actual.nil? ? pass : fail("expected nil, not #{actual.inspect}")
-    end
-
-    def template
-      "%s is nil"
+      actual.nil? ? pass("is nil") : fail("expected nil, not #{actual.inspect}")
     end
   end
   

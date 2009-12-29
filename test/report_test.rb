@@ -3,7 +3,7 @@ require 'teststrap'
 context "A reporter" do
   setup do
     Class.new(Riot::Reporter) do
-      def pass(d) "passed(#{d})"; end
+      def pass(d, message) "passed(#{d}, #{message.inspect})"; end
       def fail(d, message) "failed(#{d}, #{message})"; end
       def error(d, e) "errored(#{d}, #{e})"; end
     end.new
@@ -18,7 +18,7 @@ context "A reporter" do
 
   asserts("description sent to #pass") do
     topic.report("hi mom", [:pass])
-  end.equals("passed(hi mom)")
+  end.equals("passed(hi mom, nil)")
 
   # fail
 
@@ -55,6 +55,11 @@ context "StoryReporter" do
     @out = StringIO.new
     Riot::StoryReporter.new(@out)
   end
+
+  asserts("success message is stripped if nil") do
+    topic.pass("foo", nil)
+    ColorHelper.uncolored(@out.string)
+  end.equals("  + foo\n")
 
   context 'reporting on an empty context' do
     setup do

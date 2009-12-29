@@ -4,11 +4,7 @@ module Riot
   #   asserts("a hash") { {:name => 'washington'} }.any
   class AnyMacro < AssertionMacro
     def evaluate(actual)
-      actual.any? ? pass : fail("expected #{actual.inspect} to have items")
-    end
-
-    def template
-      "%s is not empty"
+      actual.any? ? pass("is not empty") : fail("expected #{actual.inspect} to have items")
     end
   end
   

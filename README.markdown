@@ -468,13 +468,15 @@ And then in your actual test, you might do the following:
 <a name="assertion-macros"></a>
 #### Assertion macros
 
-If you want to add special macros to an Assertion, the process is really very easy. You simple need to define a class that extends `AssertionMacro` (or at least quacks like it), be sure to implement the `evaluate` instance method, and then register the macro with `Assertion`.
+If you want to add special macros to an Assertion, the process is really very easy. You simple need to define a class that extends `AssertionMacro` (or at least quacks like it), be sure to implement the `evaluate` instance method, and then register the macro.
 
 For instance, let's say you wanted to add a macro for verifying that the result of an assertion is the same `kind\_of` object as you would expect. You would define the macro like so:
 
     module Foo
       class KindOfMacro < Riot::AssertionMacro
-        def evauluate(actual, expected)
+        register :kind_of
+
+        def evaluate(actual, expected)
           if actual.kind_of?(expected)
             pass("is a kind of #{expected.inspect}")
           else
@@ -482,8 +484,6 @@ For instance, let's say you wanted to add a macro for verifying that the result 
           end
         end
       end # KindOfMacro
-
-      Riot::Assertion.register_macro :kind_of, KindOfMacro
     end # Foo
 
 And in your context, you would use it like so:
@@ -491,5 +491,19 @@ And in your context, you would use it like so:
     context "example" do
       asserts("a hash is defined") { {:foo => 'bar'} }.kind_of(Hash)
     end
+
+If your assertion macro expects to be called only when an exception occurs, there's support for that, too. Check this:
+
+    module Foo
+      class RaisesMacro < Riot::AssertionMacro
+        register :raises
+        expects_exception! # THE IMPORTANT LINE
+
+        def evaluate(actual, expected)
+          # ... pass/fail code
+        end
+      end # RaisesMacro
+    end # Foo
+
 
 If you think you might want to chain assertions checks together, this won't work out the box. The reason for this is that your assertion macro should call out to pass or fail, which each return a signal that will be used by the reporter. You could conceivably write an assertion as a filter macro instead, that would return `self`, but I can't decide why you would do that yet (in theory it would work, though).

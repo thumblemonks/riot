@@ -13,10 +13,13 @@
     setup { "foo" }
     asserts(:upcase).equals("FOO")
 
-* Added AssertionMacro and Assertion.register_macro [jaknowlden]
+* Added AssertionMacro and #register for macros [jaknowlden, splattael]
 
     module My
       class CustomThingAssertion < Riot::AssertionMacro
+        register :custom_thing
+        expects_exception!
+
         def evaluate(actual, *expectings)
           # ...
         end

@@ -1,4 +1,4 @@
-*0.10.10*
+*master*
 
 * Allow the use of symbolic descriptions as shorthands for sending the message to the topic [dasch]
 
@@ -17,11 +17,15 @@
       Riot::Assertion.register_macro :custom_thing, CustomThingAssertion
     end
 
-* Replace IOReporter#say with #puts. Also add #print [splattael]
+* Replace IOReporter#say with #puts. Also add #print. [splattael]
 
     class SomeNewReporter < IOReporter
       def pass
         puts "I PASSED"
+      end
+
+      def fail
+        print "F"
       end
       # ...
     end

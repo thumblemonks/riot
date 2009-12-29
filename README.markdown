@@ -44,7 +44,7 @@ Then, simply install the Riot gem like so:
 <a name="speed"></a>
 #### Note on speed
 
-I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **2 times** faster than Test::unit and thusly Shoulda:
+I have done a really simple benchmarking (10,000 runs), but right now, Riot is running about **3 times** faster than Test::unit and thusly Shoulda:
 
     Rehearsal ----------------------------------------------
     Riot         0.360000   0.000000   0.360000 (  0.364236)
@@ -112,8 +112,9 @@ The other important thing to note in the examples above is the use of the `topic
 I'm going to use `asserts` for the rest of this introduction, but you should know that you can replace any instance of `asserts` with `should` and nothing would change.
 
 <a name="examples-shortcut"></a>
-#### Example: Shortcut - Asserting the topic itself
+#### Example: Shortcuts
 
+##### Asserting the topic itself
 Over the course of developing Riot it became somewhat obvious to some of us that we were creating assertions that returned the `topic` just so we could assert things about the topic itself. For instance, were doing this:
 
     context "a billionaire" do
@@ -129,15 +130,30 @@ This is awfully redundant - not to mention, contrived. So, we wrote a shortcut t
       asserts_topic.kind_of(Billionaire)
     end
 
-If you'd like to add a description to your assertion about the topic,
-but still would like to avoid the redundancy of an assertion simply
-returning the topic from it's block, you can omit the block all
-together as follows:
+If you'd like to add a description to your assertion about the topic, but still would like to avoid the redundancy of an assertion simply returning the topic from it's block, you can omit the block all together as follows:
 
     context "a trazillionaire" do
       setup { MoneyMaker.build(:trazillionaire) }
       asserts("is a trazillionaire").kind_of(Trazillionaire)
     end
+
+##### Asserting methods on topic
+
+A very common assertion pattern with Riot is calling a method on the topic and asserting it's output. For instance, the following is not an uncommon thing to see in an `ActiveRecord` test:
+
+    context "A new post" do
+      setup { Post.new(:name => "Howdy ya'll") }
+      asserts("name") { topic.name }.equals("Howdy ya'll")
+    end
+
+Since Riot is all about reducing redundancy and increasing semantics, it makes a ton of sense to be able to do this instead:
+
+    context "A new post" do
+      setup { Post.new(:name => "Howdy ya'll") }
+      asserts(:name).equals("Howdy ya'll")
+    end
+
+And now you can! Isn't that just so much easier to read?
 
 <a name="examples-equality"></a>
 #### Example: Equality

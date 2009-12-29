@@ -1,0 +1,31 @@
+*0.10.10*
+
+* Allow the use of symbolic descriptions as shorthands for sending the message to the topic [dasch]
+
+    setup { "foo" }
+    asserts(:upcase).equals("FOO")
+
+* Added AssertionMacro and Assertion.register_macro [jaknowlden]
+
+    module My
+      class CustomThingAssertion < Riot::AssertionMacro
+        def evaluate(actual, *expectings)
+          # ...
+        end
+      end
+      
+      Riot::Assertion.register_macro :custom_thing, CustomThingAssertion
+    end
+
+* Replace IOReporter#say with #puts. Also add #print [splattael]
+
+    class SomeNewReporter < IOReporter
+      def pass
+        puts "I PASSED"
+      end
+      # ...
+    end
+
+*0.10.9 and before*
+
+See [commit log](http://github.com/thumblemonks/riot/commits/master)

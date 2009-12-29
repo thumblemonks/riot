@@ -17,10 +17,15 @@ module Riot
     the_reporter.summarize do
       root_contexts.each { |ctx| ctx.run(the_reporter) }
     end
+    the_reporter
   end
 
   def self.silently!; @silent = true; end
   def self.silently?; defined?(@silent) && @silent == true end
+
+  # This means you don't want Riot to run tests for you. You will run Riot.run manually.
+  def self.alone!; @alone = true; end
+  def self.alone?; defined?(@alone) && @alone == true end
 
   def self.reporter=(reporter_class) @reporter_class = reporter_class; end
 
@@ -36,7 +41,11 @@ module Riot
   def self.verbose; Riot.reporter = Riot::VerboseStoryReporter; end
   def self.dots; Riot.reporter = Riot::DotMatrixReporter; end
 
-  at_exit { run unless Riot.silently? }
+  at_exit do
+    unless Riot.alone?
+      exit(run.success?)
+    end
+  end
 end # Riot
 
 class Object

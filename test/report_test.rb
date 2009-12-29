@@ -6,6 +6,7 @@ context "A reporter" do
       def pass(d, message) "passed(#{d}, #{message.inspect})"; end
       def fail(d, message) "failed(#{d}, #{message})"; end
       def error(d, e) "errored(#{d}, #{e})"; end
+      def results(time); end
     end.new
   end
 
@@ -44,8 +45,22 @@ context "A reporter" do
 
   context "instance" do
     setup { Riot::Reporter.new }
-
     should("return self invoking new") { topic.new }.equals { topic }
+  end
+
+  context "with no errors or failures" do
+    hookup { topic.report("foo", [:pass, nil]) }
+    asserts(:success?)
+  end
+
+  context "with failures and no errors" do
+    hookup { topic.report("foo", [:fail, "blah"]) }
+    asserts(:success?).equals(false)
+  end
+
+  context "with errors and no failures" do
+    hookup { topic.report("foo", [:error, Exception.new("boogers")]) }
+    asserts(:success?).equals(false)
   end
 end # A reporter
 

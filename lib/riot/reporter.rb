@@ -6,6 +6,7 @@ module Riot
       @current_context = ""
     end
 
+    def success?; (@failures + @errors) == 0; end
     def summarize(&block)
       started = Time.now
       yield

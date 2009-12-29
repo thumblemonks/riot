@@ -14,6 +14,22 @@ module Riot
     def teardowns; @parent.teardowns + @teardowns; end
     
     def setup(&definition) (@setups << Setup.new(&definition)).last; end
+
+    # A setup shortcut that returns the original topic so you don't have to. Good for nested setups. Instead
+    # of doing this in your context:
+    #
+    #   setup do
+    #     topic.do_something
+    #     topic
+    #   end
+    #
+    # You would do this:
+    #
+    #   hookup { topic.do_something } # Yay!
+    def hookup(&definition)
+      setup { self.instance_eval(&definition); topic }
+    end
+
     def teardown(&definition) (@teardowns << Setup.new(&definition)).last; end
 
     def asserts(what, &definition) new_assertion("asserts", what, &definition); end

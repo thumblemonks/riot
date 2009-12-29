@@ -46,6 +46,7 @@ n = 100 * 100
 Benchmark.bmbm do |x|
   x.report("Riot") do
     Riot.silently!
+    Riot.alone!
     n.times { Riot.run }
   end
 

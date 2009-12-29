@@ -1,3 +1,25 @@
+*master*
+
+* Added Context#hookup to add some setup code to an already defined topic [jaknowlden]
+
+    context "yo mama" do
+      setup { YoMama.new }
+      # ...
+      context "is cool" do
+        hookup { topic.do_something_involving_state }
+        asserts_topic.kind_of?(YoMama)
+      end
+    end
+
+* Added Riot.alone! mode to ensure Riot.run is not run at-exit [jaknowlden]
+
+    Riot.alone!
+    Riot.run
+
+  This will still print output unless you also Riot.silently!
+
+* Returning non-zero status at-exit when tests don't pass [gabrielg, jaknowlden]
+
 *0.10.10*
 
 * Passing assertion macros can now return a custom message [dasch, jaknowlden]

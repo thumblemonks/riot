@@ -1,5 +1,7 @@
 *master*
 
+* Removing Context#extend_assertions and related code [jaknowlden]
+
 * Allow the use of symbolic descriptions as shorthands for sending the message to the topic [dasch]
 
     setup { "foo" }

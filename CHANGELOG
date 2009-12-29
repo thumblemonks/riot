@@ -1,4 +1,4 @@
-*master*
+*0.10.10*
 
 * Passing assertion macros can now return a custom message [dasch, jaknowlden]
 

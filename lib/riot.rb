@@ -7,7 +7,7 @@ require 'riot/assertion_macro'
 
 module Riot
   def self.context(description, context_class = Context, &definition)
-    root_contexts << context_class.new(description, &definition)
+    (root_contexts << context_class.new(description, &definition)).last
   end
 
   def self.root_contexts; @root_contexts ||= []; end
@@ -20,6 +20,7 @@ module Riot
     the_reporter
   end
 
+  # This means you don't want to see any output from Riot. A "quiet riot" as Envy5 put it.
   def self.silently!; @silent = true; end
   def self.silently?; defined?(@silent) && @silent == true end
 

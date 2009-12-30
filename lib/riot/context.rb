@@ -10,6 +10,10 @@ module Riot
       self.instance_eval(&definition)
     end
 
+    def context(description, &definition)
+      (@contexts << self.class.new("#{@description} #{description}", self, &definition)).last
+    end
+    
     def setups; @parent.setups + @setups; end
     def teardowns; @parent.teardowns + @teardowns; end
     
@@ -36,23 +40,20 @@ module Riot
     def should(what, &definition) new_assertion("should", what, &definition); end
     def asserts_topic(what="topic"); asserts(what) { topic }; end
 
-    def context(description, &definition)
-      @contexts << self.class.new("#{@description} #{description}", self, &definition)
-    end
-    
     def run(reporter)
       reporter.describe_context(self) unless @assertions.empty?
       local_run(reporter, Situation.new)
       run_sub_contexts(reporter)
       reporter
     end
-  private
 
     def local_run(reporter, situation)
       (setups + @assertions + teardowns).each do |runnable|
         reporter.report(runnable.to_s, runnable.run(situation))
       end
     end
+
+  private
 
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end
 

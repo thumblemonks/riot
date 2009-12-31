@@ -1,3 +1,12 @@
+*master*
+
+* Added the equivalent_to macro to compare case equality (===). equals is now (==) [jaknowlden]
+
+* Assuming RootContext if nil parent provided. Added Context#parent to the API [jaknowlden]
+
+    Riot::Context.new("Hi", nil) {}.parent.class
+    => Riot::RootContext
+
 *0.10.11*
 
 * Context#asserts_topic now takes an optional description [gabrielg, jaknowlden]

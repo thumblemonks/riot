@@ -24,15 +24,8 @@ context "An equals assertion macro" do
       Riot::Assertion.new("blue") { 31415 }
     end
 
-    asserts(":pass when in expected range") do
-      topic.equals(30000..32000).run(Riot::Situation.new) == [:pass, "is equal to 30000..32000"]
-    end
-
-    context "when not in expected range" do
-      setup { topic.equals(32000..33000).run(Riot::Situation.new) }
-
-      asserts(":fail") { topic.first == :fail }
-      asserts("message") { topic.last == %Q{expected 32000..33000, not 31415} }
+    asserts("failure") do
+      topic.equals(30000..32000).run(Riot::Situation.new) == [:fail, "expected 30000..32000, not 31415"]
     end
   end # with numeric topic
 

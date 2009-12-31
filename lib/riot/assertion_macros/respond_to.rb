@@ -4,6 +4,7 @@ module Riot
   #   should("test") { "foo" }.respond_to(:to_s)
   class RespondToMacro < AssertionMacro
     register :respond_to
+    register :responds_to
 
     def evaluate(actual, expected)
       if actual.respond_to?(expected)

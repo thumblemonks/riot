@@ -1,5 +1,7 @@
 *master*
 
+* Added responds_to as a respond_to alias [jaknowlden]
+
 * Added the equivalent_to macro to compare case equality (===). equals is now (==) [jaknowlden]
 
 * Assuming RootContext if nil parent provided. Added Context#parent to the API [jaknowlden]

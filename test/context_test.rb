@@ -94,7 +94,6 @@ context "The asserts_topic shortcut" do
     setup { Riot::Context.new("foo") {}.asserts_topic("get some") }
     asserts(:to_s).equals("asserts get some")
   end
-
 end # The asserts_topic shortcut
 
 context "Using a hookup" do
@@ -108,3 +107,9 @@ context "Using a hookup" do
   
   asserts_topic.equals("I'm a string")
 end # Using a hookup
+
+context "Making a new context" do
+  asserts("RootContext is used if nil parent is provided") do
+    Riot::Context.new("hello", nil) {}.parent
+  end.kind_of(Riot::RootContext)
+end # Making a context

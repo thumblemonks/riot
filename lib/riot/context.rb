@@ -2,9 +2,9 @@ module Riot
   RootContext = Struct.new(:setups, :teardowns)
 
   class Context
-    attr_reader :description
-    def initialize(description, parent=RootContext.new([],[]), &definition)
-      @parent = parent
+    attr_reader :description, :parent
+    def initialize(description, parent=nil, &definition)
+      @parent = parent || RootContext.new([],[])
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
       self.instance_eval(&definition)

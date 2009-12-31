@@ -11,7 +11,7 @@ module Riot
     end
 
     def context(description, &definition)
-      (@contexts << self.class.new("#{@description} #{description}", self, &definition)).last
+      new_context(description, self.class, &definition)
     end
     
     def setups; @parent.setups + @setups; end
@@ -56,6 +56,10 @@ module Riot
   private
 
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end
+
+    def new_context(description, klass, &definition)
+      (@contexts << klass.new("#{@description} #{description}", self, &definition)).last
+    end
 
     def new_assertion(scope, what, &definition)
       if what.kind_of?(Symbol)

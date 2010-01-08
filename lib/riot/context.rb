@@ -38,7 +38,7 @@ module Riot
 
     def asserts(what, &definition) new_assertion("asserts", what, &definition); end
     def should(what, &definition) new_assertion("should", what, &definition); end
-    def asserts_topic(what="topic"); asserts(what) { topic }; end
+    def asserts_topic(what="that it"); asserts(what) { topic }; end
 
     def run(reporter)
       reporter.describe_context(self) unless @assertions.empty?

@@ -88,7 +88,7 @@ context "The asserts_topic shortcut" do
     topic.equals("bar").run(situation)
   end.equals([:pass, %Q{is equal to "bar"}])
 
-  asserts(:to_s).equals("asserts topic")
+  asserts(:to_s).equals("asserts that it")
 
   context "with an explicit description" do
     setup { Riot::Context.new("foo") {}.asserts_topic("get some") }

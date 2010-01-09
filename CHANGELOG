@@ -1,5 +1,13 @@
 *master*
 
+* Added Riot::Message to make messages in macros easier to write [jaknowlden]
+
+    def evaluate(actual, expected)
+      # ...
+      expected == actual pass(new_message.received(expected)) ? fail(expected(expected).not(actual))
+      # ...
+    end
+
 * Added responds_to as a respond_to alias [jaknowlden]
 
 * Added the equivalent_to macro to compare case equality (===). equals is now (==) [jaknowlden]

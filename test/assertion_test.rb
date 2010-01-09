@@ -6,7 +6,7 @@ context "An assertion" do
     asserts("to_s") { topic.to_s == "foo" }
 
     asserts(":pass is returned when evaluated") do
-      topic.run(Riot::Situation.new) == [:pass, nil]
+      topic.run(Riot::Situation.new) == [:pass, ""]
     end
   end # that is passing
 

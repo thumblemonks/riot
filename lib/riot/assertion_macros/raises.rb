@@ -14,18 +14,15 @@ module Riot
     def evaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?
-        fail("should have raised #{expected_class}, but raised nothing")
+        fail should_have.raised(expected_class).but.raised_nothing
       elsif expected_class != actual_exception.class
-        fail("should have raised #{expected_class}, not #{actual_exception.class}")
+        fail should_have.raised(expected_class).not(actual_exception.class)
       elsif expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
-        fail("expected #{expected_message.inspect} for message, not #{actual_message.inspect}")
+        fail expected(expected_message).for_message.not(actual_message)
       else
-        if expected_message
-          pass("raises #{expected_class.inspect} with message #{expected_message.inspect}")
-        else
-          pass("raises #{expected_class.inspect}")
-        end
+        message = new_message.raises(expected_class)
+        pass(expected_message ? message.with_message(expected_message) : message)
       end
-    end
-  end
+    end # evaluate
+  end # RaisesMacro
 end

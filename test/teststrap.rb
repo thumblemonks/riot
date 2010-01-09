@@ -7,7 +7,7 @@ Riot.dots if ENV["TM_MODE"]
 module Riot
   module AssertionTestContextMacros
 
-    def assertion_test_passes(description, success_message=nil, &block)
+    def assertion_test_passes(description, success_message="", &block)
       context(description) do
         setup(&block)
         setup { topic.run(Riot::Situation.new) }

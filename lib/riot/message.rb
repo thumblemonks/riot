@@ -12,9 +12,9 @@ module Riot
 
     def method_missing(meth, *phrases, &blk) _push(meth.to_s.gsub('_', ' ')); _phrase(*phrases); end
 
-    def comma(str) _concat(", " + str); end
-    def but; comma("but"); end
-    def not(*phrases); comma("not"); _phrase(*phrases); end
+    def comma(str, *phrases) _concat(", " + str); _phrase(*phrases); end
+    def but(*phrases); comma("but", *phrases); end
+    def not(*phrases); comma("not", *phrases); end
   private
     def _concat(str) (@message << str).strip!; self; end
     def _push(str) _concat(" " + str); end

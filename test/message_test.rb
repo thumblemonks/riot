@@ -24,6 +24,7 @@ context "A message object" do
   asserts("#comma with a message") { Riot::Message.new.comma("and").to_s }.equals(", and")
 
   asserts("#but") { Riot::Message.new.but.to_s }.equals(", but")
+  asserts("#but with message") { Riot::Message.new("Foo").but("a").to_s }.equals(%q["Foo", but "a"])
 
   asserts("#not") { Riot::Message.new.not.to_s }.equals(", not")
   asserts("#not with message") { Riot::Message.new("Foo").not("a").to_s }.equals(%q["Foo", not "a"])

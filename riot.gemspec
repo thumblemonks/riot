@@ -42,10 +42,12 @@ Gem::Specification.new do |s|
      "lib/riot/assertion_macros/same_elements.rb",
      "lib/riot/assertion_macros/size.rb",
      "lib/riot/context.rb",
+     "lib/riot/message.rb",
      "lib/riot/reporter.rb",
      "lib/riot/runnable.rb",
      "lib/riot/situation.rb",
      "riot.gemspec",
+     "test/assertion_macro_test.rb",
      "test/assertion_macros/any_test.rb",
      "test/assertion_macros/assigns_test.rb",
      "test/assertion_macros/empty_test.rb",
@@ -67,6 +69,7 @@ Gem::Specification.new do |s|
      "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
+     "test/message_test.rb",
      "test/report_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",
@@ -79,7 +82,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.}
   s.test_files = [
-    "test/assertion_macros/any_test.rb",
+    "test/assertion_macro_test.rb",
+     "test/assertion_macros/any_test.rb",
      "test/assertion_macros/assigns_test.rb",
      "test/assertion_macros/empty_test.rb",
      "test/assertion_macros/equals_test.rb",
@@ -100,6 +104,7 @@ Gem::Specification.new do |s|
      "test/benchmark/same_elements_vs_set.rb",
      "test/benchmark/simple_context_and_assertions.rb",
      "test/context_test.rb",
+     "test/message_test.rb",
      "test/report_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",

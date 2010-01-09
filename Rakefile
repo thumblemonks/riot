@@ -19,31 +19,6 @@ task :benchmarks do
   end
 end
 
-desc "Run Flog against library (except tests)"
-task :flog do
-  puts %x[find ./lib -name *.rb | xargs flog]
-end
-
-desc "Run Flay against library (except tests)"
-task :flay do
-  puts %x[find ./lib -name *.rb | xargs flay]
-end
-
-desc "Run Roodi against library (except tests)"
-task :roodi do
-  puts %x[find ./lib -name *.rb | xargs roodi]
-end
-
-desc "Stats on lines of code and test"
-task :stats do
-  loc = %x[find ./lib -name *.rb | xargs cat | wc -l].strip.to_i
-  lotc = %x[find ./test -name *.rb | xargs cat | wc -l].strip.to_i
-  total, ratio = (loc + lotc), (lotc / loc.to_f)
-
-  fmt = "  Code: %d\n  Test: %d\n       -----\n Total: %d  Ratio (test/code): %f"
-  puts fmt % [loc, lotc, loc + lotc, ratio]
-end
-
 #
 # Some monks like diamonds. I like gems.
 

@@ -8,8 +8,8 @@ module Riot
     register :size
 
     def evaluate(actual, expected)
-      failure_message = "size of #{actual.inspect} expected to be #{expected} but is #{actual.size}"
-      expected === actual.size ? pass("is of size #{expected}") : fail(failure_message)
+      failure_message = expected_message.size_of(actual).to_be(expected).not(actual.size)
+      expected === actual.size ? pass(new_message.is_of_size(expected)) : fail(failure_message)
     end
   end
 end

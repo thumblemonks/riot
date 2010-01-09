@@ -23,8 +23,8 @@ module Riot
     # Messaging
 
     def new_message(*phrases) Message.new(*phrases); end
-    def should_have(*phrases) new_message.should_have(*phrases); end
-    def expected(*phrases) new_message.expected(*phrases); end
+    def should_have_message(*phrases) new_message.should_have(*phrases); end
+    def expected_message(*phrases) new_message.expected(*phrases); end
   end
 end
 

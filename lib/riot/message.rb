@@ -1,5 +1,9 @@
+class BlankSlate
+  instance_methods.each { |m| undef_method m unless m =~ /^__/ }
+end
+
 module Riot
-  class Message
+  class Message < BlankSlate
     def initialize(*phrases)
       @message = ""; _phrase(*phrases)
     end

@@ -8,7 +8,7 @@ module Riot
     def evaluate(actual, expected)
       require 'set'
       same = (Set.new(expected) == Set.new(actual))
-      same ? pass : fail("expected elements #{expected.inspect} to match #{actual.inspect}")
+      same ? pass : fail(expected_message.elements(expected).to_match(actual))
     end
   end
 end

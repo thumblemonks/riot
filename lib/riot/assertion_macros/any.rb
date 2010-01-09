@@ -6,7 +6,7 @@ module Riot
     register :any
 
     def evaluate(actual)
-      actual.any? ? pass("is not empty") : fail("expected #{actual.inspect} to have items")
+      actual.any? ? pass("is not empty") : fail(expected_message(actual).to_have_items)
     end
   end
 end

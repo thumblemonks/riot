@@ -9,9 +9,9 @@ module Riot
 
     def evaluate(actual, expected)
       if expected == actual
-        pass("is equal to #{expected.inspect}")
+        pass new_message.is_equal_to(expected)
       else
-        fail("expected #{expected.inspect}, not #{actual.inspect}")
+        fail expected_message(expected).not(actual)
       end
     end
   end

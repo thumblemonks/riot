@@ -6,7 +6,7 @@ module Riot
     register :nil
 
     def evaluate(actual)
-      actual.nil? ? pass("is nil") : fail("expected nil, not #{actual.inspect}")
+      actual.nil? ? pass("is nil") : fail(expected_message.nil.not(actual))
     end
   end
 end

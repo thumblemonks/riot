@@ -7,9 +7,9 @@ module Riot
 
     def evaluate(actual, expected)
       if actual.kind_of?(expected)
-        pass("is a kind of #{expected.inspect}")
+        pass new_message.is_a_kind_of(expected)
       else
-        fail("expected kind of #{expected}, not #{actual.class.inspect}")
+        fail expected_message.kind_of(expected).not(actual.class)
       end
     end
   end

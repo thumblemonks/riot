@@ -8,9 +8,9 @@ module Riot
 
     def evaluate(actual, expected)
       if actual.respond_to?(expected)
-        pass("responds to #{expected.inspect}")
+        pass(new_message.responds_to(expected))
       else
-        fail("expected method #{expected.inspect} is not defined")
+        fail(expected_message.method(expected).is_not_defined)
       end
     end
   end

@@ -8,9 +8,9 @@ module Riot
 
     def evaluate(actual, expected)
       if actual.include?(expected)
-        pass("includes #{expected.inspect}")
+        pass new_message.includes(expected)
       else
-        fail("expected #{actual.inspect} to include #{expected.inspect}")
+        fail expected_message(actual).to_include(expected)
       end
     end
   end

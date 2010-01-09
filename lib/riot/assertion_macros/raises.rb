@@ -14,11 +14,11 @@ module Riot
     def evaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?
-        fail should_have.raised(expected_class).but.raised_nothing
+        fail should_have_message.raised(expected_class).but.raised_nothing
       elsif expected_class != actual_exception.class
-        fail should_have.raised(expected_class).not(actual_exception.class)
+        fail should_have_message.raised(expected_class).not(actual_exception.class)
       elsif expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
-        fail expected(expected_message).for_message.not(actual_message)
+        fail expected_message(expected_message).for_message.not(actual_message)
       else
         message = new_message.raises(expected_class)
         pass(expected_message ? message.with_message(expected_message) : message)

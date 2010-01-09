@@ -16,9 +16,9 @@ module Riot
       variable_name = "@#{variable}"
       actual_value = actual.instance_variable_defined?(variable_name) ? actual.instance_variable_get(variable_name) : nil
       if actual_value.nil?
-        fail("expected @#{variable} to be assigned a value")
+        fail expected_message(variable).to_be_assigned_a_value
       elsif !expected_value.nil? && expected_value != actual_value
-        fail(%Q[expected @#{variable} to be equal to #{expected_value.inspect}, not #{actual_value.inspect}])
+        fail expected_message(variable).to_be_equal_to(expected_value).not(actual_value)
       else
         pass
       end

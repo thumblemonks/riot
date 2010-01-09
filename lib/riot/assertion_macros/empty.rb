@@ -7,7 +7,7 @@ module Riot
     register :empty
 
     def evaluate(actual)
-      actual.length == 0 ? pass : fail("expected #{actual.inspect} to be empty")
+      actual.length == 0 ? pass : fail(expected_message(actual).to_be_empty)
     end
   end
 end

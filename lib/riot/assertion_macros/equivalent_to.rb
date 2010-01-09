@@ -13,9 +13,9 @@ module Riot
 
     def evaluate(actual, expected)
       if expected === actual
-        pass("is equivalent to #{expected.inspect}")
+        pass new_message.is_equivalent_to(expected)
       else
-        fail("expected #{actual.inspect} to be equivalent to #{expected.inspect}")
+        fail expected_message(actual).to_be_equivalent_to(expected)
       end
     end
   end

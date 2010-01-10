@@ -7,6 +7,10 @@ context "A message object" do
     Riot::Message.new("bar", nil, {:a => 2}).to_s
   end.equals(%q["bar" nil {:a=>2}])
 
+  asserts("+ pushes phrase onto string") do
+    Riot::Message.new.mommy.push("dearest").to_s
+  end.equals(%q[mommy dearest])
+
   context "receiving calls for unbound methods" do
     asserts("message") do
       Riot::Message.new.bar.to_s

@@ -120,9 +120,7 @@ module Riot
     end
 
     def local_run(reporter, situation)
-      @helpers.each do |name, block|
-        (class << situation; self; end).send(:define_method, name, &block)
-      end
+      @helpers.each {|name, block| situation.helper(name, &block) }
 
       (setups + @assertions + teardowns).each do |runnable|
         reporter.report(runnable.to_s, runnable.run(situation))

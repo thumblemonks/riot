@@ -1,13 +1,50 @@
 require 'riot/message'
 
 module Riot
+  # The base class for all assertion macros.
+  #
+  # == Using macros
+  #
+  # Macros are applied to the return value of assertions. For example, the
+  # `empty` macro asserts that the value is, well, empty, e.g.
+  #
+  #     asserts(:comments).empty?
+  #
+  # 
+  # == Writing your own macros
+  #
+  # Macros are added by subclassing {AssertionMacro}. For example, here's
+  # the implementation of `empty`:
+  #
+  #     class EmptyMacro < AssertionMacro
+  #       register :empty
+  #        
+  #       def evaluate(actual)
+  #         actual.length == 0 ? pass : fail(expected_message(actual).to_be_empty)
+  #       end
+  #     end
+  #
   class AssertionMacro
     class << self
+      # Whether the macro expects an exception to be thrown.
       attr_reader :expects_exception
 
-      def default; @default_macro ||= new; end
-      def expects_exception!; @expects_exception = true; end
-      def register(name); Assertion.register_macro name, self; end
+      # The default macro.
+      def default
+        @default_macro ||= new
+      end
+
+      # Specify that the macro expects an exception to be thrown by the assertion.
+      def expects_exception!
+        @expects_exception = true
+      end
+
+      # Register the macro under the given name.
+      #
+      # @param [Symbol] name the name of the macro
+      def register(name)
+        Assertion.register_macro name, self
+      end
     end
 
     def pass(message=nil) [:pass, message.to_s]; end

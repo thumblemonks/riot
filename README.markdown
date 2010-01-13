@@ -92,3 +92,15 @@ yields the output
 
     !!!plain
     + asserts #full_name matches /^\w+ \w+$/
+
+
+## Contributing
+
+Riot is still in its infancy, so both the internal and external API may change radically.
+That being said, we would love to hear any thoughts and ideas, and bug reports are always
+welcome. We hang out in `#riot` on `irc.freenode.net`.
+
+The code is hosted on [GitHub](http://github.com), and can be fetched with
+[Git](http://git-scm.com) by running:
+
+    git clone git://github.com/thumblemonks/riot.git

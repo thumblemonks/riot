@@ -113,3 +113,9 @@ context "Making a new context" do
     Riot::Context.new("hello", nil) {}.parent
   end.kind_of(Riot::RootContext)
 end # Making a context
+
+context "A context with a helper" do
+  setup { "foo" }
+  helper(:upcase) { topic.upcase }
+  asserts("executing the helper") { upcase }.equals("FOO")
+end

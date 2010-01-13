@@ -17,7 +17,7 @@ module Riot
     def initialize(description, parent=nil, &definition)
       @parent = parent || RootContext.new([],[])
       @description = description
-      @contexts, @setups, @assertions, @teardowns = [], [], [], []
+      @contexts, @setups, @assertions, @teardowns, @helpers = [], [], [], [], []
       self.instance_eval(&definition)
     end
 
@@ -55,6 +55,8 @@ module Riot
     def setup(&definition)
       (@setups << Setup.new(&definition)).last
     end
+
+    def helper(name, &block); (@helpers << [name, block]).last; end
 
     # A setup shortcut that returns the original topic so you don't have to. Good for nested setups. Instead
     # of doing this in your context:
@@ -118,6 +120,10 @@ module Riot
     end
 
     def local_run(reporter, situation)
+      @helpers.each do |name, block|
+        (class << situation; self; end).send(:define_method, name, &block)
+      end
+
       (setups + @assertions + teardowns).each do |runnable|
         reporter.report(runnable.to_s, runnable.run(situation))
       end

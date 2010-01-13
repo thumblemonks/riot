@@ -18,4 +18,16 @@ module Riot
       [:setup]
     end
   end # Setup
+
+  class Helper < RunnableBlock
+    def initialize(name, &definition)
+      super("helper #{name}", &definition)
+      @name = name
+    end
+
+    def run(situation)
+      situation.helper(@name, &definition)
+      [:helper]
+    end
+  end
 end # Riot

@@ -11,6 +11,16 @@ Rake::TestTask.new(:test) do |test|
   test.verbose =  false
 end
 
+begin
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+  YARD::Rake::YardocTask.new do |t|
+    t.files = ['lib/**/*.rb']
+  end
+rescue LoadError
+  # YARD isn't installed
+end
+
 desc "Run all of them fancy benchmarks, Howard!"
 task :benchmarks do
   Dir["test/benchmark/*.rb"].each do |file|

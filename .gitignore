@@ -1,3 +1,5 @@
 *.gem
 pkg
 .*.swp
+doc
+.yardoc

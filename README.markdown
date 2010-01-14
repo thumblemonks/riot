@@ -94,6 +94,36 @@ yields the output
     + asserts #full_name matches /^\w+ \w+$/
 
 
+### Testing Rack application
+
+[Rack](http://rack.rubyforge.org/) applications can easily be tested through Riot using
+[Rack::Test](http://github.com/brynary/rack-test). Simply insert the following in your
+test helper script:
+
+    class Riot::Situation
+      include Rack::Test::Methods
+      attr_reader :app
+    end
+
+You can then test your app by placing it in the `@app` variable.
+
+    # Should work with all Rack endpoints, not just Sinatra.
+    class GreeterApp < Sinatra::Base
+      get '/' do
+        "Hello, World!"
+      end
+    end
+
+    context "GreeterApp" do
+      setup { @app = GreeterApp }
+
+      context "on GET to /" do
+        setup { get '/' }
+        asserts(:body).equals("Hello, World!")
+      end
+    end
+
+
 ## Contributing
 
 Riot is still in its infancy, so both the internal and external API may change radically.

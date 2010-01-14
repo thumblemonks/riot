@@ -133,6 +133,7 @@ welcome. We hang out in `#riot` on `irc.freenode.net`.
 The code is hosted on [GitHub](http://github.com), and can be fetched with
 [Git](http://git-scm.com) by running:
 
+    !!!plain
     git clone git://github.com/thumblemonks/riot.git
 
 

@@ -104,3 +104,8 @@ The code is hosted on [GitHub](http://github.com), and can be fetched with
 [Git](http://git-scm.com) by running:
 
     git clone git://github.com/thumblemonks/riot.git
+
+
+## License
+
+Riot is released under the MIT license. See {file:MIT-LICENSE}.

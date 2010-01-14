@@ -15,7 +15,7 @@ begin
   require 'yard'
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new do |t|
-    t.files = ['lib/**/*.rb']
+    t.files = ['lib/**/*.rb', 'MIT-LICENSE']
   end
 rescue LoadError
   # YARD isn't installed

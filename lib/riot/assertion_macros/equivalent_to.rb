@@ -2,8 +2,8 @@ module Riot
   # Asserts that the result of the test is equivalent to the expected value. Using the +===+ operator.
   #
   #   asserts("test") { "foo" }.equivalent_to(String)
-  #   should("test") { "foo" }.equals("foo")
-  #   asserts("test") { "foo" }.equals { "foo" }
+  #   should("test") { "foo" }.equivalent_to("foo")
+  #   asserts("test") { "foo" }.equivalent_to { "foo" }
   #
   # Underneath the hood, this assertion macro says:
   #

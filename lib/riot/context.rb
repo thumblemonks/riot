@@ -120,12 +120,14 @@ module Riot
     end
 
     def local_run(reporter, situation)
-      (setups + @helpers + @assertions + teardowns).each do |runnable|
-        reporter.report(runnable.to_s, runnable.run(situation))
-      end
+      runnables.each { |runnable| reporter.report(runnable.to_s, runnable.run(situation)) }
     end
 
   private
+
+    def runnables
+      setups + @helpers + @assertions + teardowns
+    end
 
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end
 

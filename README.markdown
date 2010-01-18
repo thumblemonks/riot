@@ -96,31 +96,23 @@ yields the output
 
 ### Testing Rack application
 
-[Rack](http://rack.rubyforge.org/) applications can easily be tested through Riot using
-[Rack::Test](http://github.com/brynary/rack-test). Simply insert the following in your
-test helper script:
+Rack applications can easily be testing using [Riot::Rack](http://github.com/dasch/riot-rack),
+which integrates [Rack::Test](http://github.com/brynary/rack-test) into Riot.
 
-    class Riot::Situation
-      include Rack::Test::Methods
-      attr_reader :app
-    end
+    require 'riot'
+    require 'riot/rack'
 
-You can then test your app by placing it in the `@app` variable.
+    context "HelloWorldApp" do
+      # Specify your app using the #app helper. If you don't specify
+      # one, Riot::Rack will recursively look for a config.ru file.
+      app { HelloWorldApp }
 
-    # Should work with all Rack endpoints, not just Sinatra.
-    class GreeterApp < Sinatra::Base
-      get '/' do
-        "Hello, World!"
-      end
-    end
+      # You can use all the Rack::Test helpers in the setup blocks.
+      setup { get '/' }
 
-    context "GreeterApp" do
-      setup { @app = GreeterApp }
-
-      context "on GET to /" do
-        setup { get '/' }
-        asserts(:body).equals("Hello, World!")
-      end
+      # You can access the response directly.
+      asserts(:status).equals(200)
+      asserts(:body).equals("Hello, World!")
     end
 
 

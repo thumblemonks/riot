@@ -96,7 +96,7 @@ yields the output
 
 ### Testing Rack application
 
-Rack applications can easily be testing using [Riot::Rack](http://github.com/dasch/riot-rack),
+Rack applications can easily be tested using [Riot::Rack](http://github.com/dasch/riot-rack),
 which integrates [Rack::Test](http://github.com/brynary/rack-test) into Riot.
 
     require 'riot'

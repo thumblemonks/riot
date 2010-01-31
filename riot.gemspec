@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.10.11"
+  s.version = "0.10.12.pre"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2010-01-14}
+  s.date = %q{2010-01-30}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -44,6 +44,10 @@ Gem::Specification.new do |s|
      "lib/riot/context.rb",
      "lib/riot/message.rb",
      "lib/riot/reporter.rb",
+     "lib/riot/rr.rb",
+     "lib/riot/rr/assertion.rb",
+     "lib/riot/rr/context.rb",
+     "lib/riot/rr/situation.rb",
      "lib/riot/runnable.rb",
      "lib/riot/situation.rb",
      "riot.gemspec",
@@ -72,6 +76,7 @@ Gem::Specification.new do |s|
      "test/context_test.rb",
      "test/message_test.rb",
      "test/report_test.rb",
+     "test/rrriot_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",
      "test/teardown_test.rb",
@@ -108,6 +113,7 @@ Gem::Specification.new do |s|
      "test/context_test.rb",
      "test/message_test.rb",
      "test/report_test.rb",
+     "test/rrriot_test.rb",
      "test/setup_test.rb",
      "test/situation_test.rb",
      "test/teardown_test.rb",

@@ -1,7 +1,7 @@
 module Riot
   class Assertion < RunnableBlock
     class << self
-      def macros; @macros ||= {}; end
+      def macros; @@macros ||= {}; end
 
       def register_macro(name, assertion_macro, expect_exception=false)
         macros[name.to_s] = assertion_macro.new

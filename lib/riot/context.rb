@@ -1,9 +1,15 @@
 module Riot
   RootContext = Struct.new(:setups, :teardowns)
 
+  module ContextHelpers
+    def assertion_class; Assertion; end
+    def situation_class; Situation; end
+  end
+
   # You make your assertions within a Context. The context stores setup and
   # teardown blocks, and allows for nesting and refactoring into helpers.
   class Context
+    include ContextHelpers
     # The description of the context.
     #
     # @return [String]
@@ -114,7 +120,7 @@ module Riot
 
     def run(reporter)
       reporter.describe_context(self) unless @assertions.empty?
-      local_run(reporter, Situation.new)
+      local_run(reporter, situation_class.new)
       run_sub_contexts(reporter)
       reporter
     end
@@ -143,7 +149,7 @@ module Riot
         description = "#{scope} #{what}"
       end
 
-      (@assertions << Assertion.new(description, &definition)).last
+      (@assertions << assertion_class.new(description, &definition)).last
     end
   end # Context
 end # Riot

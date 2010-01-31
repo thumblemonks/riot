@@ -1,4 +1,19 @@
-*master*
+*0.10.12.pre*
+
+* RR support in Riot [vandrijevik,jaknowlden]
+
+    # teststrap.rb
+    require 'riot'
+    Riot.rr
+    
+    # your-test.rb
+    context "foo" do
+      setup do
+        mock!.hello {"world"}
+      end
+      
+      asserts("failure due to not calling hello") { true } # actually fails
+    end
 
 * Added Riot::Message to make messages in macros easier to write [jaknowlden]
 

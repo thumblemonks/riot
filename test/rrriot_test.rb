@@ -52,4 +52,24 @@ context "Riot with RR support" do
     asserts("situation class") { topic.__send__(:situation_class) }.equals(Riot::RR::Situation)
   end # when using the RR context
 
+  context "does not carry expectations between assertions" do
+    setup do
+      fake_context = Class.new(Riot::Context) { }
+      Riot::RR.enable(fake_context)
+      fake_context.new("foo") {}
+    end
+
+    helper(:situation) { Riot::RR::Situation.new }
+    helper(:failing_assertion) { topic.asserts("I will fail") { mock!.a; mock!.b } }
+    helper(:passing_assertion) { topic.asserts("I should not fail") { true } }
+
+    asserts("first assertion fails") do
+      failing_assertion.run(situation).first
+    end.equals(:fail)
+
+    asserts("second assertion passes") do
+      passing_assertion.run(situation)
+    end.equals([:pass, ""])
+  end # when using the RR context
+
 end # Riot with RR support

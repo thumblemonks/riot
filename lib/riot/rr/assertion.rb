@@ -7,6 +7,8 @@ module Riot
         result
       rescue ::RR::Errors::RRError => e
         [:fail, e.message.gsub(/\n/, " ")]
+      ensure
+        situation.reset
       end
     end # Assertion
   end # RR

@@ -18,7 +18,7 @@ context "Riot with RR support" do
 
   asserts("RR verification is reset between assertion runs") do
     situation = Riot::RR::Situation.new
-    Riot::RR::Assertion.new("Displeased") { mock!.hello }.run(situation)
+    Riot::RR::Assertion.new("Displeased") { mock!.hello; mock!.what }.run(situation)
     Riot::RR::Assertion.new("Displeased differently") { mock!.goodbye }.run(situation)
   end.equals([:fail, "goodbye() Called 0 times. Expected 1 times."])
 
@@ -35,6 +35,10 @@ context "Riot with RR support" do
 
     asserts("another assertion") do
       Riot::RR::Assertion.new("test") { "bar" }.run(topic)
+    end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
+
+    asserts("another another assertion") do
+      Riot::RR::Assertion.new("test") { "baz" }.run(topic)
     end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
   end # with RR doubles defined in setup
 

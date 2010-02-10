@@ -22,32 +22,8 @@ context "Riot with RR support" do
     Riot::RR::Assertion.new("Displeased differently") { mock!.goodbye }.run(situation)
   end.equals([:fail, "goodbye() Called 0 times. Expected 1 times."])
 
-  context "with RR doubles defined in setup" do
-    setup do
-      situation = Riot::RR::Situation.new
-      situation.setup { mock!.hello }
-      situation
-    end
-    
-    asserts("an assertion") do
-      Riot::RR::Assertion.new("test") { "foo" }.run(topic)
-    end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
-
-    asserts("another assertion") do
-      Riot::RR::Assertion.new("test") { "bar" }.run(topic)
-    end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
-
-    asserts("another another assertion") do
-      Riot::RR::Assertion.new("test") { "baz" }.run(topic)
-    end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
-  end # with RR doubles defined in setup
-
   context "when using the RR context" do
-    setup do
-      fake_context = Class.new(Riot::Context) { }
-      Riot::RR.enable(fake_context)
-      fake_context.new("foo") {}
-    end
+    setup { Riot::Context.new("foo") {} }
 
     asserts("new assertions") do
       topic.asserts("nothing really") { true }
@@ -58,9 +34,7 @@ context "Riot with RR support" do
 
   context "does not carry expectations between assertions" do
     setup do
-      fake_context = Class.new(Riot::Context) { }
-      Riot::RR.enable(fake_context)
-      fake_context.new("foo") {}
+      Riot::Context.new("foo") {}
     end
 
     helper(:situation) { Riot::RR::Situation.new }
@@ -76,4 +50,20 @@ context "Riot with RR support" do
     end.equals([:pass, ""])
   end # when using the RR context
 
+  context "with RR doubles defined in setup" do
+    setup do
+      situation = Riot::RR::Situation.new
+      situation.setup { mock!.hello }
+      situation
+    end
+    
+    asserts("an assertion") do
+      Riot::RR::Assertion.new("test") { "foo" }.run(topic)
+    end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
+  
+    asserts("another assertion won't use the expectations") do
+      Riot::RR::Assertion.new("test") { "bar" }.run(topic)
+    end.equals([:pass, ""])
+  
+  end # with RR doubles defined in setup
 end # Riot with RR support

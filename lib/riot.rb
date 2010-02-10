@@ -20,12 +20,6 @@ module Riot
     the_reporter
   end
 
-  # Enable RR support
-  def self.rr
-    require 'riot/rr'
-    Riot::RR.enable(Context)
-  end
-
   # This means you don't want to see any output from Riot. A "quiet riot" as Envy5 put it.
   def self.silently!; @silent = true; end
   def self.silently?; defined?(@silent) && @silent == true end

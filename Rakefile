@@ -1,20 +1,13 @@
 require 'rubygems'
 require 'rake'
 
-task :default => ["test:core", "test:assertion_macros"]
-task "test:all" => ["test:core", "test:assertion_macros", "test:extensions"]
+task :default => ["test:core"]
+task "test:all" => ["test:core", "test:extensions"]
 
 require 'rake/testtask'
 Rake::TestTask.new("test:core") do |test|
   test.libs    << 'test'
-  test.pattern =  'test/*_test.rb'
-  test.warning =  true
-  test.verbose =  false
-end
-
-Rake::TestTask.new("test:assertion_macros") do |test|
-  test.libs    << 'test'
-  test.pattern =  'test/assertion_macros/*_test.rb'
+  test.pattern =  'test/core/**/*_test.rb'
   test.warning =  true
   test.verbose =  false
 end

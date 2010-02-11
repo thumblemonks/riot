@@ -76,6 +76,12 @@ context "StoryReporter" do
     ColorHelper.uncolored(@out.string)
   end.equals("  + foo\n")
 
+  asserts("failure message excludes line info if none provided") do
+    @out.rewind
+    topic.fail("foo", "bar", nil, nil)
+    ColorHelper.uncolored(@out.string)
+  end.equals("  - foo: bar\n")
+
   context 'reporting on an empty context' do
     setup do
       context = Riot::Context.new('empty context') do

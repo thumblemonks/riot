@@ -45,6 +45,10 @@ module Riot
     def puts(message) @writer.puts(message); end
     def print(message) @writer.print(message); end
 
+    def line_info(line, file)
+      line ? "(on line #{line} in #{file})" : ""
+    end
+
     def results(time_taken)
       values = [passes, failures, errors, ("%0.6f" % time_taken)]
       puts "\n%d passes, %d failures, %d errors in %s seconds" % values
@@ -77,7 +81,11 @@ module Riot
       puts context.description
     end
     def pass(description, message) puts "  + " + green("#{description} #{message}".strip); end
-    def fail(description, message, line, file) puts "  - " + yellow("#{description}: #{message} (on line #{line} in #{file})"); end
+
+    def fail(description, message, line, file)
+      puts "  - " + yellow("#{description}: #{message} #{line_info(line, file)}".strip)
+    end
+
     def error(description, e) puts "  ! " + red("#{description}: #{e.message}"); end
   end
 
@@ -100,18 +108,21 @@ module Riot
 
     def fail(description, message, line, file)
       print yellow("F")
-      @details << "FAILURE - #{current_context.description} #{description} => #{message} (on line #{line} in #{file})"
+      @details << "FAILURE - #{test_detail(description, message)} #{line_info(line, file)}".strip
     end
 
     def error(description, e)
       print red("E")
-      @details << "ERROR - #{current_context.description} #{description} => #{format_error(e)}"
+      @details << "ERROR - #{test_detail(description, format_error(e))}"
     end
 
     def results(time_taken)
-      puts "\n" unless @details.empty?
-      @details.each { |detail| puts detail }
+      puts "\n#{@details.join("\n\n")}" unless @details.empty?
       super
+    end
+  private
+    def test_detail(description, message)
+      "#{current_context.description} #{description} => #{message}"
     end
   end
 

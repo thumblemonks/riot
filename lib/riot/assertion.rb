@@ -23,9 +23,10 @@ module Riot
     end
   private
     def enhance_with_macro(name, *expectings, &expectation_block)
-      @macro, @expectings, @expectation_block = self.class.macros[name.to_s].new, expectings, expectation_block
-      @macro.file, @macro.line = caller.first.match(/(.*):(\d+)/)[1..2]
+      @expectings, @expectation_block = expectings, expectation_block
+      @macro = self.class.macros[name.to_s].new
       raise(NoMethodError, name) unless @macro
+      @macro.file, @macro.line = caller.first.match(/(.*):(\d+)/)[1..2]
       self
     end
     alias :method_missing :enhance_with_macro

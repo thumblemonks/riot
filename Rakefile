@@ -19,6 +19,25 @@ Rake::TestTask.new("test:extensions") do |test|
   test.verbose =  false
 end
 
+#
+# Benchmarks
+
+def run_benchmarks(bin)
+  Dir["test/benchmark/*.rb"].each do |file|
+    puts ">> Running #{file}"
+    puts %x[#{bin} #{file}]
+  end
+end
+
+desc "Run all of them fancy benchmarks, Howard!"
+task("test:benchmarks") { run_benchmarks("ruby") }
+
+desc "Run all of them fancy benchmarks in ruby-1.9, Steve!"
+task("test:benchmarks:1.9") { run_benchmarks("ruby1.9") }
+
+#
+# YARDie
+
 begin
   require 'yard'
   require 'yard/rake/yardoc_task'
@@ -29,14 +48,6 @@ begin
   end
 rescue LoadError
   # YARD isn't installed
-end
-
-desc "Run all of them fancy benchmarks, Howard!"
-task :benchmarks do
-  Dir["test/benchmark/*.rb"].each do |file|
-    puts ">> Running #{file}"
-    puts %x[ruby #{file}]
-  end
 end
 
 #

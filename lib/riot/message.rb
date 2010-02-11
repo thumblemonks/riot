@@ -1,5 +1,5 @@
 class BlankSlate
-  instance_methods.each { |meth| undef_method(meth) unless meth =~ /^__/ }
+  instance_methods.each { |meth| undef_method(meth) unless meth.to_s =~ /^(__|object_id)/ }
 end
 
 module Riot

@@ -24,7 +24,8 @@ module Riot
         pass(description, result)
       when :fail then
         @failures += 1
-        fail(description, result)
+        message, line, file = *response[1..-1]
+        fail(description, message, line, file)
       when :error then
         @errors += 1
         error(description, result)
@@ -76,7 +77,7 @@ module Riot
       puts context.description
     end
     def pass(description, message) puts "  + " + green("#{description} #{message}".strip); end
-    def fail(description, message) puts "  - " + yellow("#{description}: #{message}"); end
+    def fail(description, message, line, file) puts "  - " + yellow("#{description}: #{message} (on line #{line} in #{file})"); end
     def error(description, e) puts "  ! " + red("#{description}: #{e.message}"); end
   end
 
@@ -97,9 +98,9 @@ module Riot
       print green(".")
     end
 
-    def fail(description, message)
+    def fail(description, message, line, file)
       print yellow("F")
-      @details << "FAILURE - #{current_context.description} #{description} => #{message}"
+      @details << "FAILURE - #{current_context.description} #{description} => #{message} (on line #{line} in #{file})"
     end
 
     def error(description, e)
@@ -116,7 +117,7 @@ module Riot
 
   class SilentReporter < Reporter
     def pass(description, message); end
-    def fail(description, message); end
+    def fail(description, message, line, file); end
     def error(description, e); end
     def results(time_taken); end
   end

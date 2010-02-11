@@ -8,6 +8,6 @@ context "A nil assertion macro" do
   end.equals([:pass, "is nil"])
 
   asserts(":fail with message") do
-    Riot::Assertion.new("foo") { "a" }.nil.run(topic)
+    Riot::Assertion.new("foo") { "a" }.nil.run(topic)[0..1]
   end.equals([:fail, %Q{expected nil, not "a"}])
 end # A nil assertion macro

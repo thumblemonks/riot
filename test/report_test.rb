@@ -4,7 +4,7 @@ context "A reporter" do
   setup do
     Class.new(Riot::Reporter) do
       def pass(d, message) "passed(#{d}, #{message.inspect})"; end
-      def fail(d, message) "failed(#{d}, #{message})"; end
+      def fail(d, message, line, file) "failed(#{d}, #{message} on line #{line} in file #{file})"; end
       def error(d, e) "errored(#{d}, #{e})"; end
       def results(time); end
     end.new
@@ -28,9 +28,9 @@ context "A reporter" do
     topic.failures
   end.equals(1)
 
-  asserts("description and message sent to #fail") do
-    topic.report("hi mom", [:fail, "how are you"])
-  end.equals("failed(hi mom, how are you)")
+  asserts("description, message, line and file sent to #fail") do
+    topic.report("hi mom", [:fail, "how are you", 4, "foo"])
+  end.equals("failed(hi mom, how are you on line 4 in file foo)")
 
   # error
 

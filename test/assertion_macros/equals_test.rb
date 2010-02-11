@@ -16,7 +16,7 @@ context "An equals assertion macro" do
     setup { topic.equals("bar").run(Riot::Situation.new) }
 
     asserts(":fail") { topic.first == :fail }
-    asserts("message") { topic.last == %Q{expected "bar", not "foo"} }
+    asserts("message") { topic[1] == %Q{expected "bar", not "foo"} }
   end # that is failing
 
   context "with numeric topic" do
@@ -25,7 +25,7 @@ context "An equals assertion macro" do
     end
 
     asserts("failure") do
-      topic.equals(30000..32000).run(Riot::Situation.new) == [:fail, "expected 30000..32000, not 31415"]
+      topic.equals(30000..32000).run(Riot::Situation.new)[0..1] == [:fail, "expected 30000..32000, not 31415"]
     end
   end # with numeric topic
 
@@ -35,7 +35,7 @@ context "An equals assertion macro" do
     end.equals([:pass, %Q{is equal to "foo"}])
 
     asserts(":fail with message when block expectation not met") do
-      topic.equals { "bar" }.run(Riot::Situation.new)
+      topic.equals { "bar" }.run(Riot::Situation.new)[0..1]
     end.equals([:fail, %Q{expected "bar", not "foo"}])
   end # with block as the expectation
 

@@ -47,8 +47,10 @@ module Riot
       end
     end
 
+    attr_accessor :line, :file
+
     def pass(message=nil) [:pass, message.to_s]; end
-    def fail(message) [:fail, message.to_s]; end
+    def fail(message) [:fail, message.to_s, line, file]; end
     def error(e) [:error, e]; end
 
     def expects_exception?; self.class.expects_exception; end

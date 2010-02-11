@@ -12,6 +12,6 @@ context "An exists assertion macro" do
   end.equals([:pass, "is not nil"])
 
   asserts(":fail with message when value is nil") do
-    Riot::Assertion.new("foo") { nil }.exists.run(topic)
+    Riot::Assertion.new("foo") { nil }.exists.run(topic)[0..1]
   end.equals([:fail, "expected a non-nil value"])
 end # An exists assertion macro

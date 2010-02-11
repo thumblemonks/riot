@@ -4,7 +4,7 @@ module Riot
       def macros; @@macros ||= {}; end
 
       def register_macro(name, assertion_macro, expect_exception=false)
-        macros[name.to_s] = assertion_macro.new
+        macros[name.to_s] = assertion_macro
       end
     end
 
@@ -23,7 +23,8 @@ module Riot
     end
   private
     def enhance_with_macro(name, *expectings, &expectation_block)
-      @macro, @expectings, @expectation_block = self.class.macros[name.to_s], expectings, expectation_block
+      @macro, @expectings, @expectation_block = self.class.macros[name.to_s].new, expectings, expectation_block
+      @macro.file, @macro.line = caller.first.match(/(.*):(\d+)/)[1..2]
       raise(NoMethodError, name) unless @macro
       self
     end

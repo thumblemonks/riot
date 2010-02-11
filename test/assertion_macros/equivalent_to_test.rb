@@ -13,7 +13,7 @@ context "An equivalent_to assertion macro" do
   end
 
   asserts("an array is not equivalent to 'what'") do
-    topic.equivalent_to([]).run(Riot::Situation.new) == [:fail, %Q{expected "what" to be equivalent to []}]
+    topic.equivalent_to([]).run(Riot::Situation.new)[0..1] == [:fail, %Q{expected "what" to be equivalent to []}]
   end
 
   context "with numeric topic" do
@@ -29,7 +29,7 @@ context "An equivalent_to assertion macro" do
       setup { topic.equivalent_to(32000..33000).run(Riot::Situation.new) }
 
       asserts(":fail") { topic.first == :fail }
-      asserts("message") { topic.last == %Q{expected 31413 to be equivalent to 32000..33000} }
+      asserts("message") { topic[1] == %Q{expected 31413 to be equivalent to 32000..33000} }
     end
   end # with numeric topic
 

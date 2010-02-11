@@ -15,8 +15,8 @@ context "An assertion" do
     asserts("to_s") { topic.to_s == "foo" }
 
     asserts(":fail and message are evaluated") do
-      topic.run(Riot::Situation.new) == [:fail, "Expected non-false but got nil instead"]
-    end
+      topic.run(Riot::Situation.new)[0..1]
+    end.equals([:fail, "Expected non-false but got nil instead"])
   end # that is failing
 
   context "that is erroring" do

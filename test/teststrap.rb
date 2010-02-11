@@ -20,7 +20,7 @@ module Riot
       context(description) do
         setup(&block)
         asserts("failure") { topic.run(Riot::Situation.new).first }.equals(:fail)
-        asserts("failure message") { topic.run(Riot::Situation.new).last }.equals(failure_message)
+        asserts("failure message") { topic.run(Riot::Situation.new)[1] }.equals(failure_message)
       end
     end
 
@@ -31,7 +31,7 @@ Riot::Context.instance_eval { include Riot::AssertionTestContextMacros }
 
 class MockReporter < Riot::Reporter
   def pass(description, message); end
-  def fail(description, message); end
+  def fail(description, message, line, file); end
   def error(description, e); end
   def results; end
 end

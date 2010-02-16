@@ -1,5 +1,14 @@
 *0.10.13.pre*
 
+* No longer assuming topic when no block provided to an assertion. Instead, assuming block fails by default. Use `asserts_topic` only now. [jaknowlden]
+
+    context "foo" do
+      setup { "bar" }
+      asserts_topic.kind_of(String)
+      asserts("topic").kind_of(String) # Will fail since block returns `false`
+      asserts("topic").equals(false) # Will actually pass :)
+    end
+
 *0.10.12*
 
 * Recognizing file and line number of an assertion declaration on failure [vandrijevik]

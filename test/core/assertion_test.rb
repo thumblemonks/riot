@@ -38,22 +38,22 @@ context "An assertion" do
       @situation.topic = "hello"
       Riot::Assertion.new("test")
     end
-    should("uses block returning topic as default") do
-      topic.equals("hello")
-      result = topic.run(@situation)
-    end.equals([:pass, %Q{is equal to "hello"}])
+
+    should("return a block that returns false") do
+      topic.run(@situation)
+    end.equals([:fail, "Expected non-false but got false instead", nil, nil])
   end # with no block to provide the actual value
   
   context "with block expectation" do
     setup do
       @situation = Riot::Situation.new
       @situation.topic = "hello"
-      Riot::Assertion.new("test")
+      Riot::Assertion.new("test") { topic }
     end
 
     should("use block returning topic as default") do
       topic.equals { "hello" }
-      result = topic.run(@situation)
+      topic.run(@situation)
     end.equals([:pass, %Q{is equal to "hello"}])
 
     asserts("block expectation has access to the situation items") do

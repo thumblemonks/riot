@@ -2,7 +2,7 @@ module Riot
   class RunnableBlock
     attr_reader :definition
     def initialize(description, &definition)
-      @description, @definition = description, definition || lambda { topic }
+      @description, @definition = description, definition || lambda { false }
     end
 
     def to_s; @description; end

@@ -119,7 +119,7 @@ context "DotMatrixReporter" do
       context.run(topic)
       @out.string
     end
-    asserts('puts a dot').matches('.')
+    asserts_topic('puts a dot').matches('.')
   end
   
   context 'with a failing test' do
@@ -131,9 +131,9 @@ context "DotMatrixReporter" do
       @out.string
     end
     
-    asserts('puts an F').matches('F')
-    asserts("puts the full context + assertion name").matches('whatever asserts nope!')
-    asserts("puts the failure reason").matches(/Expected .* but got false instead/)
+    asserts_topic('puts an F').matches('F')
+    asserts_topic("puts the full context + assertion name").matches('whatever asserts nope!')
+    asserts_topic("puts the failure reason").matches(/Expected .* but got false instead/)
   end
   
   context 'with an error test' do
@@ -145,9 +145,9 @@ context "DotMatrixReporter" do
       @out.string
     end
     
-    asserts('puts an E').matches('E')
-    asserts('puts the full context + assertion name').matches('whatever asserts bang')
-    asserts('puts the exception message').matches('BOOM')
-    asserts('puts the exception backtrace').matches(__FILE__)
+    asserts_topic('puts an E').matches('E')
+    asserts_topic('puts the full context + assertion name').matches('whatever asserts bang')
+    asserts_topic('puts the exception message').matches('BOOM')
+    asserts_topic('puts the exception backtrace').matches(__FILE__)
   end
 end

@@ -69,6 +69,18 @@ give a Symbol as the first argument to `asserts` and leave out the block.
     asserts(:first).equals("foo")
 
 
+If you're like me, you like to write a bunch of failing tests for a context and then make
+them pass. This can easily be done by simply calling an `asserts` or `should` command with
+no block returning the actual value.
+
+    asserts("something special")
+    should("do something special")
+
+Both of the above tests will fail. You can use this similar to a `should_eventually`. The
+difference is that `should_eventually` is not technically a failure and will therefore be
+ignored in time by (based on my experience). The above two blocks will actually show up as
+failures and should hopefully drive you to making them pass.
+
 ### Reading Riot's output
 
 Riot can output the test results in several ways, the default being *story reporting*. With

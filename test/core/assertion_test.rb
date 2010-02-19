@@ -35,7 +35,7 @@ context "An assertion" do
   context "with no block to provide the actual value" do
     setup do
       @situation = Riot::Situation.new
-      @situation.topic = "hello"
+      @situation.instance_variable_set(:@_topic, "hello")
       Riot::Assertion.new("test")
     end
 
@@ -47,7 +47,7 @@ context "An assertion" do
   context "with block expectation" do
     setup do
       @situation = Riot::Situation.new
-      @situation.topic = "hello"
+      @situation.instance_variable_set(:@_topic, "hello")
       Riot::Assertion.new("test") { topic }
     end
 
@@ -57,7 +57,7 @@ context "An assertion" do
     end.equals([:pass, %Q{is equal to "hello"}])
 
     asserts("block expectation has access to the situation items") do
-      topic.equals { @topic }
+      topic.equals { @_topic }
       topic.run(@situation)
     end.equals([:pass, %Q{is equal to "hello"}])
   end # with block expectation

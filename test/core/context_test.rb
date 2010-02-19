@@ -84,7 +84,7 @@ context "The asserts_topic shortcut" do
   should("return an Assertion") { topic }.kind_of(Riot::Assertion)
 
   should("return the actual topic as the result of evaling the assertion") do
-    (situation = Riot::Situation.new).topic = "bar"
+    (situation = Riot::Situation.new).instance_variable_set(:@_topic, "bar")
     topic.equals("bar").run(situation)
   end.equals([:pass, %Q{is equal to "bar"}])
 

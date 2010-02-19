@@ -1,8 +1,11 @@
 module Riot
   class Situation
-    attr_accessor :topic
+    def topic
+      @_topic
+    end
+
     def setup(&block)
-      @topic = self.instance_eval(&block)
+      @_topic = self.instance_eval(&block)
     end
 
     def helper(name, &block)

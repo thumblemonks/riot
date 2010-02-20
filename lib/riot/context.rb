@@ -1,5 +1,5 @@
 module Riot
-  RootContext = Struct.new(:setups, :teardowns)
+  RootContext = Struct.new(:setups, :teardowns, :detailed_description)
 
   module ContextHelpers
     def assertion_class; Assertion; end
@@ -21,7 +21,7 @@ module Riot
     attr_reader :parent
 
     def initialize(description, parent=nil, &definition)
-      @parent = parent || RootContext.new([],[])
+      @parent = parent || RootContext.new([],[], "")
       @description = description
       @contexts, @helpers, @setups, @assertions, @teardowns = [], [], [], [], []
       self.instance_eval(&definition)
@@ -129,6 +129,10 @@ module Riot
       runnables.each { |runnable| reporter.report(runnable.to_s, runnable.run(situation)) }
     end
 
+    def detailed_description
+      "#{parent.detailed_description} #{description}".strip
+    end
+
   private
 
     def runnables
@@ -138,7 +142,7 @@ module Riot
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end
 
     def new_context(description, klass, &definition)
-      (@contexts << klass.new("#{@description} #{description}", self, &definition)).last
+      (@contexts << klass.new(description, self, &definition)).last
     end
 
     def new_assertion(scope, what, &definition)

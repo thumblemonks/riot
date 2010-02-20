@@ -123,3 +123,14 @@ context "A context with a helper" do
   asserts("executing the helper") { upcase }.equals("FOO")
   asserts("calling a helper with an argument") { append("bar") }.equals("foobar")
 end
+
+
+context "A context with a description" do
+  Foo, Bar = Class.new {}, Class.new {}
+  setup do
+    Riot::Context.new(Foo) {}.context(Bar) {}
+  end
+
+  asserts(:description).equals(Bar)
+  asserts(:detailed_description).equals("Foo Bar")
+end

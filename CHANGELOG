@@ -1,5 +1,14 @@
 *0.10.13.pre*
 
+* Recording description as is. Providing #detailed_description for proper behavior [jaknowlden]
+
+    foo_context = context(Foo) {}
+    bar_context = foo_context.context(Bar) {}
+    bar_context.description
+    => Bar
+    bar_context.detailed_description
+    => "Foo Bar"
+
 * No longer assuming topic when no block provided to an assertion. Instead, assuming block fails by default. Use `asserts_topic` only now. [jaknowlden]
 
     context "foo" do

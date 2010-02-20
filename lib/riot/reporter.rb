@@ -78,7 +78,7 @@ module Riot
   class StoryReporter < IOReporter
     def describe_context(context)
       super
-      puts context.description
+      puts context.detailed_description
     end
     def pass(description, message) puts "  + " + green("#{description} #{message}".strip); end
 
@@ -122,7 +122,7 @@ module Riot
     end
   private
     def test_detail(description, message)
-      "#{current_context.description} #{description} => #{message}"
+      "#{current_context.detailed_description} #{description} => #{message}"
     end
   end
 

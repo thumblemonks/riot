@@ -23,7 +23,7 @@ module Riot
     def initialize(description, parent=nil, &definition)
       @parent = parent || RootContext.new([],[], "")
       @description = description
-      @contexts, @helpers, @setups, @assertions, @teardowns = [], [], [], [], []
+      @contexts, @setups, @assertions, @teardowns = [], [], [], []
       self.instance_eval(&definition)
     end
 
@@ -62,7 +62,18 @@ module Riot
       (@setups << Setup.new(&definition)).last
     end
 
-    def helper(name, &block); (@helpers << Helper.new(name, &block)).last; end
+    # Helpers are essentially methods accessible within a situation.
+    #
+    # They're not setup methods, but can be called from setups or from assetions. Each time called, the
+    # helper will be evaluated. It's not currently memoized.
+    #
+    #   context "A string" do
+    #     helper(:foo) { "bar" }
+    #     asserts("a foo") { foo }.equals("bar")
+    #   end
+    def helper(name, &block)
+      (@setups << Helper.new(name, &block)).last
+    end
 
     # A setup shortcut that returns the original topic so you don't have to. Good for nested setups. Instead
     # of doing this in your context:
@@ -136,7 +147,7 @@ module Riot
   private
 
     def runnables
-      setups + @helpers + @assertions + teardowns
+      setups + @assertions + teardowns
     end
 
     def run_sub_contexts(reporter) @contexts.each { |ctx| ctx.run(reporter) }; end

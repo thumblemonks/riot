@@ -1,5 +1,17 @@
 *0.10.13.pre*
 
+* Correctly report non-RR assertion failures and errors when RR is used [vandrijevik]
+
+    context "Foo.bar" do
+      asserts("baz is called") do
+        mock(Foo).baz
+        raise RuntimeError.new("oh noes")
+      end
+    end
+
+  would previously return [:fail, "baz() Called 0 times. Expected 1 times."], and will now
+  correctly return [:error, #<RuntimeError: oh noes>]
+
 * Recording description as is. Providing #detailed_description for proper behavior [jaknowlden]
 
     foo_context = context(Foo) {}

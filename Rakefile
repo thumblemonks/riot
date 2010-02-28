@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rake'
 
-task :default => ["test:core"]
+task :default => ["test:all"]
 task "test:all" => ["test:core", "test:extensions"]
 
 require 'rake/testtask'

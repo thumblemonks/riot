@@ -11,10 +11,19 @@ context "Riot with RR support" do
     Riot::RR::Assertion.new("Satisfied") { true }.run(situation)
   end.equals([:pass, ""])
 
-  asserts("assertion fails when RR is displeased") do
+  asserts("assertion that would otherwise pass fails with RR message when RR is displeased") do
     situation = Riot::RR::Situation.new
     Riot::RR::Assertion.new("Displeased") { mock!.hello }.run(situation)
   end.equals([:fail, "hello() Called 0 times. Expected 1 times."])
+
+  fake_exception = RuntimeError.new("ooga booga")
+  asserts("assertion that would otherwise fail or error does so intact even when RR is displeased") do
+    situation = Riot::RR::Situation.new
+    Riot::RR::Assertion.new("Displeased") do
+      mock!.hello
+      raise fake_exception
+    end.run(situation)
+  end.equals { [:error, fake_exception] }
 
   asserts("RR verification is reset between assertion runs") do
     situation = Riot::RR::Situation.new

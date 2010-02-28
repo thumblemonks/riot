@@ -13,7 +13,7 @@ module Riot
         situation.verify
         result
       rescue ::RR::Errors::RRError => e
-        [:fail, e.message.gsub(/\n/, " ")]
+        result.first == :pass ? [:fail, e.message.gsub(/\n/, " ")] : result
       ensure
         situation.reset
       end

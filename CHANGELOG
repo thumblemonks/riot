@@ -1,4 +1,13 @@
-*0.10.13.pre*
+*0.10.13*
+
+* Helpers are now run with other setups, not separately. Which means you could use a helper in a setup. [jaknowlden]
+
+    context "Foo" do
+      helper(:user) { User.new }
+      setup do
+        Baz.new(:user => user) # :)
+      end
+    end # Foo
 
 * Correctly report non-RR assertion failures and errors when RR is used [vandrijevik]
 

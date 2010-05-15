@@ -2,27 +2,58 @@ module Riot
   RootContext = Struct.new(:setups, :teardowns, :detailed_description)
 
   class ContextMiddleware
-    def self.register
-      Context.middlewares << self.new
-    end
+    # Registers the current middleware class with Riot so that it may be included in the set of middlewares
+    # Riot will poke before executing a Context.
+    #
+    #   class MyContextMiddleware < Riot::ContextMiddleware
+    #     register
+    #     def handle?(context); ...; end
+    #     def prepare(context); ...; end
+    #   end
+    def self.register; Context.middlewares << self.new; end
 
+    # Called prior to a Context being executed. If this method returns true, +call+ will be called. This
+    # methods expects to receive an instance of the Context to be executed. Generally, you will inspect
+    # various aspects of the Context to determine if this middleware is meant to be used.
     def handle?(context); false; end
-    def prepare(context); end
+
+    # The meat of the middleware. Because you have access to the Context, you can add your own setups,
+    # hookups, etc. +call+ will be called before any tests are run, but after the Context is configured.
+    def call(context); end
   end
 
-  module ContextHelpers
+  module ContextClassOverrides
     def assertion_class; Assertion; end
     def situation_class; Situation; end
   end
 
-  # You make your assertions within a Context. The context stores setup and
-  # teardown blocks, and allows for nesting and refactoring into helpers.
-  class Context
-    include ContextHelpers
+  module ContextOptions
+    # Set options for the specific context. These options will generally be used for context middleware.
+    # Riot::Context does not currently look at any options.
+    #
+    #   context "Foo" do
+    #     set :transactional, true
+    #   end
+    def set(key, value) (@options ||= {})[key] = value; end
 
-    def self.middlewares
-      @middlewares ||= []
-    end
+    # Returns the value of a set option. The key must match exactly, symbols and strings are not
+    # interchangeable.
+    #
+    # @return [Object]
+    def option(key) @options[key]; end
+  end
+
+  # You make your assertions within a Context. The context stores setup and teardown blocks, and allows for
+  # nesting and refactoring into helpers. Extension developers may also configure ContextMiddleware objects
+  # in order to extend the functionality of a Context.
+  class Context
+    include ContextClassOverrides
+    include ContextOptions
+
+    # The set of middleware helpers configured for the current test space.
+    #
+    # @return [Array]
+    def self.middlewares; @middlewares ||= []; end
 
     # The description of the context.
     #
@@ -42,17 +73,13 @@ module Riot
       self.instance_eval(&definition)
     end
 
-    def prepare_middleware
-      Context.middlewares.each { |middleware| middleware.prepare(self) if middleware.handle?(self) }
-    end
-
     # Create a new test context.
     #
     # @param [String] description
     def context(description, &definition)
       new_context(description, self.class, &definition)
     end
-    
+
     # Returns an ordered list of the setup blocks for the context.
     #
     # @return [Array[Riot::RunnableBlock]]
@@ -164,6 +191,10 @@ module Riot
     end
 
   private
+
+    def prepare_middleware
+      Context.middlewares.each { |middleware| middleware.call(self) if middleware.handle?(self) }
+    end
 
     def runnables
       setups + @assertions + teardowns

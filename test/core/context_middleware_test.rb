@@ -5,7 +5,7 @@ context "ContextMiddleware" do
   teardown { Riot::Context.middlewares.clear }
 
   asserts("handle? with context") { topic.handle?("Foo") }.equals(false)
-  asserts("prepare with context") { topic.prepare("Foo") }.nil
+  asserts("call with context") { topic.call("Foo") }.nil
 
   context "registration" do
     setup { Class.new(Riot::ContextMiddleware) { register } }
@@ -17,7 +17,7 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def prepare(context) context.setup { "fooberries" }; end
+        def call(context) context.setup { "fooberries" }; end
       end
     end
 
@@ -33,7 +33,7 @@ context "ContextMiddleware" do
       Class.new(Riot::ContextMiddleware) do
         register
         def handle?(context); context.description == "Foo"; end
-        def prepare(context) context.setup { "fooberries" }; end
+        def call(context) context.setup { "fooberries" }; end
       end
     end
 
@@ -49,7 +49,7 @@ context "ContextMiddleware" do
       Class.new(Riot::ContextMiddleware) do
         register
         def handle?(context); context.description == "Foo"; end
-        def prepare(context) context.setup { "foo" }; end
+        def call(context) context.setup { "foo" }; end
       end
     end
 
@@ -57,7 +57,7 @@ context "ContextMiddleware" do
       Class.new(Riot::ContextMiddleware) do
         register
         def handle?(context); context.description == "Foo"; end
-        def prepare(context) context.setup { topic + "berries" }; end
+        def call(context) context.setup { topic + "berries" }; end
       end
     end
 

@@ -1,5 +1,58 @@
 *0.10.14.pre*
 
+* Added option to Context#setup which puts the specific setup block at the beginning of the setups to be called for a context. Also useful for middlewares. [jaknowlden]
+
+    context "Foo" do
+      setup { puts "called second" }
+      setup { puts "called third" }
+      setup(true) { puts "called first" }
+    end # Foo
+
+* Added idea of options for a context. This is another feature picked up from riot-rails work. [jaknowlden]
+
+Essentially, these are useful for middlewares. For instance, if you wanted to tell a middleware that was looking for a "transactional" option before running code in a transaction block, you might do this:
+
+    context User do
+      set :transactional, true
+    end # User
+
+The middleware might do something with it:
+
+    class TransactionalMiddleware < Riot::ContextMiddleware
+      register
+
+      def handle?(context) context.option(:transactional) == true; end
+
+      def prepare(context)
+        # transactional stuff
+      end
+    end # TransactionalMiddleware
+
+You can call set as many times as you like
+
+    context User do
+      set :transactional, true
+      set :foo, :bar
+    end
+
+* ContextMiddleware: a construction pattern that allows for custom code to be applied to any context given that the middleware chooses to. This is something I started building into riot-rails and decided it was useful enough to just put it into riot itself. [jaknowlden]
+
+If, for instance, you wanted to add a setup with some stuff only if the context description was equal to "Your Mom":
+
+    class YourMomMiddleware < Riot::ContextMiddleware
+      register
+
+      def handle?(context)
+        context.description == "Your Mom"
+      end
+
+      def prepare(context)
+        context.setup do
+          "your mom is the topic"
+        end
+      end
+    end # YourMomMiddleware
+
 *0.10.13*
 
 * Helpers are now run with other setups, not separately. Which means you could use a helper in a setup. [jaknowlden]

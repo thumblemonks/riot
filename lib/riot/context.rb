@@ -106,8 +106,13 @@ module Riot
     #     setup { topic * 2 }
     #     asserts(:length).equals(6)
     #   end
-    def setup(&definition)
-      (@setups << Setup.new(&definition)).last
+    #
+    # If you provide +true+ as the first argument, the setup will be unshifted onto the list of setups,
+    # ensuring it will be run before any other setups. This is really only useful for context middlewares.
+    def setup(premium=false, &definition)
+      setup = Setup.new(&definition)
+      premium ? @setups.unshift(setup) : @setups.push(setup)
+      setup
     end
 
     # Helpers are essentially methods accessible within a situation.
@@ -189,6 +194,7 @@ module Riot
     end
 
     def detailed_description
+      # d = @description.kind_of?(Class) ? @description.name : @description
       "#{parent.detailed_description} #{description}".strip
     end
 

@@ -124,13 +124,25 @@ context "A context with a helper" do
   asserts("calling a helper with an argument") { append("bar") }.equals("foobar")
 end
 
+context "A context with nested descriptions as classes" do
+  setup { Riot::Context.new(String) {}.context(Hash) {} }
+  asserts(:description).equals { Hash }
+  asserts(:detailed_description).equals("String Hash")
+end
 
-context "A context with a description" do
-  Foo, Bar = Class.new {}, Class.new {}
+class SingletonArray
+  def self.<<(value); values << value; end
+  def self.values; @@values ||= []; end
+end
+
+context "A context with premium_setup" do
   setup do
-    Riot::Context.new(Foo) {}.context(Bar) {}
+    Riot::Context.new("Foo") do
+      setup { SingletonArray << "baz" }
+      setup(true) { SingletonArray << "bar" }
+      setup(true) { SingletonArray << "foo" }
+    end.run(MockReporter.new)
   end
 
-  asserts(:description).equals(Bar)
-  asserts(:detailed_description).equals("Foo Bar")
+  asserts("order of setups ensures topic") { SingletonArray.values }.equals(%w[foo bar baz])
 end

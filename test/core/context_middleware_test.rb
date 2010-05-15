@@ -17,6 +17,7 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
+        def handle?(context) context.description == "Bar"; end
         def call(context) context.setup { "fooberries" }; end
       end
     end
@@ -32,7 +33,7 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); context.description == "Foo"; end
+        def handle?(context); true; end
         def call(context) context.setup { "fooberries" }; end
       end
     end
@@ -48,7 +49,7 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); context.description == "Foo"; end
+        def handle?(context); true; end
         def call(context) context.setup { "foo" }; end
       end
     end
@@ -56,7 +57,7 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); context.description == "Foo"; end
+        def handle?(context); true; end
         def call(context) context.setup { topic + "berries" }; end
       end
     end
@@ -68,6 +69,22 @@ context "ContextMiddleware" do
     asserts("tests passed") { topic.passes }.equals(1)
   end # that are not exclusive
 
-  # context "with options" do
-  # end # with options
+  context "has access to options" do
+    hookup do
+      Class.new(Riot::ContextMiddleware) do
+        register
+        def handle?(context); context.option(:foo) == "bar"; end
+        def call(context) context.setup { "fooberries" }; end
+      end
+    end
+
+    setup do
+      Riot::Context.new("Foo") do
+        set :foo, "bar"
+        asserts_topic.equals("fooberries")
+      end.run(MockReporter.new)
+    end
+
+    asserts("tests passed") { topic.passes }.equals(1)
+  end # has access to options
 end # ContextMiddleware

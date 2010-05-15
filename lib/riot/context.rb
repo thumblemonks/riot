@@ -34,13 +34,15 @@ module Riot
     #   context "Foo" do
     #     set :transactional, true
     #   end
-    def set(key, value) (@options ||= {})[key] = value; end
+    def set(key, value) options[key] = value; end
 
     # Returns the value of a set option. The key must match exactly, symbols and strings are not
     # interchangeable.
     #
     # @return [Object]
-    def option(key) @options[key]; end
+    def option(key) options[key]; end
+  private
+    def options; @options ||= {}; end
   end
 
   # You make your assertions within a Context. The context stores setup and teardown blocks, and allows for
@@ -69,8 +71,8 @@ module Riot
       @parent = parent || RootContext.new([],[], "")
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
-      prepare_middleware
       self.instance_eval(&definition)
+      prepare_middleware
     end
 
     # Create a new test context.

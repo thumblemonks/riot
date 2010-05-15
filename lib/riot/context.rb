@@ -194,7 +194,6 @@ module Riot
     end
 
     def detailed_description
-      # d = @description.kind_of?(Class) ? @description.name : @description
       "#{parent.detailed_description} #{description}".strip
     end
 

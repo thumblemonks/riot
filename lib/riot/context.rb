@@ -1,6 +1,15 @@
 module Riot
   RootContext = Struct.new(:setups, :teardowns, :detailed_description)
 
+  class ContextMiddleware
+    def self.register
+      Context.middlewares << self.new
+    end
+
+    def handle?(context); false; end
+    def prepare(context); end
+  end
+
   module ContextHelpers
     def assertion_class; Assertion; end
     def situation_class; Situation; end
@@ -10,6 +19,11 @@ module Riot
   # teardown blocks, and allows for nesting and refactoring into helpers.
   class Context
     include ContextHelpers
+
+    def self.middlewares
+      @middlewares ||= []
+    end
+
     # The description of the context.
     #
     # @return [String]
@@ -24,7 +38,12 @@ module Riot
       @parent = parent || RootContext.new([],[], "")
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
+      prepare_middleware
       self.instance_eval(&definition)
+    end
+
+    def prepare_middleware
+      Context.middlewares.each { |middleware| middleware.prepare(self) if middleware.handle?(self) }
     end
 
     # Create a new test context.

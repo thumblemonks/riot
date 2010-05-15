@@ -143,7 +143,9 @@ module Riot
       setup { self.instance_eval(&definition); topic }
     end
 
-    # Add a teardown block.
+    # Add a teardown block. You may define multiple of these as well.
+    #
+    #  teardown { Bombs.drop! }
     def teardown(&definition)
       (@teardowns << Setup.new(&definition)).last
     end
@@ -166,11 +168,17 @@ module Riot
     # Passing a Symbol to +asserts+ enables this behaviour. For more information on
     # assertion macros, see {Riot::AssertionMacro}.
     #
-    # @param [String, Symbol] what the property being tested
+    # @param [String, Symbol] the property being tested
     def asserts(what, &definition)
       new_assertion("asserts", what, &definition)
     end
 
+    # Same as #asserts, except it uses the phrase "should" in the report output. Sometimes you feel like a
+    # nut, sometimes you don't.
+    #
+    #   should("ensure expected") { "bar" }.equals("bar")
+    #
+    # @param [String, Symbol] the property being tested
     def should(what, &definition)
       new_assertion("should", what, &definition)
     end

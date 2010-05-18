@@ -1,0 +1,27 @@
+body {
+  margin-top: 1.0em; background-color: #fbf0d5; color: #000000;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+a { color: #444f6a; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1 { font-size: 3.8em; color: #040f2a; margin-bottom: 3px; }
+h1 .small { font-size: 0.4em; }
+h1 a { text-decoration: none }
+h2 { font-size: 1.5em; color: #040f2a; }
+h3 { color: #040f2a; }
+
+.description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+.download { float: right; }
+pre { background: #000; color: #fff; padding: 15px;}
+
+#container { margin: 0 auto; width: 800px; }
+
+#header h1 {
+  font-family: "ChunkFiveRegular"; font-size: 5em;
+}
+
+#footer {
+  padding: 1em 0; color: #555;
+}

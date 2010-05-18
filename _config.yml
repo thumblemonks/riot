@@ -1,0 +1,2 @@
+permalink: /:categories/:title
+server_port: 4567

@@ -1,4 +1,4 @@
-*0.10.14.pre*
+*0.11.0*
 
 * Added option to Context#setup which puts the specific setup block at the beginning of the setups to be called for a context. Also useful for middlewares. [jaknowlden]
 

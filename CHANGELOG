@@ -1,3 +1,19 @@
+*0.11.1.pre
+
+* Middleware can now acts more like you would expect. Middleware now know the next neighbor in the chain and can do stuff to the context before and after the user-defined context is prepared. Removes support for the handle? method. Now we act more like a Rack app. [jaknowlden]
+
+    class MyMiddleware < Riot::ContextMiddleware
+      register
+      
+      def call(context)
+        context.setup { "fooberries" }
+
+        middleware.call(context)
+
+        context.hookup { "furberries" } if context.option(:barns)
+      end
+    end
+
 *0.11.0*
 
 * Added option to Context#setup which puts the specific setup block at the beginning of the setups to be called for a context. Also useful for middlewares. [jaknowlden]

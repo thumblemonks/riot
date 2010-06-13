@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot}
-  s.version = "0.11.0"
+  s.version = "0.11.1.pre"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2010-06-04}
+  s.date = %q{2010-06-12}
   s.description = %q{An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
      "lib/riot/assertion_macros/size.rb",
      "lib/riot/context.rb",
      "lib/riot/message.rb",
+     "lib/riot/middleware.rb",
      "lib/riot/reporter.rb",
      "lib/riot/rr.rb",
      "lib/riot/runnable.rb",
@@ -70,6 +71,7 @@ Gem::Specification.new do |s|
      "test/core/assertion_macros/same_elements_test.rb",
      "test/core/assertion_macros/size_test.rb",
      "test/core/assertion_test.rb",
+     "test/core/chained_context_middleware_test.rb",
      "test/core/context_middleware_test.rb",
      "test/core/context_test.rb",
      "test/core/context_with_options_test.rb",
@@ -109,6 +111,7 @@ Gem::Specification.new do |s|
      "test/core/assertion_macros/same_elements_test.rb",
      "test/core/assertion_macros/size_test.rb",
      "test/core/assertion_test.rb",
+     "test/core/chained_context_middleware_test.rb",
      "test/core/context_middleware_test.rb",
      "test/core/context_test.rb",
      "test/core/context_with_options_test.rb",

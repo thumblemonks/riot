@@ -1,4 +1,4 @@
-*0.11.1.pre
+*0.11.1*
 
 * Middleware can now acts more like you would expect. Middleware now know the next neighbor in the chain and can do stuff to the context before and after the user-defined context is prepared. Removes support for the handle? method. Now we act more like a Rack app. [jaknowlden]
 

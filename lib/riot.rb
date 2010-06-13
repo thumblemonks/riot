@@ -1,4 +1,5 @@
 require 'riot/reporter'
+require 'riot/middleware'
 require 'riot/context'
 require 'riot/situation'
 require 'riot/runnable'

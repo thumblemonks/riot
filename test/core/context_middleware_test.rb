@@ -1,24 +1,28 @@
 require 'teststrap'
 
 context "ContextMiddleware" do
-  setup { Riot::ContextMiddleware.new }
+  setup { Riot::ContextMiddleware.new("") }
   teardown { Riot::Context.middlewares.clear }
 
-  asserts("handle? with context") { topic.handle?("Foo") }.equals(false)
-  asserts("call with context") { topic.call("Foo") }.nil
+  asserts("#call on the base class") do
+    topic.call("Foo")
+  end.raises(RuntimeError, "You should implement call yourself")
 
   context "registration" do
     setup { Class.new(Riot::ContextMiddleware) { register } }
     asserts("registered middlewares list") { Riot::Context.middlewares }.size(1)
-    asserts("registered middleware") { Riot::Context.middlewares.first }.kind_of(Riot::ContextMiddleware)
+    asserts("registered middleware") { Riot::Context.middlewares.first }.kind_of(Class)
   end # registration
 
   context "that is not meant to be used" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context) context.description == "Bar"; end
-        def call(context) context.setup { "fooberries" }; end
+        # def handle?(context) context.description == "Bar"; end
+        def call(context)
+          context.setup { "fooberries" } if context.description == "Bar"
+          middleware.call(context)
+        end
       end
     end
 
@@ -33,8 +37,11 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); true; end
-        def call(context) context.setup { "fooberries" }; end
+        # def handle?(context); true; end
+        def call(context)
+          context.setup { "fooberries" }
+          middleware.call(context)
+        end
       end
     end
 
@@ -49,16 +56,20 @@ context "ContextMiddleware" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); true; end
-        def call(context) context.setup { "foo" }; end
+        def call(context)
+          context.setup { topic + "berries" }
+          middleware.call(context)
+        end
       end
     end
 
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); true; end
-        def call(context) context.setup { topic + "berries" }; end
+        def call(context)
+          context.setup { "foo" }
+          middleware.call(context)
+        end
       end
     end
 
@@ -69,12 +80,14 @@ context "ContextMiddleware" do
     asserts("tests passed") { topic.passes }.equals(1)
   end # that are not exclusive
 
-  context "has access to options" do
+  context "has access to options after context setup" do
     hookup do
       Class.new(Riot::ContextMiddleware) do
         register
-        def handle?(context); context.option(:foo) == "bar"; end
-        def call(context) context.setup { "fooberries" }; end
+        def call(context)
+          middleware.call(context)
+          context.setup { "fooberries" } if context.option(:foo) == "bar"
+        end
       end
     end
 
@@ -86,5 +99,5 @@ context "ContextMiddleware" do
     end
 
     asserts("tests passed") { topic.passes }.equals(1)
-  end # has access to options
+  end # has access to options after context setup
 end # ContextMiddleware

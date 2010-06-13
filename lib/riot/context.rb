@@ -1,31 +1,10 @@
 module Riot
   RootContext = Struct.new(:setups, :teardowns, :detailed_description)
 
-  class ContextMiddleware
-    # Registers the current middleware class with Riot so that it may be included in the set of middlewares
-    # Riot will poke before executing a Context.
-    #
-    #   class MyContextMiddleware < Riot::ContextMiddleware
-    #     register
-    #     def handle?(context); ...; end
-    #     def prepare(context); ...; end
-    #   end
-    def self.register; Context.middlewares << self.new; end
-
-    # Called prior to a Context being executed. If this method returns true, +call+ will be called. This
-    # methods expects to receive an instance of the Context to be executed. Generally, you will inspect
-    # various aspects of the Context to determine if this middleware is meant to be used.
-    def handle?(context); false; end
-
-    # The meat of the middleware. Because you have access to the Context, you can add your own setups,
-    # hookups, etc. +call+ will be called before any tests are run, but after the Context is configured.
-    def call(context); end
-  end
-
   module ContextClassOverrides
     def assertion_class; Assertion; end
     def situation_class; Situation; end
-  end
+  end # ContextClassOverrides
 
   module ContextOptions
     # Set options for the specific context. These options will generally be used for context middleware.
@@ -43,7 +22,7 @@ module Riot
     def option(key) options[key]; end
   private
     def options; @options ||= {}; end
-  end
+  end # ContextOptions
 
   # You make your assertions within a Context. The context stores setup and teardown blocks, and allows for
   # nesting and refactoring into helpers. Extension developers may also configure ContextMiddleware objects
@@ -71,8 +50,7 @@ module Riot
       @parent = parent || RootContext.new([],[], "")
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
-      self.instance_eval(&definition)
-      prepare_middleware
+      prepare_middleware(&definition)
     end
 
     # Create a new test context.
@@ -201,14 +179,18 @@ module Riot
       runnables.each { |runnable| reporter.report(runnable.to_s, runnable.run(situation)) }
     end
 
+    # Prints the full description from the context tree
     def detailed_description
       "#{parent.detailed_description} #{description}".strip
     end
 
   private
 
-    def prepare_middleware
-      Context.middlewares.each { |middleware| middleware.call(self) if middleware.handle?(self) }
+    def prepare_middleware(&context_definition)
+      last_middleware = AllImportantMiddleware.new(&context_definition)
+      Context.middlewares.inject(last_middleware) do |last_middleware, middleware|
+        middleware.new(last_middleware)
+      end.call(self)
     end
 
     def runnables
@@ -232,4 +214,5 @@ module Riot
       (@assertions << assertion_class.new(description, &definition)).last
     end
   end # Context
+
 end # Riot

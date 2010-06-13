@@ -3,3 +3,4 @@ pkg
 .*.swp
 doc
 .yardoc
+*.tmproj

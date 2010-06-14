@@ -1,5 +1,5 @@
 module Riot
-  RootContext = Struct.new(:setups, :teardowns, :detailed_description)
+  RootContext = Struct.new(:setups, :teardowns, :detailed_description, :options)
 
   module ContextClassOverrides
     def assertion_class; Assertion; end
@@ -20,7 +20,10 @@ module Riot
     #
     # @return [Object]
     def option(key) options[key]; end
-  private
+
+    # Returns the has of defined options.
+    #
+    # @return [Hash]
     def options; @options ||= {}; end
   end # ContextOptions
 
@@ -47,9 +50,10 @@ module Riot
     attr_reader :parent
 
     def initialize(description, parent=nil, &definition)
-      @parent = parent || RootContext.new([],[], "")
+      @parent = parent || RootContext.new([],[], "", {})
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
+      @options = @parent.options
       prepare_middleware(&definition)
     end
 

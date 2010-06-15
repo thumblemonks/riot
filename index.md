@@ -29,7 +29,7 @@ Of course, you can nest contexts as well; the `setup` blocks are executed outsid
 
       context "with one element" do
         setup { topic << "foo" }
-        asserts("is not empty") { !topic.empty? }
+        asserts("array is not empty") { !topic.empty? }
         asserts("returns the element on #first") { topic.first == "foo" }
       end
     end # An Array
@@ -64,7 +64,31 @@ There are a bunch of [built-in assertion macros](). Elsewhere, we'll explain to 
 
 ### Setups, Hookups, and Helpers
 
-We're not done yet; there's plenty more cool stuff for you to know about.
+We're not done yet; there's plenty more cool stuff for you to know about. You know about `setup` already; but you may not know that you can call `setup` multiple times within a Context. Well, you can. They run in the order you write them (top-down) and the result of a prior `setup` will be the `topic` for the next setup. in this way you *could* chain together some partitioned setup criteria without ever explicitly setting a variable (instance or local).
+
+    context "A cheesey order" do
+      setup { Cheese.create!(:name => "Blue") }
+      setup { Order.create!(:cheese => topic, :purchase_order => "123-abc") }
+      
+      asserts_topic.kind_of(Order) # I love tests that are readable
+    end # A cheesey order
+
+This notion about a prior `setup` being the `topic` for a latter `setup` is true even when the `setup` is called from a parent Context.
+
+More than likely, however, you'll want to modify something about the topic without changing what the topic for the context is. To do this, Riot provides the `hookup` block, which is just like a `setup` block except that `hookup` will always return the `topic` that was provided to it. It's kind of like calling `Object#tap`. Here's a for-instance:
+
+    context "A Person" do
+      setup { Person.new(:name => "Master Blasterr") }
+
+      asserts(:valid?).not!
+
+      context "with valid email" do
+        hookup { topic.email = "master@blast.err" }
+        asserts(:valid?) # Yay!
+      end # with valid email
+    end # A complex thing
+
+You can also `hookup` as many times as you like; the great part is that the `topic` never changes.
 
 ### The Situation
 
@@ -74,10 +98,33 @@ By now you're probably asking yourself, "How could Riot get any better?"
 
 ### Writing Your Own Assertion Macros
 
+### Mocking
+
+* rr
+
 ## Riot and Frameworks
 
 ### Sinatra
 
+* chicago
+
 ### Rails
 
+* riot-rails
+
+### Mongoid
+
+* riot-mongoid
+
 ## Common Recipes
+
+### Adding context helpers methods
+
+### Lazy-loaded helpers
+
+    helper(:foo) { @foo ||= Foo.new }
+
+## Oddities
+
+* Riot.dots
+* WVSI96

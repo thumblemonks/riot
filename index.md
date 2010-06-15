@@ -18,9 +18,9 @@ In Riot, tests reside in `contexts`. Within these, a `topic` object is defined t
     context "An Array" do
       setup { Array.new }
       asserts("is empty") { topic.empty? }
-    end
+    end # An Array
 
-As you can see, the setup block doesn't use any instance variables to save the object under test -- rather, the return value of the block is used as the `topic`. This object can then be accessed in the assertions using the `topic` attribute. Furthermore, assertions need only return a boolean; `true` indicates a pass, while `false` indicates a fail.
+As you can see, the setup block doesn't use any instance variables to save the object under test -- rather, the return value of the block is used as the `topic`. This object can then be accessed in the assertions using the `topic` attribute. Furthermore, at their very basic level, assertions need only return a boolean; `true` indicates a pass, while `false` indicates a fail.
 
 Of course, you can nest contexts as well; the `setup` blocks are executed outside-in; as in, the parents' setups are run before the current context allowing for a setup hierarchy; this is also what you would expect from other frameworks.
 
@@ -32,19 +32,47 @@ Of course, you can nest contexts as well; the `setup` blocks are executed outsid
         asserts("is not empty") { !topic.empty? }
         asserts("returns the element on #first") { topic.first == "foo" }
       end
-    end
+    end # An Array
 
-### Contexts
+By the way, you can put use any kind of ruby object in your context description. Riot will call `to_s` on the actual value before it is used in a reporting context. This fact will become useful later ;)
 
-### Assertions and Macros
+### Assertion Macros
+
+Well, how useful would Riot be if you could only return true/false from an assertion? Pretty useful, actually; but, we can make it more useful! No; that's not crazy. No it isn't. Yes; I'm sure.
+
+We can do this with assertion macros. You can think of these as special assertion modifiers that check the return value of the assertion block. Actually, it's not that you **can** think of them this way; you **should** think of them this way.
+
+Let's take this little for instance:
+
+    context "Yum" do
+      setup { ["cookies", "donuts"] }
+      asserts("#first") { topic.first }.equals("cookies")
+    end # Yum
+
+First, how's that for a readable test? Second, you should notice that the assertion block will return the `first` item in from the `topic`, which is assumed to be `Enumerable`. If it isn't, then you have other problems. Since the first element in the array is "cookies", the assertion will pass. Yay!
+
+But wait, there's more. Riot is about helping you write tests faster and to be more readable. Notice any duplication in the example above (besides the value "cookies")? I do. How about that `first` notation in the assertion name and reference in the assertion block. Riot provides a shortcut which allows you reference methods on the topic through the assertion name. Here's another way to write the same test:
+
+    context "Yum" do
+      setup { ["cookies", "donuts"] }
+      asserts(:first).equals("cookies")
+    end # Yum
+
+Now that real yum.
+
+There are a bunch of [built-in assertion macros](). Elsewhere, we'll explain to you how to write your own.
 
 ### Setups, Hookups, and Helpers
 
-### Writing Your Own Macros
+We're not done yet; there's plenty more cool stuff for you to know about.
 
 ### The Situation
 
 ### Context Middleware
+
+By now you're probably asking yourself, "How could Riot get any better?"
+
+### Writing Your Own Assertion Macros
 
 ## Riot and Frameworks
 

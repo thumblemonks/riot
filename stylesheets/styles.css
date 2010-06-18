@@ -16,11 +16,19 @@ h3 { color: #040f2a; }
 .download { float: right; }
 pre { background: #000; color: #fff; padding: 15px;}
 
+.rounded { border-radius: 1ex; -moz-border-radius: 1ex; -webkit-border-radius: 1ex; }
+
 #container { margin: 0 auto; width: 800px; }
 
 #header h1 {
   font-family: "ChunkFiveRegular"; font-size: 5em;
 }
+#header #menu {
+  padding: 1ex; margin: 1ex 0;
+  background-color: #c9d0e1;
+}
+  #header #menu ul { padding: 0; margin: 0; }
+    #header #menu ul li { list-style: none; padding: 0 1em 0 0; margin: 0; display: inline-block; }
 
 #footer {
   padding: 1em 0; color: #555;

@@ -64,7 +64,7 @@ There are a bunch of [built-in assertion macros](). Elsewhere, we'll explain to 
 
 ### Setups, Hookups, and Helpers
 
-We're not done yet; there's plenty more cool stuff for you to know about. You know about `setup` already; but you may not know that you can call `setup` multiple times within a Context. Well, you can. They run in the order you write them (top-down) and the result of a prior `setup` will be the `topic` for the next setup. in this way you *could* chain together some partitioned setup criteria without ever explicitly setting a variable (instance or local).
+We're not done yet; there's plenty more cool stuff for you to know about. You know about `setup` already; but you may not know that you can call `setup` multiple times within a Context. Well, you can. They run in the order you write them (top-down) and the result of a prior `setup` will be the `topic` for the next setup. In this way you **could** chain together some partitioned setup criteria without ever explicitly setting a variable (instance or local).
 
     context "A cheesey order" do
       setup { Cheese.create!(:name => "Blue") }
@@ -88,7 +88,63 @@ More than likely, however, you'll want to modify something about the topic witho
       end # with valid email
     end # A complex thing
 
-You can also `hookup` as many times as you like; the great part is that the `topic` never changes.
+If the point didn't smack you in the face there, think about using `setup` instead of `hookup` in the sub-context. Had you written that as a `setup` block, you'd have to return `topic` after setting the email address, or else the new topic would be the actual email address; and you probably don't want to actually be calling `"master@blast.err".valid?` in the assertion.
+
+You can also call `hookup` as many times as you like; the great part is that the `topic` never changes.
+
+#### Helpers
+
+You remember how you used to - or currently do - create instance variables to hold some data that you're going to use in your tests? Well, Riot allows you to still do that yucky stuff, but would rather you use a helper to encapsulate it. For instance, you could do this:
+
+    context "A greedy monkey" do
+      setup do
+        @a_banana = Banana.new(:ripe => true)
+        Monkey.new
+      end
+
+      hookup { topic.takes(@a_banana) }
+
+      asserts(:bananas).size(1)
+    end # A greedy monkey
+
+Or, you could do this
+
+    context "A greedy monkey" do
+      helper(:a_banana) { Banana.new(:ripe => true) }
+      setup { Monkey.new }
+      hookup { topic.takes(a_banana) }
+      asserts(:bananas).size(1)
+    end # A greedy monkey
+
+"So! What's the difference?", you ask. Nothing really. It's all aesthetic; but, it's a better aesthetic for a couple of reasons. Let me tell you why:
+
+1. Helpers are good ways to encapsulate related setup data and give that data namespace
+2. The act of setting up data does not clutter up your setups or assertions
+3. I'll argue that it makes the code more readable; ex. how do you verbalize to your friends `@a_banana` and `a_banana`. In the former, I probably say "at a banana" and think "Why do I sound like a muppet when I talk?".
+3. Being that helpers are blocks, you can actually pass arguments to them
+
+What's that about (4)? Yes, helpers are really just over-glorified methods, which means you can pass arguments to them. Which means you can build factories with them. Which means those factories can go away when the context is no longer used and they're no longer cluttering up your object space. You want another for instance, eh?
+
+    context "A greedy monkey" do
+      helper(:make_a_banana) do |color|
+        Banana.new(:color => color)
+      end
+
+      setup { Monkey.new }
+
+      hookup do
+        topic.takes(make_a_banana("green"))
+        topic.takes(make_a_banana("blue"))
+      end
+
+      asserts(:bananas).size(2)
+      asserts("green bananas") { topic.bananas.green }.size(1)
+      asserts("blue bananas") { topic.bananas.blue }.size(1)
+    end # A greedy monkey
+
+Or you could `make_many_bananas` or whatever. There are also lots of clever ways to get helpers included into a context which you will hopefully see when you read up on Context Middleware and look through the Recipes. Riot Rails makes liberal use of helpers when [setting up a context](http://github.com/thumblemonks/riot-rails/master/lib/riot/action_controller/context_middleware.rb) to test controllers.
+
+Again, you define as many helpers as you like; you can also replace existing helpers by simply defining a helper with the same name (*that's because they're just methods defined within the context instance ... shhh*).
 
 ### The Situation
 
@@ -120,7 +176,7 @@ By now you're probably asking yourself, "How could Riot get any better?"
 
 ### Adding context helpers methods
 
-### Lazy-loaded helpers
+### Lazy-loaded factory-ish helpers
 
     helper(:foo) { @foo ||= Foo.new }
 

@@ -2,36 +2,38 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="description" content="{{ page.description }}">
-  <meta name="keywords" content="{{ page.keywords }}">
-  <title>Riot - {{ page.title }}</title>
-  <link rel="stylesheet" href="stylesheets/styles.css">
-  <link rel="stylesheet" href="stylesheets/type/type.css">
-</head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="{{ page.description }}">
+    <meta name="keywords" content="{{ page.keywords }}">
+    <title>Riot - {{ page.title }}</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/type/type.css">
+  </head>
 
-<body>
+  <body>
 
-  <div id="container">
-    <div id="header">
-      <h1>Riot</h1>
-      <div id="description">
-        An extremely fast-running, expressive, and context-driven unit testing framework. Protest the slow
-        test.
+    <div id="container">
+      <div id="header">
+        <h1>Riot</h1>
+        <div id="description">
+          An extremely fast-running, expressive, and context-driven unit testing framework. Protest the slow
+          test.
+        </div>
+      </div>
+
+      <div id="content">
+        {{ content }}
+      </div>
+
+      <div id="footer">
+        <a href="/about">About</a> /
+        <a href="http://github.com/thumblemonks/riot">Source code</a> /
+        <a href="http://rdoc.info/projects/thumblemonks/riot">Documentation</a>
       </div>
     </div>
 
-    <div id="content">
-      {{ content }}
-    </div>
-
-    <div id="footer">
-      <a href="/about">About</a> /
-      <a href="http://github.com/thumblemonks/riot">Source code</a> /
-      <a href="http://rdoc.info/projects/thumblemonks/riot">Documentation</a>
-    </div>
-  </div>
-
-</body>
+    <script src="/javascripts/jquery-1.4.2.min.js"></script>
+    <script src="/javascripts/site.js"></script>
+  </body>
 </html>

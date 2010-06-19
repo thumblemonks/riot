@@ -146,14 +146,6 @@ Or you could `make_many_bananas` or whatever. There are also lots of clever ways
 
 Again, you define as many helpers as you like; you can also replace existing helpers by simply defining a helper with the same name (*that's because they're just methods defined within the context instance ... shhh*).
 
-### The Situation
-
-### Context Middleware
-
-By now you're probably asking yourself, "How could Riot get any better?"
-
-### Writing Your Own Assertion Macros
-
 ### Mocking
 
 * rr
@@ -171,14 +163,6 @@ By now you're probably asking yourself, "How could Riot get any better?"
 ### Mongoid
 
 * riot-mongoid
-
-## Common Recipes
-
-### Adding context helpers methods
-
-### Lazy-loaded factory-ish helpers
-
-    helper(:foo) { @foo ||= Foo.new }
 
 ## Oddities
 

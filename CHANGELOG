@@ -1,3 +1,11 @@
+*0.11.3*
+
+* Modified `matches` assertion macro to treat actual as a string before executing regular expression comparison. [jaknowlden]
+
+    asserts("a number") { 42 }.matches(/\d+/)
+    # same as
+    asserts("a number as string") { "42" }.matches(/\d+/)
+
 *0.11.2*
 
 * [ISSUE] Options were not nesting. Now fixed. [jaknowlden]

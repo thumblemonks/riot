@@ -7,7 +7,7 @@ module Riot
 
     def evaluate(actual, expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
-      if actual =~ expected
+      if actual.to_s =~ expected
         pass(new_message.matches(expected))
       else
         fail(expected_message(expected).to_match(actual))

@@ -1,12 +1,16 @@
 module Riot
   class Reporter
     attr_accessor :passes, :failures, :errors, :current_context
+
     def initialize
       @passes = @failures = @errors = 0
       @current_context = ""
     end
 
+    def new(*args, &block); self; end
+
     def success?; (@failures + @errors) == 0; end
+
     def summarize(&block)
       started = Time.now
       yield
@@ -32,9 +36,9 @@ module Riot
       end
     end
 
-    def new(*args, &block)
-      self
-    end
+    def pass(description, result); end
+    def fail(description, message, line, file); end
+    def error(description, result); end
   end # Reporter
 
   class IOReporter < Reporter

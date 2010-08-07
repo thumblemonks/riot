@@ -50,4 +50,5 @@ class Object
   def context(description, context_class = Riot::Context, &definition)
     Riot.context(description, context_class, &definition)
   end
+  alias_method :describe, :context
 end

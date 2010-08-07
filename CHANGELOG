@@ -1,3 +1,21 @@
+*0.11.4.pre*
+
+* Added `describe` alias for `context` for easier rspec porting. Useful at the top level and within a context. [kriss]
+
+Who can argue with porting from rspec to riot? Not me. [jaknowlden]
+
+    describe "My thing" do
+      asserts(:size).equals(:small)
+    end # My thing
+
+The following also works:
+
+    context "Another thing is"
+      describe "my" do
+        asserts_topic.equals("marshmallow") # this test will fail ... because it will ... because it's wrong
+      end # my
+    end # Another thing is
+
 *0.11.3*
 
 * Modified `matches` assertion macro to treat actual as a string before executing regular expression comparison. [jaknowlden]

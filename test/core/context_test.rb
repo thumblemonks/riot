@@ -146,3 +146,12 @@ context "A context with premium_setup" do
 
   asserts("order of setups ensures topic") { SingletonArray.values }.equals(%w[foo bar baz])
 end
+
+context "The describe alias" do
+  setup do
+    Riot::Context.new("Foo") {}
+  end
+
+  asserts("any ol' object") { Object.new }.responds_to(:describe)
+  asserts_topic.responds_to :describe
+end # The describe alias

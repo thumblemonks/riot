@@ -63,6 +63,7 @@ module Riot
     def context(description, &definition)
       new_context(description, self.class, &definition)
     end
+    alias_method :describe, :context
 
     # Returns an ordered list of the setup blocks for the context.
     #

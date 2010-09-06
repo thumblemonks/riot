@@ -1,6 +1,8 @@
-*0.11.4.pre*
+*0.11.4*
 
-* Added `describe` alias for `context` for easier rspec porting. Useful at the top level and within a context. [kriss]
+* Passing Proc's instead of lambdas to `instance_eval` to comply with ruby 1.9.2. [skade]
+
+* Added `describe` alias for `context` for easier rspec porting. Useful at the top level and within a context. [nu7hatch]
 
 Who can argue with porting from rspec to riot? Not me. [jaknowlden]
 

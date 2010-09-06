@@ -210,7 +210,7 @@ module Riot
 
     def new_assertion(scope, what, &definition)
       if what.kind_of?(Symbol)
-        definition ||= lambda { topic.send(what) }
+        definition ||= proc { topic.send(what) }
         description = "#{scope} ##{what}"
       else
         description = "#{scope} #{what}"

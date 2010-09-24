@@ -1,9 +1,9 @@
 body {
-  margin-top: 1.0em; background-color: #fbf0d5; color: #000000;
+  margin: 0; padding: 0; background-color: #ffffff; color: #000000;
   font-family: Helvetica, Arial, sans-serif;
 }
 
-a { color: #444f6a; text-decoration: none; }
+a { color: #0a5; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 h1 { font-size: 3.8em; color: #040f2a; margin-bottom: 3px; }
@@ -12,24 +12,41 @@ h1 a { text-decoration: none }
 h2 { font-size: 1.5em; color: #040f2a; }
 h3 { color: #040f2a; }
 
+p { text-align: justify; }
+
 .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
 .download { float: right; }
 pre { background: #000; color: #fff; padding: 15px;}
 
-.rounded { border-radius: 1ex; -moz-border-radius: 1ex; -webkit-border-radius: 1ex; }
+.rounded { border-radius: 0.5ex; -moz-border-radius: 0.5ex; -webkit-border-radius: 0.5ex; }
 
-#container { margin: 0 auto; width: 800px; }
+.container { margin: 0 auto; width: 960px; }
 
+#header {
+  background-color: #eee; padding: 1em 0; clear: both;
+}
 #header h1 {
-  font-family: "ChunkFiveRegular"; font-size: 5em;
+  font-family: "ChunkFiveRegular"; font-size: 3em; color: #0a5;
+  margin: 0; padding: 0;
+}
+#header h3 {
+  font-size: 0.75em; font-weight: normal; color: #888; text-transform: uppercase;
+  margin: 0; padding: 0;
 }
 #header #menu {
-  padding: 1ex; margin: 1ex 0;
-  background-color: #c9d0e1;
+  padding: 1ex 0; margin: 1ex 0; float: right; clear: both;
 }
   #header #menu ul { padding: 0; margin: 0; }
-    #header #menu ul li { list-style: none; padding: 0 1em 0 0; margin: 0; display: inline-block; }
+    #header #menu ul li { list-style: none; padding: 0 0 0 1em; margin: 0; display: inline-block; }
+
+#header #release-info {
+  float: right; clear: both; padding: 0.5ex; background-color: #fafafa;
+  border: 1px solid #dadada; color: #666; font-size: 90%;
+}
+
+#section { clear: both; }
 
 #footer {
+  margin: 0 auto; width: 960px; 
   padding: 1em 0; color: #555;
 }

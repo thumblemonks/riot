@@ -60,7 +60,7 @@ But wait, there's more. Riot is about helping you write tests faster and to be m
 
 Now that's real yum.
 
-There are a bunch of [built-in assertion macros](/assertion-macros.html). Elsewhere, we'll explain to you how to write your own.
+There are a bunch of built-in assertion macros. Elsewhere, we'll explain to you how to write your own.
 
 ### Setups, Hookups, and Helpers
 

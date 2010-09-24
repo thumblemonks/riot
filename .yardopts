@@ -1,0 +1,7 @@
+--protected
+--no-private
+-
+docs/GettingStarted.markdown
+docs/Hacking.markdown
+CHANGELOG
+MIT-LICENSE

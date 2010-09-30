@@ -166,6 +166,10 @@ module Riot
       new_assertion("should", what, &definition)
     end
 
+    def denies(what, &definition)
+      new_negative_assertion("denies", what, &definition)
+    end
+
     # Makes an assertion on the topic itself, e.g.
     #
     #   asserts_topic.matches(/^ab+/)
@@ -217,6 +221,17 @@ module Riot
       end
 
       (@assertions << assertion_class.new(description, &definition)).last
+    end
+
+    def new_negative_assertion(scope, what, &definition)
+      if what.kind_of?(Symbol)
+        definition ||= proc { topic.send(what) }
+        description = "#{scope} ##{what}"
+      else
+        description = "#{scope} #{what}"
+      end
+
+      (@assertions << assertion_class.new(description, true, &definition)).last
     end
   end # Context
 

@@ -59,6 +59,10 @@ module Riot
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
     end
 
+    def devaluate(actual)
+      !actual ? pass : fail("Expected non-true but got #{actual.inspect} instead")
+    end
+
     # Messaging
 
     def new_message(*phrases) Message.new(*phrases); end

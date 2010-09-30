@@ -8,8 +8,9 @@ module Riot
       end
     end
 
-    def initialize(description, &definition)
-      super
+    def initialize(description, negative=false, &definition)
+      super(description, &definition)
+      @negative = negative
       @expectings, @expectation_block = [], false, nil
       @macro = AssertionMacro.default
     end
@@ -17,7 +18,8 @@ module Riot
     def run(situation)
       @expectings << situation.evaluate(&@expectation_block) if @expectation_block
       actual = situation.evaluate(&definition)
-      @macro.evaluate((@macro.expects_exception? ? nil : actual), *@expectings)
+      macro_arguments = [(@macro.expects_exception? ? nil : actual), *@expectings]
+      @negative ? @macro.devaluate(*macro_arguments) : @macro.evaluate(*macro_arguments)
     rescue Exception => e
       @macro.expects_exception? ? @macro.evaluate(e, *@expectings) : @macro.error(e)
     end

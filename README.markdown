@@ -1,31 +1,19 @@
 # Riot
 
-A fast, expressive and concise unit-testing framework.
+A fast, expressive and concise unit-testing framework. Protest the slow test.
 
 
 ## Installation 
 
-Add Gemcutter to your gem sources:
-
-    !!!plain
-    sudo gem sources -a http://gemcutter.org
-
-Then, simply install the Riot gem like so:
-
-    !!!plain
-    sudo gem install riot
-
+    gem install riot
 
 ## Usage
 
-In contrast to other popular Ruby testing frameworks such as Test::Unit,
-[Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/),
+In contrast to other popular Ruby testing frameworks such as Test::Unit, [minitest](http://github.com/seattlerb/minitest), [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/),
 Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds
-up the test runs quite a bit, but also puts restrictions on how you write your tests. In
-general, you should avoid mutating any objects under test.
+up the test runs quite a bit, but also puts restrictions on how you write your tests. In general, Riot doesn't think you should be mutating any objects under test for a given `context`.
 
-In Riot, tests reside in *contexts*. Within these, a *topic* object is defined through a
-`setup` block. The actual assertions are then made with `assert`.
+In Riot, tests reside in `contexts`. Within these, a `topic` object is defined through a `setup` block. The actual assertions are then made with an `assert` block. For instance:
 
     context "An Array" do
       setup { Array.new }
@@ -33,7 +21,7 @@ In Riot, tests reside in *contexts*. Within these, a *topic* object is defined t
     end
 
 As you can see, the setup block doesn't use any instance variables to save the object under
-test -- rather, the return value of the block is used as the *topic*. This object can then
+test -- rather, the return value of the block is used as the `topic`. This object can then
 be accessed in the assertions using the `topic` attribute.
 
 Furthermore, assertions need only return a boolean; `true` indicates a pass, while `false`
@@ -54,7 +42,7 @@ Contexts can also be nested; the `setup` blocks are executed outside-in before.
 
 ### Using assertion macros
 
-Macros greatly simplify a lot of assertions by capturing common practises, e.g. comparing
+Macros greatly simplify a lot of assertions by capturing common practices, e.g. comparing
 some value using the `==` operator. They work by calling the macro method on the return
 value of `asserts`:
 
@@ -62,41 +50,32 @@ value of `asserts`:
 
 Other macros are available; for a complete overview, see {Riot::AssertionMacro}.
 
-A common pattern is to make assertions on the return value of some attribute or method
-on the `topic` -- to simplify this, we have provided an easy to use shorthand. Simply
-give a Symbol as the first argument to `asserts` and leave out the block.
+A common pattern is to make assertions on the return value of some attribute or method on the `topic` -- to simplify this, we have provided an easy to use shorthand. Simply give a Symbol as the first argument to `asserts` and leave out the block:
 
     asserts(:first).equals("foo")
 
 
-If you're like me, you like to write a bunch of failing tests for a context and then make
-them pass. This can easily be done by simply calling an `asserts` or `should` command with
-no block returning the actual value.
+If you're like me, you like to write a bunch of failing tests for a context and then make them pass. This can easily be done by simply calling an `asserts` or `should` command with no block returning the actual value.
 
     asserts("something special")
     should("do something special")
 
-Both of the above tests will fail. You can use this similar to a `should_eventually`. The
-difference is that `should_eventually` is not technically a failure and will therefore be
-ignored in time by (based on my experience). The above two blocks will actually show up as
-failures and should hopefully drive you to making them pass.
+Both of the above tests will fail. You can use this similar to a `should_eventually`. The difference is that `should_eventually` is not technically a failure and will therefore be ignored in time by (based on my experience). The above two blocks will actually show up as failures and should hopefully drive you to making them pass.
 
 ### Reading Riot's output
 
-Riot can output the test results in several ways, the default being *story reporting*. With
-this reporter, the output looks like the following:
+Riot can output the test results in several ways, the default being *story reporting*. With this reporter, the output looks like the following:
 
     !!!plain
     An Array
-      + asserts is empty
+      + asserts it is empty
     An Array with one element
-      + asserts is not empty
-      + asserts returns the element on #first
+      + asserts it is not empty
+      + asserts it returns the element on #first
     
     3 passes, 0 failures, 0 errors in 0.000181 seconds
 
-The various shorthands and macros are built in a way that ensures expressive and specific
-feedback, e.g. the assertion
+The various shorthands and macros are built in a way that ensures expressive and specific feedback, e.g. the assertion
 
     asserts(:full_name).matches(/^\w+ \w+$/)
 
@@ -105,11 +84,9 @@ yields the output
     !!!plain
     + asserts #full_name matches /^\w+ \w+$/
 
+### Testing Rack applications
 
-### Testing Rack application
-
-Rack applications can easily be tested using [Riot::Rack](http://github.com/dasch/riot-rack),
-which integrates [Rack::Test](http://github.com/brynary/rack-test) into Riot.
+Rack applications can easily be tested using [Riot::Rack](http://github.com/dasch/riot-rack), which integrates [Rack::Test](http://github.com/brynary/rack-test) into Riot.
 
     require 'riot'
     require 'riot/rack'
@@ -130,9 +107,7 @@ which integrates [Rack::Test](http://github.com/brynary/rack-test) into Riot.
 
 ## Contributing
 
-Riot is still in its infancy, so both the internal and external API may change radically.
-That being said, we would love to hear any thoughts and ideas, and bug reports are always
-welcome. We hang out in `#riot` on `irc.freenode.net`.
+Riot is still pretty new and is slowly solidifying its internal and external API. That being said, we would love to hear any thoughts and ideas, and bug reports are always welcome. We hang out in `#riot` on `irc.freenode.net`.
 
 The code is hosted on [GitHub](http://github.com), and can be fetched with
 [Git](http://git-scm.com) by running:

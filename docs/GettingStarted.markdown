@@ -1,6 +1,6 @@
 ## Getting Started
 
-In contrast to other popular Ruby testing frameworks such as Test::Unit, [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/), Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds up the test runs quite a bit, but also puts restrictions on how you write your tests. In general, Riot doesn't think you should be mutating any objects under test for a given `context`.
+In contrast to other popular Ruby testing frameworks such as Test::Unit, [minitest](http://github.com/seattlerb/minitest), [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/), Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds up the test runs quite a bit, but also puts restrictions on how you write your tests. In general, Riot doesn't think you should be mutating any objects under test for a given `context`.
 
 Which is a great segue into this little tid-bit, in Riot tests reside in `contexts`. Within these, a `topic` object is defined through a `setup` block. The actual assertions are then made with an `assert` block. For instance:
 

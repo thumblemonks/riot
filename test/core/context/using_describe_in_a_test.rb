@@ -1,5 +1,14 @@
 require 'teststrap'
 
+context "The describe alias" do
+  setup do
+    Riot::Context.new("Foo") {}
+  end
+
+  asserts("any ol' object") { Object.new }.responds_to(:describe)
+  asserts_topic.responds_to :describe
+end # The describe alias
+
 describe "This describe context" do
   setup { "another thing is my" }
   asserts_topic.kind_of(String)

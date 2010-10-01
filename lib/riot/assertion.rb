@@ -11,7 +11,7 @@ module Riot
     def initialize(description, negative=false, &definition)
       super(description, &definition)
       @negative = negative
-      @expectings, @expectation_block = [], false, nil
+      @expectings, @expectation_block = [], nil
       @macro = AssertionMacro.default
     end
 

@@ -40,3 +40,32 @@ context "An equals assertion macro" do
   end # with block as the expectation
 
 end # An equals assertion macro
+
+context "A negative equals assertion macro" do
+  setup do
+    Riot::Assertion.new("that flirgy", true) { "foo" }
+  end
+
+  asserts(":pass when values do not match") do
+    topic.equals("bar").run(Riot::Situation.new) == [:pass, %Q{is equal to "bar" when it is "foo"}]
+  end
+
+  asserts(":fail when values do match") do
+    topic.equals("foo").run(Riot::Situation.new)[0..1] == [:fail, %Q{did not expect "foo"}]
+  end
+  
+  asserts("result of evaluating when number outside of range") do
+    Riot::Assertion.new("blue", true) { 31415 }.equals(30000..32000).run(Riot::Situation.new)
+  end.equals([:pass, "is equal to 30000..32000 when it is 31415"])
+  
+  context "with block as the expectation" do
+    asserts(":pass when block expectation values do not equal") do
+      topic.equals { "bazzle" }.run(Riot::Situation.new)
+    end.equals([:pass, %Q{is equal to "bazzle" when it is "foo"}])
+  
+    asserts(":fail with message when block expectation values do equal") do
+      topic.equals { "foo" }.run(Riot::Situation.new)[0..1]
+    end.equals([:fail, %Q{did not expect "foo"}])
+  end # with block as the expectation
+
+end # A negative assertion macro

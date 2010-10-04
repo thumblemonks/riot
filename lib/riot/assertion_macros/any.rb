@@ -8,5 +8,9 @@ module Riot
     def evaluate(actual)
       actual.any? ? pass("is not empty") : fail(expected_message(actual).to_have_items)
     end
+
+    def devaluate(actual)
+      actual.any? ? fail(expected_message(actual).not_to_have_elements) : pass("has elements")
+    end
   end
 end

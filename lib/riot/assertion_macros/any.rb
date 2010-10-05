@@ -1,7 +1,13 @@
 module Riot
-  # Asserts the result has items
+  # In the positive case, asserts the result has items using the +any?+ operator.
+  #
   #   asserts("an array") { [1] }.any
   #   asserts("a hash") { {:name => 'washington'} }.any
+  #
+  # In the negative case, asserts the result has no items using the +any?+ operator.
+  #
+  #   denies("an empty array") { [] }.any
+  #   denies("an empty hash") { {} }.any
   class AnyMacro < AssertionMacro
     register :any
 

@@ -1,9 +1,16 @@
 module Riot
-  # Asserts that the result of the test equals the expected value. Using the +==+ operator to assert
-  # equality.
+  # In the positive case, asserts that the result of the test equals the expected value. Using the +==+ 
+  # operator to assert equality.
+  #
   #   asserts("test") { "foo" }.equals("foo")
   #   should("test") { "foo" }.equals("foo")
   #   asserts("test") { "foo" }.equals { "foo" }
+  #
+  # In the negative case, asserts that the result of the test *does not* equal the expected value. Using the
+  # +==+ operator.
+  #
+  #   denies("test") { "foo" }.equals("bar")
+  #   denies("test") { "foo" }.equals { "bar" }
   class EqualsMacro < AssertionMacro
     register :equals
 

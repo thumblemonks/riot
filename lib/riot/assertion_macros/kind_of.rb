@@ -12,5 +12,13 @@ module Riot
         fail expected_message.kind_of(expected).not(actual.class)
       end
     end
+    
+    def devaluate(actual, expected)
+      if actual.kind_of?(expected)
+        fail "expected not kind of #{expected.inspect}"
+      else
+        pass "is not a kind of #{expected.inspect}"
+      end
+    end
   end
 end

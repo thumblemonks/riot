@@ -11,5 +11,10 @@ module Riot
     def evaluate(actual)
       !actual.nil? ? pass("is not nil") : fail("expected a non-nil value")
     end
+    
+    def devaluate(actual)
+      !actual.nil? ? fail("expected a nil value") : pass("is nil")
+    end
+    
   end
 end

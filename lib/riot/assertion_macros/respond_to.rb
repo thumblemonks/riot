@@ -13,5 +13,14 @@ module Riot
         fail(expected_message.method(expected).is_not_defined)
       end
     end
+    
+    def devaluate(actual, expected)
+      if actual.respond_to?(expected)
+        fail(expected_message.method(expected).is_defined)
+      else
+        pass "does not respond to #{expected.inspect}"
+      end
+    end
+    
   end
 end

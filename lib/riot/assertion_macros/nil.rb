@@ -8,5 +8,9 @@ module Riot
     def evaluate(actual)
       actual.nil? ? pass("is nil") : fail(expected_message.nil.not(actual))
     end
+    
+    def devaluate(actual)
+      actual.nil? ? fail("expected not nil") : pass("is not nil")
+    end
   end
 end

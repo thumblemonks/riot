@@ -12,5 +12,9 @@ module Riot
     def evaluate(actual)
       actual ? fail("expected to exist ... not!") : pass("does exist ... not!")
     end
+    
+    def devaluate(actual)
+      actual ? pass("does not exist ... not!") : fail("expected to not exist ... not!")
+    end
   end
 end

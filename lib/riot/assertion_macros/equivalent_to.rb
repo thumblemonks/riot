@@ -18,5 +18,14 @@ module Riot
         fail expected_message(actual).to_be_equivalent_to(expected)
       end
     end
+    
+    def devaluate(actual, expected)
+      if expected === actual
+        fail expected_message(actual).not_to_be_equivalent_to(expected)
+      else
+        pass new_message.is_not_equivalent_to(expected)
+      end
+    end
+    
   end
 end

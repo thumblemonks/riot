@@ -18,7 +18,7 @@ module Riot
     end
 
     def devaluate(actual)
-      actual.empty? ? fail(new_message.expected_to_not_be_empty) : pass(new_message.is_empty)
+      actual.empty? ? fail(expected_message(actual).to_not_be_empty) : pass(new_message.is_empty)
     end
   end
 end

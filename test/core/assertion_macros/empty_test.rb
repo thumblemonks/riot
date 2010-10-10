@@ -32,7 +32,7 @@ context "A negative empty assertion macro" do
 
   asserts("when string is empty") do
     assert_empty("")[0..1]
-  end.equals([:fail, "expected to not be empty"])
+  end.equals([:fail, "expected \"\" to not be empty"])
 
   asserts("when array is not empty") do
     assert_empty([1])
@@ -40,7 +40,7 @@ context "A negative empty assertion macro" do
 
   asserts("when array is empty") do
     assert_empty([])[0..1]
-  end.equals([:fail, "expected to not be empty"])
+  end.equals([:fail, "expected [] to not be empty"])
 
   asserts("when hash is not empty") do
     assert_empty({:boo => "blux"})
@@ -48,5 +48,5 @@ context "A negative empty assertion macro" do
 
   asserts("when hash is empty") do
     assert_empty({})[0..1]
-  end.equals([:fail, "expected to not be empty"])
+  end.equals([:fail, "expected {} to not be empty"])
 end # A negative empty assertion macro

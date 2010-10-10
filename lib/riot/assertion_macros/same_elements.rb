@@ -13,7 +13,7 @@ module Riot
 
     def devaluate(actual, expected)
       same = (Set.new(expected) == Set.new(actual))
-      same ? fail(expected_message.elements(expected).not.to_match(actual)) : pass
+      same ? fail(expected_message.elements(expected).not_to_match(actual)) : pass
     end
 
   end

@@ -18,7 +18,7 @@ module Riot
       if actual.respond_to?(expected)
         fail(expected_message.method(expected).is_defined)
       else
-        pass "does not respond to #{expected.inspect}"
+        pass new_message.does_not_respond_to(expected)
       end
     end
     

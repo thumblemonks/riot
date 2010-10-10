@@ -19,7 +19,7 @@ context "A negative kind_of assertion macro" do
     Riot::Assertion.new("foo", true) { 1 }.kind_of(String)
   end
   
-  assertion_test_fails(":fail when a kind of String", "expected not kind of String") do
+  assertion_test_fails(":fail when a kind of String", "expected not kind of String, not String") do
     Riot::Assertion.new("foo", true) { "a" }.kind_of(String)
   end
 

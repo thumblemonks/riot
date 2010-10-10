@@ -16,9 +16,9 @@ module Riot
     
     def devaluate(actual, expected)
       if actual.include?(expected)
-        fail "expected #{actual.inspect} to not include #{expected}"
+        fail expected_message(actual).to_not_include(expected)
       else
-        pass "does not include #{expected}"
+        pass new_message.does_not_include(expected)
       end
     end
     

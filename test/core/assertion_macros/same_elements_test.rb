@@ -19,11 +19,11 @@ end # A same_elements assertion macro
 context "A negative same_elements assertion macro" do
   setup { Riot::Assertion.new("test", true) { ["foo","bar", 69] } }
   
-  assertion_test_fails("when elements match", %Q{expected elements [69, "foo", "bar"], not to match ["foo", "bar", 69]}) do
+  assertion_test_fails("when elements match", %Q{expected elements [69, "foo", "bar"] not to match ["foo", "bar", 69]}) do
     topic.same_elements([69, "foo", "bar"])
   end
 
-  assertion_test_fails("when any elements match", %Q{expected elements ["foo", "bar", 69], not to match ["foo", "bar", 69]}) do
+  assertion_test_fails("when any elements match", %Q{expected elements ["foo", "bar", 69] not to match ["foo", "bar", 69]}) do
     topic.same_elements(["foo", "bar", 69])
   end
 

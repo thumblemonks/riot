@@ -23,7 +23,7 @@ end
 
 def run_all_tests
   system('clear')
-  result = run "rake test"
+  result = run "rake test:all"
   growl result.split("\n").last rescue nil
   puts result
 end

@@ -21,9 +21,13 @@ module Riot
       macro_arguments = [(@macro.expects_exception? ? nil : actual), *@expectings]
       @negative ? @macro.devaluate(*macro_arguments) : @macro.evaluate(*macro_arguments)
     rescue Exception => e
-      @macro.expects_exception? ? @macro.evaluate(e, *@expectings) : @macro.error(e)
+      if @macro.expects_exception?
+        @negative ? @macro.devaluate(e, *@expectings) : @macro.evaluate(e, *@expectings)
+      else
+        @macro.error(e)
+      end
     end
-  private
+    private
     def enhance_with_macro(name, *expectings, &expectation_block)
       @expectings, @expectation_block = expectings, expectation_block
       @macro = self.class.macros[name.to_s].new

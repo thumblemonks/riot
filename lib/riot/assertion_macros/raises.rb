@@ -24,5 +24,27 @@ module Riot
         pass(expected_message ? message.with_message(expected_message) : message)
       end
     end # evaluate
+
+    def devaluate(actual_exception, expected_class, expected_message=nil)
+      actual_message = actual_exception && actual_exception.message
+      if actual_exception.nil?
+        pass new_message.raised_nothing
+      elsif expected_class != actual_exception.class
+        if expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
+          pass new_message.not_raised(expected_class).with_message(expected_message)
+        else
+          pass new_message.not_raised(expected_class)
+        end
+      else
+        message = should_have_message.not_raised(expected_class)
+        full_msg =
+        if expected_message
+          message.with_message(expected_message).but.raised(actual_exception.class).with_message(actual_exception.message)
+        else
+          message.but.raised(actual_exception.class)
+        end
+        fail full_msg
+      end
+    end # devaluate
   end # RaisesMacro
 end

@@ -27,7 +27,7 @@ module Riot
         @macro.error(e)
       end
     end
-    private
+  private
     def enhance_with_macro(name, *expectings, &expectation_block)
       @expectings, @expectation_block = expectings, expectation_block
       @macro = self.class.macros[name.to_s].new

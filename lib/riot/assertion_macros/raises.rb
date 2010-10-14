@@ -7,6 +7,13 @@ module Riot
   # from the actual raised exception will be converted to a string before any comparison is executed.
   #   asserts("test") { raise My::Exception, "Foo" }.raises(My::Exception, "Foo")
   #   asserts("test") { raise My::Exception, "Foo Bar" }.raises(My::Exception, /Bar/)
+  #
+  # In the negative case, you can test that an exception was not raised or that if an exception was raised
+  # that the type of exception was different (sounds confusing).
+  #
+  #   denies("test") { "foo" }.raises(Exception) # would pass
+  #   denies("test") { raise Exception }.raises(My::Exception) # would pass
+  #   denies("test") { raise Exception }.raises(Exception) # would fail
   class RaisesMacro < AssertionMacro
     register :raises
     expects_exception!
@@ -37,13 +44,12 @@ module Riot
         end
       else
         message = should_have_message.not_raised(expected_class)
-        full_msg =
         if expected_message
-          message.with_message(expected_message).but.raised(actual_exception.class).with_message(actual_exception.message)
+          fail message.with_message(expected_message).but.raised(actual_exception.class).
+            with_message(actual_exception.message)
         else
-          message.but.raised(actual_exception.class)
+          fail message.but.raised(actual_exception.class)
         end
-        fail full_msg
       end
     end # devaluate
   end # RaisesMacro

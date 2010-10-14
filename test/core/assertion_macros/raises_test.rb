@@ -35,6 +35,7 @@ end # A raises assertion macro
 
 context "A negative raises assertion macro" do
   helper(:deny_raises) { |o| Riot::Assertion.new("foo", true) { raise Whoops, o } }
+
   assertion_test_fails("when expected exception is raised", "should have not raised Whoops, but raised Whoops") do
     deny_raises(nil).raises(Whoops)
   end
@@ -56,10 +57,10 @@ context "A negative raises assertion macro" do
   end
 
   assertion_test_fails("when provided message matches expected message", 'should have not raised Whoops with message /Mom/, but raised Whoops with message "Mom"') do
-    deny_raises('Mom').raises(Whoops,/Mom/)
+    deny_raises('Mom').raises(Whoops, /Mom/)
   end
 
-  assertion_test_passes("when messages don't match", 'not raised Whoops with message /Mom/') do
-    deny_raises('Dad').rasies(Whoops,/Mom/)
+  assertion_test_fails("when messages don't match", "should have not raised Whoops with message /Mom/, but raised Whoops with message \"Dad\"") do
+    deny_raises('Dad').raises(Whoops,/Mom/)
   end
 end # A raises assertion macro

@@ -1,3 +1,9 @@
+*0.12.0.pre*
+
+* Negative tests are finally here! Added support for `denies` and adjusted macros to care about it with `devaluate`. [jaknowlden, achiu]
+
+    denies("my name") { "Rumplestiltzkin" }.equals("Henry")
+
 *0.11.4*
 
 * Passing Proc's instead of lambdas to `instance_eval` to comply with ruby 1.9.2. [skade]

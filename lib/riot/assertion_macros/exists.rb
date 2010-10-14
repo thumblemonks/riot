@@ -1,20 +1,27 @@
 module Riot
   # Asserts that the result of the test is a non-nil value. This is useful in the case where you don't want
   # to translate the result of the test into a boolean value
+  #
   #   asserts("test") { "foo" }.exists
   #   should("test") { 123 }.exists
   #   asserts("test") { "" }.exists
   #   asserts("test") { nil }.exists # This would fail
+  #
+  # You can also test for non-existince (being nil), but if you would better if you used the +nil+ macro:
+  #
+  #   denies("test") { nil }.exists # would pass
+  #   asserts("test") { nil }.nil   # same thing
+  #
+  #   denies("test") { "foo" }.exists # would fail
   class ExistsMacro < AssertionMacro
     register :exists
 
     def evaluate(actual)
-      !actual.nil? ? pass("is not nil") : fail("expected a non-nil value")
+      actual.nil? ? fail("expected a non-nil value") : pass("is not nil")
     end
     
     def devaluate(actual)
-      !actual.nil? ? fail("expected a nil value") : pass("is nil")
+      actual.nil? ? pass("is nil") : fail("expected a nil value")
     end
-    
   end
 end

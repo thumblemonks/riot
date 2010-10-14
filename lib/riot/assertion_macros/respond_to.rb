@@ -1,7 +1,12 @@
 module Riot
   # Asserts that the result of the test is an object that responds to the given method
+  #
   #   asserts("test") { "foo" }.respond_to(:to_s)
   #   should("test") { "foo" }.respond_to(:to_s)
+  #
+  # If you want to test that the result does not respond to something:
+  #
+  #   denies("test") { "foo" }.responds_to(:harassment)
   class RespondToMacro < AssertionMacro
     register :respond_to
     register :responds_to

@@ -5,7 +5,12 @@ module Riot
   #   should("test") { "foo" }.equivalent_to("foo")
   #   asserts("test") { "foo" }.equivalent_to { "foo" }
   #
-  # Underneath the hood, this assertion macro says:
+  # You can also assert that the expected value is not equivalent to something else:
+  #
+  #   denies("test") { "foo" }.equivalent_to(Boolean)
+  #   denies("test") { "foo" }.equivalent_to("bar")
+  #
+  # Underneath the hood, this assertion macro uses:
   #
   #   expected === actual
   class EquivalentToMacro < AssertionMacro

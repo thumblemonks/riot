@@ -1,7 +1,13 @@
 module Riot
   # Asserts that the result of the test is nil
+  #
   #   asserts("test") { nil }.nil
   #   should("test") { nil }.nil
+  #
+  # You could test that the result is not nil, but it would make more sense to use the +exists+ macro:
+  #
+  #   denies("test") { "foo" }.nil
+  #   asserts("test") { "foo" }.exists
   class NilMacro < AssertionMacro
     register :nil
 

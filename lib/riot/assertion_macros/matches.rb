@@ -1,7 +1,12 @@
 module Riot
   # Asserts that the result of the test equals matches against the proved expression
+  #
   #   asserts("test") { "12345" }.matches(/\d+/)
   #   should("test") { "12345" }.matches(/\d+/)
+  #
+  # You can also test that the result does not match your regex:
+  #
+  #   denies("test") { "hello, world"}.matches(/\d+/)
   class MatchesMacro < AssertionMacro
     register :matches
 

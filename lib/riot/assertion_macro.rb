@@ -22,6 +22,10 @@ module Riot
   #       def evaluate(actual)
   #         actual.length == 0 ? pass : fail(expected_message(actual).to_be_empty)
   #       end
+  #
+  #       def devaluate(actual)
+  #         actual.empty? ? fail(expected_message(actual).to_not_be_empty) : pass(new_message.is_empty)
+  #       end
   #     end
   #
   class AssertionMacro
@@ -55,10 +59,12 @@ module Riot
 
     def expects_exception?; self.class.expects_exception; end
 
+    # Supports positive assertion testing
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
     end
 
+    # Supports negative/converse assertion testing
     def devaluate(actual)
       !actual ? pass : fail("Expected non-true but got #{actual.inspect} instead")
     end

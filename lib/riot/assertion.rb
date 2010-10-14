@@ -18,14 +18,9 @@ module Riot
     def run(situation)
       @expectings << situation.evaluate(&@expectation_block) if @expectation_block
       actual = situation.evaluate(&definition)
-      macro_arguments = [(@macro.expects_exception? ? nil : actual), *@expectings]
-      @negative ? @macro.devaluate(*macro_arguments) : @macro.evaluate(*macro_arguments)
+      assert((@macro.expects_exception? ? nil : actual), *@expectings)
     rescue Exception => e
-      if @macro.expects_exception?
-        @negative ? @macro.devaluate(e, *@expectings) : @macro.evaluate(e, *@expectings)
-      else
-        @macro.error(e)
-      end
+      @macro.expects_exception? ? assert(e, *@expectings) : @macro.error(e)
     end
   private
     def enhance_with_macro(name, *expectings, &expectation_block)
@@ -36,5 +31,9 @@ module Riot
       self
     end
     alias :method_missing :enhance_with_macro
+
+    def assert(*arguments)
+      @negative ? @macro.devaluate(*arguments) : @macro.evaluate(*arguments)
+    end
   end # Assertion
 end # Riot

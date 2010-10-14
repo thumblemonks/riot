@@ -12,11 +12,15 @@ module Riot
     register :any
 
     def evaluate(actual)
-      actual.any? ? pass("is not empty") : fail(expected_message(actual).to_have_items)
+      any?(actual) ? pass("is not empty") : fail(expected_message(actual).to_have_items)
     end
 
     def devaluate(actual)
-      actual.any? ? fail(expected_message(actual).not_to_have_elements) : pass("has elements")
+      any?(actual) ? fail(expected_message(actual).not_to_have_elements) : pass("has elements")
+    end
+  private
+    def any?(object)
+      object.kind_of?(String) ? object.length > 0 : object.any?
     end
   end
 end

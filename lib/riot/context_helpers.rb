@@ -122,6 +122,9 @@ module Riot
       if what.kind_of?(Symbol)
         definition ||= proc { topic.send(what) }
         description = "#{scope} ##{what}"
+      elsif what.kind_of?(Array)
+        definition ||= proc { topic.send(*what) }
+        description = "#{scope} ##{what.shift} with argument(s): #{what}"
       else
         description = "#{scope} #{what}"
       end

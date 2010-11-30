@@ -148,6 +148,7 @@ context "DotMatrixReporter" do
     asserts_topic('puts an E').matches('E')
     asserts_topic('puts the full context + assertion name').matches('whatever asserts bang')
     asserts_topic('puts the exception message').matches('BOOM')
-    asserts_topic('puts the exception backtrace').matches(__FILE__)
+    # <file path>:<one or more number><two newlines><anything till end of line><newline> is the last thing in the stack trace
+    asserts_topic('puts the filtered exception backtrace').matches(/#{__FILE__}:\d+\n\n.*$\n\z/)
   end
 end

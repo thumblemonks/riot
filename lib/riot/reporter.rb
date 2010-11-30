@@ -62,9 +62,24 @@ module Riot
       format = []
       format << "    #{e.class.name} occurred"
       format << "#{e.to_s}"
-      e.backtrace.each { |line| format << "      at #{line}" }
+      filter_backtrace(e.backtrace).each { |line| format << "      at #{line}" }
 
       format.join("\n")
+    end
+private
+    def filter_backtrace(backtrace)
+      cleansed = []
+      bad = true
+
+      # goal is to filter all the riot stuff/rake before the first non riot thing
+      backtrace.reverse_each do |bt|
+        # make sure we are still in the bad part
+        bad = (bt =~ /\/lib\/riot/ || bt =~ /rake_test_loader/) if bad
+
+        cleansed.unshift bt unless bad
+      end
+
+      cleansed.empty?? backtrace : cleansed
     end
 
     begin

@@ -127,12 +127,12 @@ private
 
     def fail(description, message, line, file)
       print yellow("F")
-      @details << "\n#{yellow 'FAILURE'} - #{line_info(line, file)}\n#{test_detail(description, message)}".strip
+      @details << "FAILURE - #{test_detail(description, message)} #{line_info(line, file)}".strip
     end
 
     def error(description, e)
       print red("E")
-      @details << "\n#{red 'ERROR'}\n#{test_detail(description, format_error(e))}"
+      @details << "ERROR - #{test_detail(description, format_error(e))}"
     end
 
     def results(time_taken)

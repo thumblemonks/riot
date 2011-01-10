@@ -62,11 +62,12 @@ module Riot
       format = []
       format << "    #{e.class.name} occurred"
       format << "#{e.to_s}"
-      filter_backtrace(e.backtrace).each { |line| format << "      at #{line}" }
+      filter_backtrace(e.backtrace) { |line| format << "      at #{line}" }
 
       format.join("\n")
     end
-private
+
+  protected
     def filter_backtrace(backtrace)
       cleansed = []
       bad = true
@@ -76,7 +77,7 @@ private
         # make sure we are still in the bad part
         bad = (bt =~ /\/lib\/riot/ || bt =~ /rake_test_loader/) if bad
 
-        cleansed.unshift bt unless bad
+        yield bt unless bad
       end
 
       cleansed.empty?? backtrace : cleansed

@@ -1,3 +1,9 @@
+*0.12.1*
+
+* Error reporting now filters the backtrace to include only meaningful line items. [mbriggs]
+
+* Added ability to pass method arguments to asserts. [sirupsen]
+
 *0.12.0*
 
 * Negative tests are finally here! Added support for `denies` and adjusted macros to care about it with `devaluate`. [jaknowlden, achiu]

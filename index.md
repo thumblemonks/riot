@@ -11,7 +11,7 @@ layout: default
 
 ## Getting Started
 
-In contrast to other popular Ruby testing frameworks such as Test::Unit, [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/), Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds up the test runs quite a bit, but also puts restrictions on how you write your tests. In general, you should avoid mutating any objects under test.
+In contrast to other popular Ruby testing frameworks such as Test::Unit, [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/), Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds up the test runs quite a bit, but also puts restrictions on how you write your tests. In general, you should avoid mutating any objects under test and if you use Riot you're pretty much going to have to.
 
 In Riot, tests reside in `contexts`. Within these, a `topic` object is defined through a `setup` block. The actual assertions are then made with an `assert` block.
 
@@ -27,6 +27,8 @@ Of course, you can nest contexts as well; the `setup` blocks are executed outsid
     context "An Array" do
       setup { Array.new }
 
+      asserts("is empty") { topic.empty? }
+
       context "with one element" do
         setup { topic << "foo" }
         asserts("array is not empty") { !topic.empty? }
@@ -34,7 +36,7 @@ Of course, you can nest contexts as well; the `setup` blocks are executed outsid
       end
     end # An Array
 
-By the way, you can put use any kind of ruby object in your context description. Riot will call `to_s` on the actual value before it is used in a reporting context. This fact will become useful later ;)
+By the way, you can put any kind of ruby object in your context description. Riot will call `to_s` on the actual value before it is used in a reporting context. This fact will become [useful later](./hacking.html#context-middleware) ;)
 
 ### Assertion Macros
 
@@ -49,7 +51,7 @@ Let's take this little for instance:
       asserts("#first") { topic.first }.equals("cookies")
     end # Yum
 
-First, how's that for a readable test? Second, you should notice that the assertion block will return the `first` item in from the `topic`, which is assumed to be `Enumerable`. If it isn't, then you have other problems. Since the first element in the array is "cookies", the assertion will pass. Yay!
+First, how's that for a readable test? Second, you should notice that the assertion block will return the `first` item from the `topic` (which is assumed to be `Enumerable` in this case); if it isn't `Enumerable`, then you have other problems. Since the first element in the array is "cookies", the assertion will pass. Yay!
 
 But wait, there's more. Riot is about helping you write tests faster and to be more readable. Notice any duplication in the example above (besides the value "cookies")? I do. How about that `first` notation in the assertion name and reference in the assertion block. Riot provides a shortcut which allows you reference methods on the topic through the assertion name. Here's another way to write the same test:
 
@@ -80,7 +82,7 @@ More than likely, however, you'll want to modify something about the topic witho
     context "A Person" do
       setup { Person.new(:name => "Master Blasterr") }
 
-      asserts(:valid?).not!
+      denies(:valid?) # :(
 
       context "with valid email" do
         hookup { topic.email = "master@blast.err" }

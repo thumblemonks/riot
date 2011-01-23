@@ -38,31 +38,77 @@ Remember that `equals` assertion macro from the [Daily Use](/) page? Well, it's 
             fail expected_message(expected).not(actual)
           end
         end
-      end
-    end
 
-Before we break that down, here's a list of five keywords you should see any macro you write: `AssertionMacro`, `register`, `evaluate`, `pass`, `fail`. If you don't see one or some of them, that better be because you are extending/mixing-in functionality that is using that keyword.
+        def devaluate(actual, expected)
+          if expected != actual
+            pass new_message.is_equal_to(expected).when_it_is(actual)
+          else
+            fail new_message.did_not_expect(actual)
+          end
+        end
+      end # EqualsMacro
+    end # Riot
+
+Before we break that down, here's a list of five keywords you should see any macro you write: `AssertionMacro`, `register`, `evaluate`, `devaluate`, `pass`, `fail`. If you don't see one or some of them, that better be because you are extending/mixing-in functionality that is using that keyword.
 
 One, `Riot::AssertionMacro` is required because it has the awesome functionality you need for your macro to execute and report its findings.
 
-Two, `register` is a class helper that actually tells Riot how to tie your usage of `equals` at the end of an assertion to some assertion checking logic (this macro). It's not important whether or not you use a symbol or a string, but it should definitely be something that would match a valid method name. You should also know that if someone else defines a macro with the same name after yours has registered, their's will win; there can be only one.
+Two, `register` is a class helper that actually tells Riot how to tie your usage of `equals` at the end of an assertion to some assertion checking logic (this macro). It's not important whether or not you use a symbol or a string, but it should definitely be something that would match a valid method name. You should also know that if someone else defines a macro with the same name after yours has been registered, their's will win; there can be only one.
 
-Three, `evaluate` is what you will implement to determine if the assertion is valid or not. In regards to `equals`, we only care about the actual value (what was returned by the assertion block the user wrote) and what is expected.
+Three, `evaluate` is what you will implement to satisfy the `asserts` assertions. In regards to `equals`, we only care about the actual value (what was returned by the assertion block the user wrote) and what is expected.
 
-`pass` and `fail` are helpers which return a tuple ... to be truthful, you can return whatever you want so long as your reporter understands it. the current format is `[:status, 'message']` where status is one of `:pass`, `:fail`, and `:error`. go nuts
+Four, `devaluate` is what you will implement to support the `denies` assertion. In this case, the assertion passes if the actual string DOES NOT match the expected one.
 
-#### Message Strings {#message-strings}
+Finally, `pass` and `fail` are helper methods which simply return a tuple. To be truthful, you can return whatever you want so long as Riot can do something with it. The current format is `[status, 'message']` where `status` is one of the following values `:pass`, `:fail`, and `:error`.
 
-"What's that interesting looking message string `expected_message(expected).not(actual)`?", you ask. Well, this a wondrous bundle of joy is all I can say. I got tired of writing strings with interpolated other strings and being all verbose; so I devised a way to let me mostly use english to construct sentences that also take variable values. Let's take a for instance; the message string you so wisely pointed out above would produce the following should the values of `expected` and `actual` be "goobers" and "nerds" respectively:
+*"But, what about that interesting looking message chain thing: `expected_message(expected).not(actual)`?"*, you note.
+
+#### Messages {#message-strings}
+
+Messages are a wondrous bundle of joy is all I can say. I got tired of writing strings with interpolated other strings and being all verbose; so I devised a way to let me mostly use english to construct sentences that also take variable values[^speed]. Let's take a for instance; the message string you so wisely pointed out above would produce the following should the values of `expected` and `actual` be "goobers" and "nerds" respectively:
 
     "expected 'goobers', not 'nerds'"
 
 And that other string, `new_message.is_equal_to(expected)` would produce:
 
     "is equal to 'goobers'"
+    
+`new_message` simply creates a new Message instance. Whereas `expected_message` starts a new Message instance, but prefaces it with "expected"; it's the same as typing `new_message.expected(expected)`. You may also say `should_have_message(expected).not(actual)` to produce:
 
-Why? ...
+    "should have 'goobers', not 'nerds'"
+
+You may only use these three helpers from within an assertion macro, but you can use `Riot::Message` anywhere you want. What you can expect from Message is:
+
+* that any method call &mdash; eg. `is_equal_to` &mdash; will have its name converted to a string and underscores replaced with spaces
+* that any arguments passed to a method call &mdash; eg. `is_equal_to("mommy")` &mdash; will be inspected using `Object#inspect` and have those values appended to the overall message
+* using the method named `comma` will append a ","
+* using the method named `not` will append a ", not"
+* using the method named `but` will append a ", but"
+
+What this means is that you can use Message to generate nice output from your macros, but again you do not have to. You could simply return any string you want.
+
+#### Arguments passed to macros {#macro-arguments}
+
+
+
+#### Working with errors in your macros {#working-with-errors}
+
+Normally, you can ignore errors in your assertion macro because Riot specifically handles them when they are raised. However, if you're intending to write an assertion macro that cares about errors you can do so easily as you are registering it. To declare that your macro expects exceptions, you simply call `expects_exception!`. For instance:
+
+    module Riot
+      class RaisesMacro < AssertionMacro
+        register :raises
+        expects_exception!
+        
+        # ...
+      end # RaisesMacro
+    end # Riot
+
+That is the actual opening stanza to Riot's own `raises macro`. What happens when you register your macro in this way is that Riot will pass the actual exception on to your macro if one is raised while evaluating the assertion block (your macro will be called by default if no exception is raised). The exception itself will be the the first argument passed to `evaluate` or `devaluate` or `nil` in the event nothing was raised.
 
 ### Context Middleware {#context-middleware}
 
 By now you're probably asking yourself, "How could Riot get any better?"
+
+<!-- footnotes -->
+[^speed]: The implementation of Message is actually really fast. It's even benchmarked.

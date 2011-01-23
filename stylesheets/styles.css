@@ -21,6 +21,13 @@ pre { background: #000; color: #fff; padding: 15px;}
 .rounded { border-radius: 0.5ex; -moz-border-radius: 0.5ex; -webkit-border-radius: 0.5ex; }
 
 .container { margin: 0 auto; width: 960px; }
+.container .half {
+  margin: 0 auto 0 0; width: 49%; display: inline-block; vertical-align: top;
+}
+
+/*
+ * header
+ */
 
 #header {
   background-color: #eee; padding: 1em 0; clear: both;
@@ -44,9 +51,35 @@ pre { background: #000; color: #fff; padding: 15px;}
   border: 1px solid #dadada; color: #666; font-size: 90%;
 }
 
+/*
+ * section
+ */
+
 #section { clear: both; }
 
+#section sup { font-family: "Courier New", fixed; }
+#section hr { border-style: dotted; border-width: 1px; border-color: #bbb; }
+#section .footnotes { font-family: "Courier New", fixed; font-size: 80%; }
+
+/*
+ * footer
+ */
+
 #footer {
-  margin: 0 auto; width: 960px; 
+  background-color: #888; padding: 1em 0 2em 0; clear: both;
+  color: #eee;
+}
+
+#footer h3 { color: #444; }
+
+#footer a, #footer a:visited { color: #eaf19f; }
+#footer a:hover { color: #eaf19f; }
+
+#footer ul { list-style-type: none; padding: 0; margin: 0; }
+#footer ul li { padding: 0; margin: 0; }
+#footer ul li span { display: inline-block; width: 7em; }
+
+#disclaimer {
+  clear: both;
   padding: 1em 0; color: #555;
 }

@@ -31,21 +31,77 @@
         <h1>Riot!</h1>
         <h3>Protest the slow test</h3>
       </div>
-    </div>
+    </div> <!-- #header -->
 
     <div id="section">
       <div class="container">
         {{ content }}
       </div>
-    </div>
+    </div> <!-- #section -->
 
     <div id="footer">
       <div class="container">
-        <a href="http://github.com/thumblemonks/riot" title="Checkout Riot source code">Source code</a> /
-        <a href="http://rubydoc.info/github/thumblemonks/riot/master/frames" title="Lookover Riot documentation">Documentation</a>
-        <A href="http://creativecommons.org/licenses/by/2.5/" title="Creative Commons Attribution"><img src="./images/cc-attribution-by-small.png" align="center" />
+        <div class="half">
+          <div>
+            <h3>Framework Extensions</h3>
+            <ul>
+              <li>
+                <span><a href="" title="Riot + HTTParty">Riot Gear</a></span>
+                Riot &plus; HTTParty (web service testing)
+              </li>
+              <li>
+                <span><a href="" title="Riot + Sinatra">Chicago</a></span>
+                Riot &plus; Sinatra
+              </li>
+              <li>
+                <span><a href="" title="Riot + Mongoid">Riot Mongoid</a></span>
+                Riot &plus; Mongoid
+              </li>
+              <li>
+                <span><a href="" title="Riot + Rails">Riot Rails</a></span>
+                Riot &plus; Rails
+              </li>
+            </ul>
+          </div> <!-- frameworks -->
+
+          <div>
+            <h3>Indie Projects</h3>
+            <ul>
+              <li>
+                <span><a href="" title="Independent model validations tool">WVSi96</a></span>
+                Why Validations Suck in '96
+              </li>
+            </ul>
+          </div> <!-- indie projects -->
+        </div>
+
+        <div class="half">
+          <h3>Index</h3>
+          <ul>
+            <li><a href="./index.html#getting-started" title="Getting started with Riot">Getting started</a></li>
+            <li><a href="./index.html#running" title="Running riot tests">Running Riot</a></li>
+            <li><a href="./index.html#assertions" title="Using assertions">Assertions</a></li>
+            <li><a href="./index.html#setups-hookups" title="Using setups and hookups">Setup &amp; Hookup</a></li>
+            <li><a href="./index.html#helpers" title="Using helpers">Helpers</a></li>
+            <li><a href="./index.html#mocking" title="Mocking in Riot">Mocking &amp; Stubbing</a></li>
+
+            <li>Hacking: <a href="./hacking.html#beginning-hacking" title="Hacking Riot, an introduction">Introduction</a></li>
+            <li>Hacking: <a href="./hacking.html#writing-assertion-macros" title="Writing assertion macros">Assertion Macros</a></li>
+            <li>Hacking: <a href="./hacking.html#message-strings" title="How Riot message strings work">Message Strings</a></li>
+            <li>Hacking: <a href="./hacking.html#context-middleware" title="Using context middleware in Riot">Context Middleware</a></li>
+          </ul>
+        </div> <!-- index -->
+
       </div>
-    </div>
+    </div> <!-- #footer -->
+
+    <div id="disclaimer">
+      <div class="container">
+        <a href="http://github.com/thumblemonks/riot" title="Checkout Riot source code">Source code</a> /
+        <a href="http://rubydoc.info/github/thumblemonks/riot/master/frames" title="Lookover Riot documentation">API Documentation</a>
+        <a href="http://creativecommons.org/licenses/by/2.5/" title="Creative Commons Attribution"><img src="./images/cc-attribution-by-small.png" align="center" /></a>
+      </div>
+    </div> <!-- #disclaimer -->
 
     <script src="./javascripts/jquery-1.4.2.min.js"></script>
     <script src="./javascripts/site.js"></script>

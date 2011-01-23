@@ -1,6 +1,6 @@
 body {
   margin: 0; padding: 0; background-color: #ffffff; color: #000000;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Calibri, Helvetica, Arial, sans-serif;
 }
 
 a { color: #0a5; text-decoration: none; }
@@ -57,9 +57,11 @@ pre { background: #000; color: #fff; padding: 15px;}
 
 #section { clear: both; }
 
-#section sup { font-family: "Courier New", fixed; }
 #section hr { border-style: dotted; border-width: 1px; border-color: #bbb; }
-#section .footnotes { font-family: "Courier New", fixed; font-size: 80%; }
+#section .footnotes { font-family: "Times New Roman", serif; font-style: italic; font-size: 80%; }
+#section .footnotes ol { padding: 0 0 0 1.25em ; }
+#section .footnotes li { margin: 0; padding: 0; }
+#section .footnotes li p { margin: 0; padding: 0; }
 
 /*
  * footer

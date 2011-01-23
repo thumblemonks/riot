@@ -162,7 +162,70 @@ Riot implements but a handful of general checks most people expect and actually 
 
 ### Context Middleware {#context-middleware}
 
-By now you're probably asking yourself, "How could Riot get any better?"
+By now you're probably asking yourself, "How could Riot get any better?" How about we get jiggy one level above assertions? I'm talking Context Middleware and this is where things might get a little abstract.
+
+Perhaps all you've known of Riot is what you've read in this documentation (except this section). Perhaps you're a whiz at Riot and you're all up in it writing macros and what not. Now, perhaps you've gotten to the point where you'd like to do something extra fancy and write some heplful setup blocks that are only injected if the context's description is a specific type of class (not just a string).
+
+    context Person do
+      denies(:valid?)
+    end # Person
+
+Perhaps now you're bummed. But, don't be! Context middleware can help. We can actually make that a valid Riot context and test by writing this small snippet of code:
+
+    class Modelware < Riot::ContextMiddleware
+      register
+      
+      def call(context)
+        if context.description.kind_of?(Model)
+          context.setup { context.description.new }
+        end
+        middleware.call(context)
+      end
+    end # Modelware
+
+*"Get the %\*@& out of here!"*, you say.
+
+I know! It's pretty awesome and it's pretty powerful. If you're familiar at all with the nature of Rack middleware &mdash; how to implement it, how it's executed, etc. &mdash; you'll be familiar with Context middleware as the principles are similar:
+
+1. Define a class that extends `Riot::ContextMiddleware`
+2. Call `register`
+3. Implement a `call` method that accepts the Context that is about to be executed
+4. Do stuff, but make sure to pass the call along with `middleware.call(context)`
+
+Steps 1, 2, and 3 should be pretty straight-forward. Currently, `context` is the only argument to `call`. When your middleware is initialized it is given the next registered middleware in the chain (which is where the `middleware` method gets its value from).
+
+So, "Do stuff" from step 4 is the where we start breaking things down. What can you actually do? Well, you can do anything to the context that you could do if you were writing a Riot test; and I do mean anything.
+
+* Add setup blocks (as many as you like)
+* Add teardown blocks (as many as you like)
+* Add hookup blocks (as many as you like)
+* Add helpers (as many as you like)
+* Add assertions
+
+The context in question will not run before all middleware have been applied to the context; this is different behavior that of Rack middleware. Context middleware is only about preparing a context, not about executing it. Thus, where in your method you actually pass the call off to the next middleware in the chain has impact on how the context is set up. Basically, whatever you do before calling `middleware.call(context)` is done before any other middleware gets setup and before the innards of the context itself are applied. Whatever you do after that call is done after all that, but still before the actual setups, hookups, assertions, and teardowns are run.
+
+In effect, the only[^please] way you could futz with the execution of the context would be to not call `middleware.call(context)`.
+
+#### What if I want my setup to be first? {#primary-setup}
+
+If you know you'd like your setup to go first, regardless of where in the middleware call chain you are, you simply need to pass true as the first argument to it. For instance:
+
+    class Bloatware < Riot::ContextMiddleware
+      register
+  
+      def call(context)
+        middleware.call(context)
+        context.setup(true) do
+          puts "Ha ha, I'm not doing anything important"
+        end
+      end
+    end # Bloatware
+
+This will make Bloatware's setup run before any other setup in the given context, but not before the setups from parent contexts. Additionally, if Bloatware was called from some other middleware that middleware could get its setup in before Bloatware's. Generally, you should avoid needing to worry about order.
+
+#### Contextual Options {#context-options}
 
 <!-- footnotes -->
+
 [^speed]: The implementation of Message is actually really fast. It's even benchmarked.
+[^please]: Clearly it's not the only way, but if you're being a good samaritan it is.

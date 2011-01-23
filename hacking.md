@@ -63,7 +63,7 @@ Finally, `pass` and `fail` are helper methods which simply return a tuple. To be
 
 *"But, what about that interesting looking message chain thing: `expected_message(expected).not(actual)`?"*, you note.
 
-#### Messages {#message-strings}
+#### Messages {#messages}
 
 Messages are a wondrous bundle of joy is all I can say. I got tired of writing strings with interpolated other strings and being all verbose; so I devised a way to let me mostly use english to construct sentences that also take variable values[^speed]. Let's take a for instance; the message string you so wisely pointed out above would produce the following should the values of `expected` and `actual` be "goobers" and "nerds" respectively:
 
@@ -89,7 +89,51 @@ What this means is that you can use Message to generate nice output from your ma
 
 #### Arguments passed to macros {#macro-arguments}
 
+It's not going to be obvious how arguments passed to `evaluate` and `devaluate` are handled just by looking at the `equals` macro. In that specific macro you see `actual` as the first argument and `expected` as the second. By convention, the actual value returned from evaluating the assertion block (the block the user wrote) will always be the first argument to your macros evaluation method. Beyond that, you can expect as many arguments as your macro needs (explicitly or implicitly using splat).
 
+Here, the `equals` macro is saying that it only wants one argument to use in comparison with the actual value. `raises` on the other hand, lets you pass up to two arguments with the second being the optional exception message that is expected.
+
+    context "Making problems"
+      setup do
+        Exception.new("Take this!")
+      end
+
+      asserts("exception type alone") { raise topic }.raises(Exception)
+      asserts("exception type and message") { raise topic }.raises(Exception, "Take this!")
+    end # Making problems
+
+It's also possible that an evaluation block be passed to your macro. For instance:
+
+    context "Making jelly" do
+      setup { BlueBerry.new }
+
+      asserts(:color).equals("red")
+      asserts(:color).equals { "red" }
+    end # Making jelly
+
+Both of the assertions will have the same result and you never need to care that the expected value was provided via evaluating a block. By convention Riot notices this, evaluates it, and passes the returned value from the block into the/your macro as the last argument ... always. This means that if you were writing a macro named `awesomeness` and the following was its usage in practice:
+
+    context "Jambonee"
+      topic { Song.new("Jambonee") }
+      
+      asserts_topic.awesomeness(11) { Scale.new(11) }
+    end # Jambonee
+
+Then your `evaluate` and `devaluate` methods need to accept two arguments in addition to the always present `actual` argument. Like so:
+
+    class AwesomenessMacro < Riot::AssertionMacro
+      register :awesomeness
+      
+      def evaluate(actual, expected_awesomeness, scale)
+        # ...
+      end
+
+      def devaluate(actual, unexpected_awesomeness, scale)
+        # ...
+      end
+    end # AwesomenessMacro
+
+If you want `scale` to be optional, you can default it to whatever you want. This is Ruby!
 
 #### Working with errors in your macros {#working-with-errors}
 
@@ -104,7 +148,17 @@ Normally, you can ignore errors in your assertion macro because Riot specificall
       end # RaisesMacro
     end # Riot
 
-That is the actual opening stanza to Riot's own `raises macro`. What happens when you register your macro in this way is that Riot will pass the actual exception on to your macro if one is raised while evaluating the assertion block (your macro will be called by default if no exception is raised). The exception itself will be the the first argument passed to `evaluate` or `devaluate` or `nil` in the event nothing was raised.
+That is the actual opening stanza to Riot's own `raises` macro. What happens when you register your macro in this way is that Riot will pass the actual exception on to your macro if one is raised while evaluating the assertion block (your macro will be called by default if no exception is raised). The exception itself will be the the first argument passed to `evaluate` or `devaluate` or `nil` in the event nothing was raised.
+
+#### Why would you write your own macro?
+
+You'll probably want to write your own macro if:
+
+* You're writing Riot support for your fancy framework. I bet your framework has a DSL and it'd be nice if users could mimic that DSL in their Riot tests.
+* You've noticed a lot of repetitive or tedious logic in your assertion blocks
+* It's just fun
+
+Riot implements but a handful of general checks most people expect and actually use. But, that's to say it's complete. The joy of Riot is being concise and elegant and macros are how that happens.
 
 ### Context Middleware {#context-middleware}
 

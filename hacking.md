@@ -21,7 +21,7 @@ When you define a context in your test code, Riot will create a `Riot::Context` 
 
 When a context is added to the list of runnable contexts, its innards are also evaluated in order to prepare/generate the actual setups, teardowns, hookups, helpers, and assertions. These are managed by the containing context only. When all of the contexts have been evaluated &mdash; which happens at run-time as the classpath is getting loaded in &mdash; Riot will run through the list of contexts in the order in which they were defined. When an assertion is executed, its result is immediately reported.
 
-Something special about Riot and assertions is that Riot creates a unique Situation for each context. The job of the situation is to be an evaluation instance for that context; or a data "jail" for the life of the context. Things like `topic` or instance variables exist only while the situation lasts. Anything that happens within a helper, setup, assertion, etc. are all evaluated against the situation. This should mean that contexts don't inadvertently use/collide-with each others' data. The situation is then thrown away when the context is finished. Thusly, make sure not assign a situation instance to a long-lasting variable and do not assign variables in situations to things outside of it; the GC monster will eat you when next you sleep.
+Something special about Riot and assertions is that Riot creates a unique Situation for each context. The job of the situation is to be an evaluation instance for that context; or a data "jail" for the life of the context. Things like `topic` or instance variables exist only while the situation lasts. Anything that happens within a helper, setup, assertion, etc. are all evaluated against the situation. This should mean that contexts don't inadvertently use/collide-with each others' data. The situation is then thrown away when the context is finished. Thusly, make sure to not assign a situation instance to a long-lasting variable and do not assign variables in situations to things outside of it; the GC monster will eat you when next you sleep.
 
 ### Writing Your Own Assertion Macros {#writing-assertion-macros}
 
@@ -51,7 +51,7 @@ module Riot
 end # Riot
 {% endhighlight %}
 
-Before we break that down, here's a list of five keywords you should see any macro you write: `AssertionMacro`, `register`, `evaluate`, `devaluate`, `pass`, `fail`. If you don't see one or some of them, that better be because you are extending/mixing-in functionality that is using that keyword.
+Before we break that down, here's a list of six keywords you should see in any macro you write: `AssertionMacro`, `register`, `evaluate`, `devaluate`, `pass`, `fail`. If you don't see one or some of them, that better be because you are extending/mixing-in functionality that is using that keyword.
 
 One, `Riot::AssertionMacro` is required because it has the awesome functionality you need for your macro to execute and report its findings.
 
@@ -170,13 +170,13 @@ You'll probably want to write your own macro if:
 * You've noticed a lot of repetitive or tedious logic in your assertion blocks
 * It's just fun
 
-Riot implements but a handful of general checks most people expect and actually use. But, that's to say it's complete. The joy of Riot is being concise and elegant and macros are how that happens.
+Riot implements but a handful of general checks most people expect and actually use. But, that's not to say it's complete. The joy of Riot is being concise and elegant and macros are how that happens.
 
 ### Context Middleware {#context-middleware}
 
 By now you're probably asking yourself, "How could Riot get any better?" How about we get jiggy one level above assertions? I'm talking Context Middleware and this is where things might get a little abstract.
 
-Perhaps all you've known of Riot is what you've read in this documentation (except this section). Perhaps you're a whiz at Riot and you're all up in it writing macros and what not. Now, perhaps you've gotten to the point where you'd like to do something extra fancy and write some heplful setup blocks that are only injected if the context's description is a specific type of class (not just a string).
+Perhaps all you've known of Riot is what you've read in this documentation (except this section). Perhaps you're a whiz at Riot and you're all up in it writing macros and what not. Now, perhaps you've gotten to the point where you'd like to do something extra fancy and write some helpful setup blocks that are only injected if the context's description is a specific type of class (not just a string).
 
 {% highlight ruby %}
 context Person do
@@ -218,7 +218,7 @@ So, "Do stuff" from step 4 is the where we start breaking things down. What can 
 * Add helpers (as many as you like)
 * Add assertions
 
-The context in question will not run before all middleware have been applied to the context; this is different behavior that of Rack middleware. Context middleware is only about preparing a context, not about executing it. Thus, where in your method you actually pass the call off to the next middleware in the chain has impact on how the context is set up. Basically, whatever you do before calling `middleware.call(context)` is done before any other middleware gets setup and before the innards of the context itself are applied. Whatever you do after that call is done after all that, but still before the actual setups, hookups, assertions, and teardowns are run.
+The context in question will not run before all middleware have been applied to the context; this is different behavior than that of Rack middleware. Context middleware is only about preparing a context, not about executing it. Thus, where in your method you actually pass the call off to the next middleware in the chain has impact on how the context is set up. Basically, whatever you do before calling `middleware.call(context)` is done before any other middleware gets setup and before the innards of the context itself are applied. Whatever you do after that call is done after all that, but still before the actual setups, hookups, assertions, and teardowns are run.
 
 In effect, the only[^please] way you could futz with the execution of the context would be to not call `middleware.call(context)`.
 
@@ -243,7 +243,7 @@ This will make Bloatware's setup run before any other setup in the given context
 
 #### Contextual Options {#context-options}
 
-While re-doing Riot Rails for about the 12th time I stumbled onto the idea of Context Middleware. That was great, but while working through some middleware I realized I wanted to be able to configure that middleware from a any context I was working in. Specifically, I wanted to be able to be make a context transactional (similar to how you can with the Test::Unit implementation) by "flipping a switch". By being transactional, any database changes would be rolled back when the context was finished.
+While re-doing Riot Rails for about the 12th time I stumbled onto the idea of Context Middleware. That was great, but while working through some middleware I realized I wanted to be able to configure that middleware from within a running context. Specifically, I wanted to be able to be make a context transactional (similar to how you can with the Test::Unit implementation) by "flipping a switch". By being transactional, any database changes would be rolled back when the context was finished.
 
 A theoretical example of usage:
 

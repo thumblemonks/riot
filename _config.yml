@@ -1,3 +1,4 @@
 permalink: /:categories/:title
 server_port: 4567
 pygments:    true
+markdown:    maruku

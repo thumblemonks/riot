@@ -63,6 +63,13 @@ pre { background: #000; color: #fff; padding: 15px;}
 #section .footnotes li { margin: 0; padding: 0; }
 #section .footnotes li p { margin: 0; padding: 0; }
 
+#section code, #section pre code {
+  font-family: Inconsolata, Monaco, "Courier New", fixed;
+  font-size: 12pt;
+}
+#section code { background-color: #ffd; }
+#section pre > code { background-color: transparent; }
+
 /*
  * footer
  */

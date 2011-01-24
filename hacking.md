@@ -17,7 +17,7 @@ What does that mean for you? It means Riot wants to be open. It wants you to mak
 
 ### Let's Start at the Beginning {#beginning-hacking}
 
-When you define a context in your test code, Riot will create a `Riot::Context` object (Context), tell it what you wanted the description to be, and push it onto the queue of contexts it knows about. This is boring so far, I know. When you define a sub-context (a context within a context), Riot does the same as before except that it tells this new context who its parent context is. The context tree is essentially flattened out in Riot's "mind" at this point. Riot just has one big list (though I did play around with a true tree structure). This way makes for some better abstractions of responsibility. As a context, this bit about knowing the parent means a sub-context can "inherit" setups, teardowns, hookups, and helpers; and the linked-list approach still maintains a tree structure since a child knows only of its immediate parent.
+When you define a context in your test code, Riot will create a `Riot::Context` object (Context), tell it what you wanted the description to be, and push it onto the queue of contexts it knows about. This is boring so far, I know. When you define a sub-context (a context within a context), Riot does the same as before except that it tells this new context who its parent context is. The context tree is essentially flattened out in Riot's "mind" at this point. Riot just has one big list. Though I did play around with a true tree structure, this way allows for some better abstractions of responsibility. As a context, this bit about knowing the parent means a sub-context can "inherit" setups, teardowns, hookups, and helpers; and the linked-list approach still maintains a tree structure since a child knows only of its immediate parent.
 
 When a context is added to the list of runnable contexts, its innards are also evaluated in order to prepare/generate the actual setups, teardowns, hookups, helpers, and assertions. These are managed by the containing context only. When all of the contexts have been evaluated &mdash; which happens at run-time as the classpath is getting loaded in &mdash; Riot will run through the list of contexts in the order in which they were defined. When an assertion is executed, its result is immediately reported.
 
@@ -27,27 +27,29 @@ Something special about Riot and assertions is that Riot creates a unique Situat
 
 Remember that `equals` assertion macro from the [Daily Use](/) page? Well, it's an Assertion Macro and is just like something you could write. I mean that for real; it's not hard at all. For instance, here is the full assertion macro for `equals`:
 
-    module Riot
-      class EqualsMacro < AssertionMacro
-        register :equals
+{% highlight ruby %}
+module Riot
+  class EqualsMacro < AssertionMacro
+    register :equals
 
-        def evaluate(actual, expected)
-          if expected == actual
-            pass new_message.is_equal_to(expected)
-          else
-            fail expected_message(expected).not(actual)
-          end
-        end
+    def evaluate(actual, expected)
+      if expected == actual
+        pass new_message.is_equal_to(expected)
+      else
+        fail expected_message(expected).not(actual)
+      end
+    end
 
-        def devaluate(actual, expected)
-          if expected != actual
-            pass new_message.is_equal_to(expected).when_it_is(actual)
-          else
-            fail new_message.did_not_expect(actual)
-          end
-        end
-      end # EqualsMacro
-    end # Riot
+    def devaluate(actual, expected)
+      if expected != actual
+        pass new_message.is_equal_to(expected).when_it_is(actual)
+      else
+        fail new_message.did_not_expect(actual)
+      end
+    end
+  end # EqualsMacro
+end # Riot
+{% endhighlight %}
 
 Before we break that down, here's a list of five keywords you should see any macro you write: `AssertionMacro`, `register`, `evaluate`, `devaluate`, `pass`, `fail`. If you don't see one or some of them, that better be because you are extending/mixing-in functionality that is using that keyword.
 
@@ -93,45 +95,53 @@ It's not going to be obvious how arguments passed to `evaluate` and `devaluate` 
 
 Here, the `equals` macro is saying that it only wants one argument to use in comparison with the actual value. `raises` on the other hand, lets you pass up to two arguments with the second being the optional exception message that is expected.
 
-    context "Making problems"
-      setup do
-        Exception.new("Take this!")
-      end
+{% highlight ruby %}
+context "Making problems"
+  setup do
+    Exception.new("Take this!")
+  end
 
-      asserts("exception type alone") { raise topic }.raises(Exception)
-      asserts("exception type and message") { raise topic }.raises(Exception, "Take this!")
-    end # Making problems
+  asserts("exception type alone") { raise topic }.raises(Exception)
+  asserts("exception type and message") { raise topic }.raises(Exception, "Take this!")
+end # Making problems
+{% endhighlight %}
 
 It's also possible that an evaluation block be passed to your macro. For instance:
 
-    context "Making jelly" do
-      setup { BlueBerry.new }
+{% highlight ruby %}
+context "Making jelly" do
+  setup { BlueBerry.new }
 
-      asserts(:color).equals("red")
-      asserts(:color).equals { "red" }
-    end # Making jelly
+  asserts(:color).equals("red")
+  asserts(:color).equals { "red" }
+end # Making jelly
+{% endhighlight %}
 
 Both of the assertions will have the same result and you never need to care that the expected value was provided via evaluating a block. By convention Riot notices this, evaluates it, and passes the returned value from the block into the/your macro as the last argument ... always. This means that if you were writing a macro named `awesomeness` and the following was its usage in practice:
 
-    context "Jambonee"
-      topic { Song.new("Jambonee") }
-      
-      asserts_topic.awesomeness(11) { Scale.new(11) }
-    end # Jambonee
+{% highlight ruby %}
+context "Jambonee"
+  topic { Song.new("Jambonee") }
+  
+  asserts_topic.awesomeness(11) { Scale.new(11) }
+end # Jambonee
+{% endhighlight %}
 
 Then your `evaluate` and `devaluate` methods need to accept two arguments in addition to the always present `actual` argument. Like so:
 
-    class AwesomenessMacro < Riot::AssertionMacro
-      register :awesomeness
-      
-      def evaluate(actual, expected_awesomeness, scale)
-        # ...
-      end
+{% highlight ruby %}
+class AwesomenessMacro < Riot::AssertionMacro
+  register :awesomeness
+  
+  def evaluate(actual, expected_awesomeness, scale)
+    # ...
+  end
 
-      def devaluate(actual, unexpected_awesomeness, scale)
-        # ...
-      end
-    end # AwesomenessMacro
+  def devaluate(actual, unexpected_awesomeness, scale)
+    # ...
+  end
+end # AwesomenessMacro
+{% endhighlight %}
 
 If you want `scale` to be optional, you can default it to whatever you want. This is Ruby!
 
@@ -139,14 +149,16 @@ If you want `scale` to be optional, you can default it to whatever you want. Thi
 
 Normally, you can ignore errors in your assertion macro because Riot specifically handles them when they are raised. However, if you're intending to write an assertion macro that cares about errors you can do so easily as you are registering it. To declare that your macro expects exceptions, you simply call `expects_exception!`. For instance:
 
-    module Riot
-      class RaisesMacro < AssertionMacro
-        register :raises
-        expects_exception!
-        
-        # ...
-      end # RaisesMacro
-    end # Riot
+{% highlight ruby %}
+module Riot
+  class RaisesMacro < AssertionMacro
+    register :raises
+    expects_exception!
+    
+    # ...
+  end # RaisesMacro
+end # Riot
+{% endhighlight %}
 
 That is the actual opening stanza to Riot's own `raises` macro. What happens when you register your macro in this way is that Riot will pass the actual exception on to your macro if one is raised while evaluating the assertion block (your macro will be called by default if no exception is raised). The exception itself will be the the first argument passed to `evaluate` or `devaluate` or `nil` in the event nothing was raised.
 
@@ -166,22 +178,26 @@ By now you're probably asking yourself, "How could Riot get any better?" How abo
 
 Perhaps all you've known of Riot is what you've read in this documentation (except this section). Perhaps you're a whiz at Riot and you're all up in it writing macros and what not. Now, perhaps you've gotten to the point where you'd like to do something extra fancy and write some heplful setup blocks that are only injected if the context's description is a specific type of class (not just a string).
 
-    context Person do
-      denies(:valid?)
-    end # Person
+{% highlight ruby %}
+context Person do
+  denies(:valid?)
+end # Person
+{% endhighlight %}
 
 Perhaps now you're bummed. But, don't be! Context middleware can help. We can actually make that a valid Riot context and test by writing this small snippet of code:
 
-    class Modelware < Riot::ContextMiddleware
-      register
-      
-      def call(context)
-        if context.description.kind_of?(Model)
-          context.setup { context.description.new }
-        end
-        middleware.call(context)
-      end
-    end # Modelware
+{% highlight ruby %}
+class Modelware < Riot::ContextMiddleware
+  register
+  
+  def call(context)
+    if context.description.kind_of?(Model)
+      context.setup { context.description.new }
+    end
+    middleware.call(context)
+  end
+end # Modelware
+{% endhighlight %}
 
 *"Get the %\*@& out of here!"*, you say.
 
@@ -208,24 +224,69 @@ In effect, the only[^please] way you could futz with the execution of the contex
 
 #### What if I want my setup to be first? {#primary-setup}
 
-If you know you'd like your setup to go first, regardless of where in the middleware call chain you are, you simply need to pass true as the first argument to it. For instance:
+If you know you'd like your setup to go first, regardless of where in the middleware call chain you are, you simply need to pass `true` as the first argument to it. For instance:
 
-    class Bloatware < Riot::ContextMiddleware
-      register
-  
-      def call(context)
-        middleware.call(context)
-        context.setup(true) do
-          puts "Ha ha, I'm not doing anything important"
-        end
-      end
-    end # Bloatware
+{% highlight ruby %}
+class Bloatware < Riot::ContextMiddleware
+  register
+
+  def call(context)
+    middleware.call(context)
+    context.setup(true) do
+      puts "Ha ha, I'm not doing anything important"
+    end
+  end
+end # Bloatware
+{% endhighlight %}
 
 This will make Bloatware's setup run before any other setup in the given context, but not before the setups from parent contexts. Additionally, if Bloatware was called from some other middleware that middleware could get its setup in before Bloatware's. Generally, you should avoid needing to worry about order.
 
 #### Contextual Options {#context-options}
 
+While re-doing Riot Rails for about the 12th time I stumbled onto the idea of Context Middleware. That was great, but while working through some middleware I realized I wanted to be able to configure that middleware from a any context I was working in. Specifically, I wanted to be able to be make a context transactional (similar to how you can with the Test::Unit implementation) by "flipping a switch". By being transactional, any database changes would be rolled back when the context was finished.
+
+A theoretical example of usage:
+
+{% highlight ruby %}
+context Room do
+  set :transactional, true
+  
+  hookup { topic.create! }
+  denies(:new_record?)
+end # Room
+{% endhighlight %}
+
+So, `set` ... that's the new thing and it takes two arguments: a key and a value. Now, how is it used?
+
+
+{% highlight ruby %}
+module RiotRails
+  class TransactionalMiddleware < Riot::ContextMiddleware
+    register
+
+    def call(context)
+      middleware.call(context)
+      make_transactional(context) if want_transactional?(context)
+    end
+  private
+    def want_transactional?(context)
+      context.option(:transactional) == true
+    end
+
+    def make_transactional(context)
+      # The guts and glory
+    end
+
+  end # TransactionalMiddleware
+end # RiotRails
+{% endhighlight %}
+
+I removed the distracting code so you can see that `context.option(:transactional)` is used in `want_transactional?`. You should also notice that we are inspecting the option after the middleware chain has been processed. This is important as you won't see any options before you pass the call on.
+
+`set` is just a basic DSL around a hash; very similar to `set` in Sinatra; in fact, that's why it's named that way here. If, for some reason, you need direct access to the hash options, you can say `context.options`. Finally, there is no limit[^dwi] placed on the number of options that can be set.
+
 <!-- footnotes -->
 
 [^speed]: The implementation of Message is actually really fast. It's even benchmarked.
 [^please]: Clearly it's not the only way, but if you're being a good samaritan it is.
+[^dwi]: Yes, yes, yes. There is an actual limit, but not one that Riot worries about. 

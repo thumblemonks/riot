@@ -46,9 +46,19 @@ pre { background: #000; color: #fff; padding: 15px;}
   #header #menu ul { padding: 0; margin: 0; }
     #header #menu ul li { list-style: none; padding: 0 0 0 1em; margin: 0; display: inline-block; }
 
-#header #release-info {
+#header #info {
   float: right; clear: both; padding: 0.5ex; background-color: #fafafa;
   border: 1px solid #dadada; color: #666; font-size: 90%;
+}
+
+/*
+ * pitch
+ */
+
+#pitch {
+  background-color: #f5f5f5; padding: 1em 0; clear: both;
+  font-size: 225%; font-weight: bold; text-align: center;
+  color: #666;
 }
 
 /*

@@ -5,9 +5,9 @@ keywords: ruby, testing, framework, riot
 layout: default
 ---
 
-## News
+<!-- ## News
 
-*See if we can pull RSS or something from [rubygems.org/riot](http://rubygems.org/gem/riot) and the spin-off/extensions projects.*
+*See if we can pull RSS or something from [rubygems.org/riot](http://rubygems.org/gem/riot) and the spin-off/extensions projects.* -->
 
 ## Getting Started {#getting-started}
 

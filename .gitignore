@@ -5,3 +5,5 @@ doc
 .yardoc
 *.tmproj
 _site
+.wathcr
+

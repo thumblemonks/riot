@@ -32,9 +32,6 @@ end
 desc "Run all of them fancy benchmarks, Howard!"
 task("test:benchmarks") { run_benchmarks("ruby") }
 
-desc "Run all of them fancy benchmarks in ruby-1.9, Steve!"
-task("test:benchmarks:1.9") { run_benchmarks("ruby1.9") }
-
 #
 # YARDie
 

@@ -56,11 +56,17 @@ pre { background: #000; color: #fff; padding: 15px;}
  */
 
 #pitch {
+  background-image: url('/images/riot.png');
+  background-position: left bottom;
+  background-repeat: no-repeat;
   background-color: #f5f5f5; padding: 1em 0; clear: both;
   font-size: 225%; font-weight: bold; text-align: center;
   color: #666;
 }
 
+#pitch strong { color: #00AA5F; font-size: 40px; }
+#pitch span { color: red; }
+#pitch > div { margin-left: 200px; }
 /*
  * section
  */

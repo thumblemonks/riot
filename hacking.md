@@ -120,7 +120,7 @@ end # Making jelly
 Both of the assertions will have the same result and you never need to care that the expected value was provided via evaluating a block. By convention Riot notices this, evaluates it, and passes the returned value from the block into the/your macro as the last argument ... always. This means that if you were writing a macro named `awesomeness` and the following was its usage in practice:
 
 {% highlight ruby %}
-context "Jambonee"
+context "Jambonee" do
   topic { Song.new("Jambonee") }
   
   asserts_topic.awesomeness(11) { Scale.new(11) }

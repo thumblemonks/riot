@@ -12,14 +12,18 @@ module Riot
   # It would be kind of like a double negative:
   #
   #   denies("you are funny") { true }.not!
+  #
+  # @deprecated Please use the denies assertion instead
   class NotMacro < AssertionMacro
     register :not!
 
     def evaluate(actual)
+      warn "not! is deprecated; please use the denies assertion instead"
       actual ? fail("expected to exist ... not!") : pass("does exist ... not!")
     end
     
     def devaluate(actual)
+      warn "not! is deprecated; please use the denies assertion instead"
       actual ? pass("does not exist ... not!") : fail("expected to not exist ... not!")
     end
   end

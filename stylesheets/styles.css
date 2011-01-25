@@ -80,6 +80,21 @@ pre { background: #000; color: #fff; padding: 15px;}
 #section code { background-color: #ffd; }
 #section pre > code { background-color: transparent; }
 
+#section ul#builtin-macro-list {
+  padding: 0; margin: 0; list-style-type: none;
+}
+#section ul#builtin-macro-list > li {
+  border: 1px dotted #ccc; padding: 1em; margin: 1ex 0;
+  border-radius: 1ex;
+}
+#section ul#builtin-macro-list > li p {
+  margin-top: 0;
+}
+#section ul#builtin-macro-list li ul li {
+  padding: .5ex 0; margin: 0; border-top: 1px dotted #ddd;
+  display: inline-block; width: 47%; margin-right: 2%; vertical-align: top;
+}
+
 /*
  * footer
  */

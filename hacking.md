@@ -2,7 +2,7 @@
 title: Hacking with Riot
 description: Thing developers should know about extending Riot for their projects or libraries
 keywords: ruby, testing, framework, riot, hacking
-layout: default
+layout: section
 ---
 
 ## Hacking Riot

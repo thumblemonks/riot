@@ -2,7 +2,7 @@
 title: Riot loot
 description: Recipes for common situations encountered when testing with Riot
 keywords: ruby, testing, framework, riot, loot, recipes, cookbook
-layout: default
+layout: section
 ---
 
 ## The Loot

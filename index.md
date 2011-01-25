@@ -2,12 +2,14 @@
 title: Ruby Testing Framework
 description: An extremely fast-running, expressive, and context-driven unit testing framework. Protest the slow test.
 keywords: ruby, testing, framework, riot
-layout: default
+layout: home
 ---
 
-<!-- ## News
+<!--
+## News {#news}
 
-*See if we can pull RSS or something from [rubygems.org/riot](http://rubygems.org/gem/riot) and the spin-off/extensions projects.* -->
+*See if we can pull RSS or something from [rubygems.org/riot](http://rubygems.org/gem/riot) and the spin-off/extensions projects.*
+-->
 
 ## Getting Started {#getting-started}
 
@@ -52,10 +54,11 @@ We can do this with assertion macros. You can think of these as special assertio
 Let's take this little for instance:
 
 {% highlight ruby %}
-context "Yummie things" do
+context "Yummy things" do
   setup { ["cookies", "donuts"] }
+
   asserts("#first") { topic.first }.equals("cookies")
-end # Yummie things
+end # Yummy things
 {% endhighlight %}
 
 First, how's that for a readable test? Second, you should notice that the assertion block will return the `first` item from the `topic` (which is assumed to be `Enumerable` in this case); if it isn't `Enumerable`, then you have other problems. Since the first element in the array is "cookies", the assertion will pass. Yay!
@@ -63,18 +66,34 @@ First, how's that for a readable test? Second, you should notice that the assert
 But wait, there's more. Riot is about helping you write faster and more readable tests. Notice any duplication in the example above (besides the value "cookies")? I do. How about that `first` notation in the assertion name and reference in the assertion block. Riot provides a shortcut which allows you to reference methods on the topic through the assertion name. Here's another way to write the same test:
 
 {% highlight ruby %}
-context "Yummie things" do
+context "Yummy things" do
   setup { ["cookies", "donuts"] }
+
   asserts(:first).equals("cookies")
-end # Yummie things
+end # Yummy things
 {% endhighlight %}
 
-Now that's real yummie.
+Now that's real yummy. Want some more? Perhaps you just want to test the topic itself &mdash; not a method or attribute of it. You could do this:
 
-There are a bunch of built-in assertion macros and you can even [write your own](./hacking.html#writing-assertion-macros)
+{% highlight ruby %}
+context "Yummy things" do
+  setup { ["cookies", "donuts"] }
 
-* equals
-* ...
+  asserts("topic") { topic }.size(2)
+end # Yummy things
+{% endhighlight %}
+
+But, as you can probably already guess, that's gross and redundant. To solve this, Riot provides the `asserts_topic` shortcut which is a helper that pretty much just does `asserts("topic") { topic }` for you.
+
+{% highlight ruby %}
+context "Yummy things" do
+  setup { ["cookies", "donuts"] }
+
+  asserts_topic.size(2)
+end # Yummy things
+{% endhighlight %}
+
+Yep, more readable.
 
 #### Negative Assertions {#negative-assertions}
 
@@ -92,6 +111,111 @@ end # My wallet
 {% endhighlight %}
 
 One of those will pass and the other will fail. If $10 is not enough for lunch the `denies` statement will pass; and then you should move to Chicago where it is enough (if only barely).
+
+#### Built-in Assertion Macros {#builtin-macros}
+
+There are a bunch of built-in assertion macros for your everyday use. Be sure to [write your own](./hacking.html#writing-assertion-macros) if these don't satisfy your every need. You will notice the two varying mechanisms for passing arguments into the macros: one is the conventional form of message passing (via actual arguments) and the other is derived from a provided block. If the macro expects one argument, you can use either form (but not both). If the macro accepts multiple arguments, the last argument you want to pass in can be provided via the block.
+
+The advantage of using the block is that its innards are evaluated against the same scope that the assertion was evaluated against. This means you can use the same helpers and instance variables in the macro block to generate an expected value (if you so desire). It's also useful if you have a fairly complex routine for generating the expected value.
+
+{#builtin-macro-list}
+* **Equals**: compares equality of the actual value to the expected value using the `==` operator 
+  * `asserts.equals(Object)`
+  * `denies.equals(Object)`
+  * `asserts.equals { Object }`
+  * `denies.equals { Object }`
+
+* **Equivalent To**: compares equivalence of actual value to the expected value using the `===` operator
+  * `asserts.equivalent_to(Object)`
+  * `denies.equivalent_to(Object)`
+  * `asserts.equivalent_to { Object }`
+  * `denies.equivalent_to { Object }`
+
+* **Assigns**: checks that the actual value has an instance variable defined within it's scope. You can also validate the value of that variable. Very much mimicing the `assigns` found in Rails-ish tests from way back in form, function, and need.
+  * `asserts("a person") { Person.new }.assigns(:email)`
+  * `denies("a person") { Person.new }.assigns(:email)`
+  * `asserts("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")`
+  * `denies("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")`
+  * `asserts.assigns { :email }`
+  * `denies.assigns { :email }`
+  * `asserts.assigns(:email) { "a@b.com" }`
+  * `denies.assigns(:email) { "a@b.com" }`
+
+* **Nil**: simply checks the actual value for its nil-ness. Expects no arguments.
+  * `asserts.nil`
+  * `denies.nil`
+
+* **Exists**: pretty much the opposite of the `nil` assertion macro. Expects no arguments.
+  * `asserts.exists`
+  * `denies.exists`
+
+* **Matches**: compares the actual value to a provided regular expression
+  * `asserts.matches(%r{Regex})`
+  * `denies.matches(%r{Regex})`
+  * `asserts.matches { /Regex/ }`
+  * `denies.matches { /Regex/ }`
+
+* **Raises**: validates the type of exception raised from the assertion block. Optionally, you can give it the message you expected in the form of a literal string or even a portion of it.
+  * `asserts.raises(ExceptionClass)`
+  * `denies.raises(ExceptionClass)`
+  * `asserts.raises(ExceptionClass, "Expected message")`
+  * `denies.raises(ExceptionClass, "Expected message")`
+  * `asserts.raises(ExceptionClass) { "ted mess" }`
+  * `denies.raises(ExceptionClass) { "ted mess" }`
+
+* **Kind Of**: validates the type of object returned from the assertion block
+  * `asserts.kind_of(Class)`
+  * `denies.kind_of(Class)`
+  * `asserts.kind_of { Class }`
+  * `denies.kind_of { Class }`
+
+* **Responds To**: checks that the actual object `respond_to?` to a particular message
+  * `asserts.respond_to(:foo)`
+  * `denies.respond_to(:foo)`
+  * `asserts.respond_to { "foo" }`
+  * `denies.respond_to { "foo" }`
+  * `asserts.responds_to("foo")`
+  * `denies.responds_to("foo")`
+  * `asserts.responds_to { :foo }`
+  * `denies.responds_to { :foo }`
+
+* **Includes**: checks for the existence of: a character or sequence of characters in a string, an element in an array, or a key in a hash.
+  * `asserts("this string") { "barbie q" }.includes("foo")`
+  * `denies("this string") { "barbie q" }.includes("foo")`
+  * `asserts("this array") { [1,2,3] }.includes(2)`
+  * `denies("this array") { [1,2,3] }.includes(2)`
+  * `asserts("this hash") { {:key1 => "foo"} }.includes(:key2)`
+  * `denies("this hash") { {:key1 => "foo"} }.includes(:key2)`
+  * `asserts.includes { "foo" }`
+  * `denies.includes { "foo" }`
+  * `asserts.includes { 2 }`
+  * `denies.includes { 2 }`
+  * `asserts.includes { :key }`
+  * `denies.includes { :key }`
+
+* **Size**: compares the size of the actual object to the number you provide. Works with anything that responds to `size(Numeric)` (strings, arrays, hashes, etc).
+  * `asserts.size(Numeric)`
+  * `denies.size(Numeric)`
+  * `asserts.size { Numeric }`
+  * `denies.size { Numeric }`
+
+* **Any**: checks the result of calling `any?` on the actual value. Expects no arguments.
+  * `asserts.any`
+  * `denies.any`
+
+* **Empty**: checks the result of calling `empty?` on the actual value. Expects no arguments.
+  * `asserts.empty`
+  * `denies.empty`
+
+* **Same Elements**: compares actual to expected to see if they contain the same elements. Uses `Set` under-the-hood, just so you know.
+  * `asserts.same_elements(Array)`
+  * `denies.same_elements(Array)`
+  * `asserts.same_elements { Array }`
+  * `denies.same_elements { Array }`
+
+* **Not!**: Expects no arguments and simply checks that the actual value is non-truthy. This is different than `exists` which only checks that the actual value is not nil. This assertion was added at the inception of Riot to deal with the fact that Riot didn't yet have negative assertions. I am hereby declaring this macro `@deprecated`. Please stop using it (note to self) because it will be removed someday.
+  * `asserts("i'm confused") { false }.not!`
+  * `denies("i'm not confused?") { true }.not!`
 
 ### Setups, Hookups, and Helpers {#setups-hookups}
 

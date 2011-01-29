@@ -6,15 +6,15 @@ module Riot
   # == Using macros
   #
   # Macros are applied to the return value of assertions. For example, the
-  # `empty` macro asserts that the value is, well, empty, e.g.
+  # +empty+ macro asserts that the value is empty or denies that it is empty e.g.
   #
   #     asserts(:comments).empty?
-  #
+  #     denies(:comments).empty?
   # 
   # == Writing your own macros
   #
   # Macros are added by subclassing {AssertionMacro}. For example, here's
-  # the implementation of `empty`:
+  # the implementation of +empty+:
   #
   #     class EmptyMacro < AssertionMacro
   #       register :empty
@@ -31,9 +31,14 @@ module Riot
   class AssertionMacro
     class << self
       # Whether the macro expects an exception to be thrown.
+      #
+      # @return [Boolean]
       attr_reader :expects_exception
 
+      # @private
       # The default macro.
+      #
+      # @return [Riot::AssertionMacro]
       def default
         @default_macro ||= new
       end
@@ -45,32 +50,61 @@ module Riot
 
       # Register the macro under the given name.
       #
-      # @param [Symbol] name the name of the macro
+      # @param [String, Symbol] name the name of the macro
       def register(name)
         Assertion.register_macro name, self
       end
     end
 
-    attr_accessor :line, :file
+    # During failure reporting, what line number did the failure occur at
+    # @return [Number]
+    attr_accessor :line
 
+    # During failure reporting, what file did the failure occur in
+    # @return [String]
+    attr_accessor :file
+
+    # Returns a status tuple indicating the assertion passed.
+    #
+    # @param [String] message The message to report with
+    # @return [Array[Symbol, String]]
     def pass(message=nil) [:pass, message.to_s]; end
-    def fail(message) [:fail, message.to_s, line, file]; end
-    def error(e) [:error, e]; end
 
+    # Returns a status tuple indicating the assertion failed and where it failed it if that can be 
+    # determined.
+    #
+    # @param [String] message The message to report with
+    # @return [Array[Symbol, String, Number, String]]
+    def fail(message) [:fail, message.to_s, line, file]; end
+
+    # Returns a status tuple indicating the assertion had an unexpected error.
+    #
+    # @param [Exception] ex The Exception that was captured
+    # @return [Array[Symbol, Exception]]
+    def error(ex) [:error, ex]; end
+
+    # Returns +true+ if this macro expects to handle Exceptions during evaluation.
+    #
+    # @return [boolean]
     def expects_exception?; self.class.expects_exception; end
 
-    # Supports positive assertion testing
+    # Supports positive assertion testing. This is where magic happens.
+    #
+    # @param [Object] actual The value returned from evaling the {Riot::Assertion Assertion} block
+    # @return [Array] response from either {#pass}, {#fail} or {#error}
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
     end
 
-    # Supports negative/converse assertion testing
+    # Supports negative/converse assertion testing. This is also where magic happens.
+    #
+    # @param [Object] actual The value returned from evaling the {Riot::Assertion Assertion} block
+    # @return [Array] response from either {#pass}, {#fail} or {#error}
     def devaluate(actual)
       !actual ? pass : fail("Expected non-true but got #{actual.inspect} instead")
     end
 
     # Messaging
-
     def new_message(*phrases) Message.new(*phrases); end
     def should_have_message(*phrases) new_message.should_have(*phrases); end
     def expected_message(*phrases) new_message.expected(*phrases); end

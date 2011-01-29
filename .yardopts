@@ -1,3 +1,4 @@
+-r README.markdown
 --protected
 --no-private
 -

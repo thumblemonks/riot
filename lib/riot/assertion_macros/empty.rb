@@ -13,10 +13,12 @@ module Riot
   class EmptyMacro < AssertionMacro
     register :empty
 
+    # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
       actual.empty? ? pass(new_message.is_empty) : fail(expected_message(actual).to_be_empty)
     end
 
+    # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
       actual.empty? ? fail(expected_message(actual).to_not_be_empty) : pass(new_message.is_empty)
     end

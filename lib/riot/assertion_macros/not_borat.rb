@@ -17,11 +17,13 @@ module Riot
   class NotMacro < AssertionMacro
     register :not!
 
+    # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
       warn "not! is deprecated; please use the denies assertion instead"
       actual ? fail("expected to exist ... not!") : pass("does exist ... not!")
     end
     
+    # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
       warn "not! is deprecated; please use the denies assertion instead"
       actual ? pass("does not exist ... not!") : fail("expected to not exist ... not!")

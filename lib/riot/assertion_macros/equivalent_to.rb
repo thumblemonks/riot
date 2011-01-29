@@ -16,6 +16,8 @@ module Riot
   class EquivalentToMacro < AssertionMacro
     register :equivalent_to
 
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Object] expected the object value to compare actual to
     def evaluate(actual, expected)
       if expected === actual
         pass new_message.is_equivalent_to(expected)
@@ -24,6 +26,8 @@ module Riot
       end
     end
     
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Object] expected the object value to compare actual to
     def devaluate(actual, expected)
       if expected === actual
         fail expected_message(actual).not_to_be_equivalent_to(expected)

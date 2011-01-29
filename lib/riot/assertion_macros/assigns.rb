@@ -20,6 +20,9 @@ module Riot
   class AssignsMacro < AssertionMacro
     register :assigns
 
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Symbol, String] variable name of instance variable to look for
+    # @param [Object, nil] expected_value an optional value to validate for the variable
     def evaluate(actual, *expectings)
       prepare(actual, *expectings) do |variable, expected_value, actual_value|
         if actual_value.nil?
@@ -32,6 +35,9 @@ module Riot
       end
     end
 
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Symbol, String] variable name of instance variable to look for
+    # @param [Object, nil] expected_value an optional value to validate for the variable
     def devaluate(actual, *expectings)
       prepare(actual, *expectings) do |variable, expected_value, actual_value|
         if actual_value.nil? || (expected_value && expected_value != actual_value)

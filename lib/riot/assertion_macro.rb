@@ -66,20 +66,20 @@ module Riot
 
     # Returns a status tuple indicating the assertion passed.
     #
-    # @param [String] message The message to report with
+    # @param [String] message the message to report with
     # @return [Array[Symbol, String]]
     def pass(message=nil) [:pass, message.to_s]; end
 
     # Returns a status tuple indicating the assertion failed and where it failed it if that can be 
     # determined.
     #
-    # @param [String] message The message to report with
+    # @param [String] message the message to report with
     # @return [Array[Symbol, String, Number, String]]
     def fail(message) [:fail, message.to_s, line, file]; end
 
     # Returns a status tuple indicating the assertion had an unexpected error.
     #
-    # @param [Exception] ex The Exception that was captured
+    # @param [Exception] ex the Exception that was captured
     # @return [Array[Symbol, Exception]]
     def error(ex) [:error, ex]; end
 
@@ -90,7 +90,7 @@ module Riot
 
     # Supports positive assertion testing. This is where magic happens.
     #
-    # @param [Object] actual The value returned from evaling the {Riot::Assertion Assertion} block
+    # @param [Object] actual the value returned from evaling the {Riot::Assertion Assertion} block
     # @return [Array] response from either {#pass}, {#fail} or {#error}
     def evaluate(actual)
       actual ? pass : fail("Expected non-false but got #{actual.inspect} instead")
@@ -98,15 +98,28 @@ module Riot
 
     # Supports negative/converse assertion testing. This is also where magic happens.
     #
-    # @param [Object] actual The value returned from evaling the {Riot::Assertion Assertion} block
+    # @param [Object] actual the value returned from evaling the {Riot::Assertion Assertion} block
     # @return [Array] response from either {#pass}, {#fail} or {#error}
     def devaluate(actual)
       !actual ? pass : fail("Expected non-true but got #{actual.inspect} instead")
     end
 
-    # Messaging
+    # Creates a new message for use in any macro response that is initially empty.
+    #
+    # @param [Array<Object>] *phrases array of object whose values will be inspected and added to message
+    # @return [Riot::Message]
     def new_message(*phrases) Message.new(*phrases); end
+
+    # Creates a new message for use in any macro response that will start as "should have ".
+    #
+    # @param [Array<Object>] *phrases array of object whose values will be inspected and added to message
+    # @return [Riot::Message]
     def should_have_message(*phrases) new_message.should_have(*phrases); end
+
+    # Creates a new message for use in any macro response that will start as "expected ".
+    #
+    # @param [Array<Object>] *phrases array of object whose values will be inspected and added to message
+    # @return [Riot::Message]
     def expected_message(*phrases) new_message.expected(*phrases); end
   end
 end

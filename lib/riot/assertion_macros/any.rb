@@ -11,10 +11,12 @@ module Riot
   class AnyMacro < AssertionMacro
     register :any
 
+    # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
       any?(actual) ? pass("is not empty") : fail(expected_message(actual).to_have_items)
     end
 
+    # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
       any?(actual) ? fail(expected_message(actual).not_to_have_elements) : pass("has elements")
     end

@@ -10,6 +10,8 @@ module Riot
   class KindOfMacro < AssertionMacro
     register :kind_of
 
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Class] expected the expected class of actual
     def evaluate(actual, expected)
       if actual.kind_of?(expected)
         pass new_message.is_a_kind_of(expected)
@@ -18,6 +20,8 @@ module Riot
       end
     end
     
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Class] expected the unexpected class of actual
     def devaluate(actual, expected)
       if actual.kind_of?(expected)
         fail expected_message.not_kind_of(expected).not(actual.class)

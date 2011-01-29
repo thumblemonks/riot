@@ -11,11 +11,15 @@ module Riot
     register :same_elements
     require 'set'
     
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Object] expected the collection of elements that actual should be equivalent to
     def evaluate(actual, expected)
       same = (Set.new(expected) == Set.new(actual))
       same ? pass : fail(expected_message.elements(expected).to_match(actual))
     end
 
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Object] expected the collection of elements that actual should not be equivalent to
     def devaluate(actual, expected)
       same = (Set.new(expected) == Set.new(actual))
       same ? fail(expected_message.elements(expected).not_to_match(actual)) : pass

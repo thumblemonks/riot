@@ -18,6 +18,9 @@ module Riot
     register :raises
     expects_exception!
 
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Class] expected_class the expected Exception class
+    # @param [String, nil] expected_message an optional exception message or message partial
     def evaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?
@@ -32,6 +35,9 @@ module Riot
       end
     end # evaluate
 
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Class] expected_class the unexpected Exception class
+    # @param [String, nil] expected_message an optional exception message or message partial
     def devaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?

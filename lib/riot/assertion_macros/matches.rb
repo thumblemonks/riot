@@ -10,6 +10,8 @@ module Riot
   class MatchesMacro < AssertionMacro
     register :matches
 
+    # (see Riot::AssertionMacro#evaluate)
+    # @param [Regex, String] expected the string or regex to be used in comparison
     def evaluate(actual, expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
       if actual.to_s =~ expected
@@ -19,6 +21,8 @@ module Riot
       end
     end
     
+    # (see Riot::AssertionMacro#devaluate)
+    # @param [Regex, String] expected the string or regex to be used in comparison
     def devaluate(actual, expected)
       expected = %r[#{Regexp.escape(expected)}] if expected.kind_of?(String)
       if actual.to_s =~ expected

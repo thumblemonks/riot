@@ -14,6 +14,9 @@ module Riot
     #
     # If you provide +true+ as the first argument, the setup will be unshifted onto the list of setups,
     # ensuring it will be run before any other setups. This is really only useful for context middlewares.
+    #
+    # @param [Boolean] premium indicates importance of the setup
+    # @return [Riot::Setup]
     def setup(premium=false, &definition)
       setup = Setup.new(&definition)
       premium ? @setups.unshift(setup) : @setups.push(setup)
@@ -29,6 +32,9 @@ module Riot
     #     helper(:foo) { "bar" }
     #     asserts("a foo") { foo }.equals("bar")
     #   end
+    #
+    # @param [String, Symbol] name the name of the helper
+    # @return [Riot::Helper]
     def helper(name, &block)
       (@setups << Helper.new(name, &block)).last
     end
@@ -44,6 +50,8 @@ module Riot
     # You would do this:
     #
     #   hookup { topic.do_something } # Yay!
+    #
+    # @return [Riot::Setup]
     def hookup(&definition)
       setup { self.instance_eval(&definition); topic }
     end
@@ -51,6 +59,8 @@ module Riot
     # Add a teardown block. You may define multiple of these as well.
     #
     #  teardown { Bombs.drop! }
+    #
+    # @return [Riot::Setup]
     def teardown(&definition)
       (@teardowns << Setup.new(&definition)).last
     end
@@ -73,7 +83,8 @@ module Riot
     # Passing a Symbol to +asserts+ enables this behaviour. For more information on
     # assertion macros, see {Riot::AssertionMacro}.
     #
-    # @param [String, Symbol] the property being tested
+    # @param [String, Symbol] what description of test or property to inspect on the topic
+    # @return [Riot::Assertion]
     def asserts(what, &definition)
       new_assertion("asserts", what, &definition)
     end
@@ -83,7 +94,8 @@ module Riot
     #
     #   should("ensure expected") { "bar" }.equals("bar")
     #
-    # @param [String, Symbol] the property being tested
+    # @param [String, Symbol] what description of test or property to inspect on the topic
+    # @return [Riot::Assertion]
     def should(what, &definition)
       new_assertion("should", what, &definition)
     end
@@ -106,7 +118,8 @@ module Riot
     # Passing a Symbol to +denies+ enables this behaviour. For more information on
     # assertion macros, see {Riot::AssertionMacro}.
     #
-    # @param [String, Symbol] the property being tested
+    # @param [String, Symbol] what description of test or property to inspect on the topic
+    # @return [Riot::Assertion]
     def denies(what, &definition)
       new_assertion("denies", what, true, &definition)
     end
@@ -114,6 +127,9 @@ module Riot
     # Makes an assertion on the topic itself, e.g.
     #
     #   asserts_topic.matches(/^ab+/)
+    #
+    # @param [String] what description of test
+    # @return [Riot::Assertion]
     def asserts_topic(what="that it")
       asserts(what) { topic }
     end

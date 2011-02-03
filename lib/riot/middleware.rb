@@ -81,9 +81,9 @@ module Riot
       @middleware = middleware
     end
 
-    # The meat. Because you have access to the Context, you can add your own setups, hookups, etc. +call+ 
-    # will be called before any tests are run, but after the Context is configured. Though something will 
-    # likely be returned, do not put any faith in what that will be.
+    # The magic happens here. Because you have access to the Context, you can add your own setups, hookups,
+    # etc. +call+ will be called before any tests are run, but after the Context is configured. Though 
+    # something will likely be returned, do not put any faith in what that will be.
     #
     # @param [Riot::Context] context the Context instance that will be prepared by registered middleware
     def call(context)

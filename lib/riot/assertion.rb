@@ -38,14 +38,14 @@ module Riot
       @macro = AssertionMacro.default
     end
 
-    # Given a [Riot::Situation], execute the assertion definition provided to this Assertion, hand off to an
+    # Given a {Riot::Situation}, execute the assertion definition provided to this Assertion, hand off to an
     # assertion macro for evaluation, and then return a status tuple. If the macro to be used expects any
     # exception, catch the exception and send to the macro; else just return it back.
     #
     # Currently supporting 3 evaluation states: :pass, :fail, and :error
     # 
-    # @param [Riot::Situation] situation An instance of a Riot::Situation
-    # @return [Array[Symbol, String]] array containing evaluation state and a descriptive explanation
+    # @param [Riot::Situation] situation An instance of a {Riot::Situation}
+    # @return [Array<Symbol, String>] array containing evaluation state and a descriptive explanation
     def run(situation)
       @expectings << situation.evaluate(&@expectation_block) if @expectation_block
       actual = situation.evaluate(&definition)

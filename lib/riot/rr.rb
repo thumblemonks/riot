@@ -37,18 +37,20 @@ module Riot
 
     # Redefines the classes {Riot::Context} will use when creating new assertions and situations to be the
     # ones provided RR support. See {Riot::RR::Assertion} and {Riot::RR::Situation}.
-    module ContextHelpers
-    private
+    module ContextClassOverrides
+      # (see Riot::ContextClassOverrides#assertion_class)
       def assertion_class; Riot::RR::Assertion; end
-      def situation_class; Riot::RR::Situation; end
-    end # ContextHelpers
 
-    # A convenience method for telling {Riot::RR::ContextHelpers} to mix itself into {Riot::Context}. Thus,
-    # enabling RR support in Riot.
+      # (see Riot::ContextClassOverrides#situation_class)
+      def situation_class; Riot::RR::Situation; end
+    end # ContextClassOverrides
+
+    # A convenience method for telling {Riot::RR::ContextClassOverrides} to mix itself into {Riot::Context}.
+    # Thus, enabling RR support in Riot.
     #
     # @param [Class] context_class the class representing the Context to bind to
     def self.enable(context_class)
-      context_class.instance_eval { include Riot::RR::ContextHelpers }
+      context_class.instance_eval { include Riot::RR::ContextClassOverrides }
     end
 
   end # RR

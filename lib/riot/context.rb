@@ -4,6 +4,7 @@ require 'riot/context_helpers'
 module Riot
   RootContext = Struct.new(:setups, :teardowns, :detailed_description, :options)
 
+  # Defines the classes {Riot::Context} will use when creating new assertions and situations.
   module ContextClassOverrides
     # Returns the default class used for generating new {Riot::Assertion Assertion} instances. Defaults to
     # {Riot::Assertion}.
@@ -18,7 +19,7 @@ module Riot
     def situation_class; Situation; end
   end # ContextClassOverrides
 
-  # An {Riot::Assertion Assertion} is declared within a Context. The context stores setup and teardown
+  # An {Riot::Assertion} is declared within a Context. The context stores setup and teardown
   # blocks, and allows for nesting and refactoring. Extension developers may also configure
   # {Riot::ContextMiddleware Middleware} objects in order to extend the functionality of a Context.
   class Context

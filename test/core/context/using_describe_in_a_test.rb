@@ -21,7 +21,7 @@ context "Using a describe sub-context" do
         setup { "another thing is my" }
         asserts_topic.kind_of(String)
       end
-    end.run(Riot::Reporter.new)
+    end.run(Riot::SilentReporter.new)
   end
 
   asserts("current context description") do

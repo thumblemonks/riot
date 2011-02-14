@@ -380,4 +380,4 @@ If you want to make changes, please feel free to do so. The best process is to f
 
 ## License
 
-Riot is released under the MIT license. See {file:MIT-LICENSE}.
+Riot is released under the MIT license. See [MIT LICENSE](https://github.com/thumblemonks/riot/blob/master/MIT-LICENSE). 

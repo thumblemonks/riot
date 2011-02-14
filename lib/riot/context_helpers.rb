@@ -140,7 +140,7 @@ module Riot
         description = "#{scope} ##{what}"
       elsif what.kind_of?(Array)
         definition ||= proc { topic.send(*what) }
-        description = "#{scope} ##{what.shift} with argument(s): #{what}"
+        description = "#{scope} ##{what.first} with argument(s): #{what[1..-1]}"
       else
         description = "#{scope} #{what}"
       end

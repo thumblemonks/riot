@@ -30,7 +30,7 @@ context "A negative matching assertion macro" do
     topic.matches(/abc/)
   end
 
-  assertion_test_passes("when expression does not match", 'does not match /abcd/') do
+  assertion_test_passes("when expression does not match", 'matches /abcd/') do
     topic.matches(/abcd/)
   end
 
@@ -41,7 +41,7 @@ context "A negative matching assertion macro" do
       topic.matches(/^42$/)
     end
 
-    assertion_test_passes("actual value converted to string", 'does not match /^52$/') do
+    assertion_test_passes("actual value converted to string", 'matches /^52$/') do
       topic.matches(/^52$/)
     end
   end

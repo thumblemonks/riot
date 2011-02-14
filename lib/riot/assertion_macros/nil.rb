@@ -18,7 +18,7 @@ module Riot
     
     # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
-      actual.nil? ? fail(expected_message.is_nil.not('non-nil')) : pass("is not nil")
+      actual.nil? ? fail(expected_message.is_nil.not('non-nil')) : pass("is nil")
     end
   end
 end

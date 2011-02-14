@@ -32,7 +32,7 @@ module Riot
       if expected === actual
         fail expected_message(actual).not_to_be_equivalent_to(expected)
       else
-        pass new_message.is_not_equivalent_to(expected)
+        pass new_message.is_equivalent_to(expected)
       end
     end
     

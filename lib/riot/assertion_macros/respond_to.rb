@@ -27,7 +27,7 @@ module Riot
       if actual.respond_to?(expected)
         fail(expected_message.method(expected).is_defined)
       else
-        pass new_message.does_not_respond_to(expected)
+        pass new_message.responds_to(expected)
       end
     end
     

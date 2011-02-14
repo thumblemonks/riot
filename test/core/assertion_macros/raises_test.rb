@@ -8,11 +8,11 @@ context "A raises assertion macro" do
     asserts_raises(nil).raises(Whoops)
   end
 
-  assertion_test_fails("when unexpected exception is raised", "should have raised Exception, not Whoops") do
+  assertion_test_fails("when unexpected exception is raised", "expected to raise Exception, not Whoops") do
     asserts_raises(nil).raises(Exception)
   end
 
-  assertion_test_fails("when nothing was raised", "should have raised Whoops, but raised nothing") do
+  assertion_test_fails("when nothing was raised", "expected to raise Whoops, but raised nothing") do
     assertion = Riot::Assertion.new("foo") { "barf" }.raises(Whoops)
   end
   
@@ -36,31 +36,31 @@ end # A raises assertion macro
 context "A negative raises assertion macro" do
   helper(:deny_raises) { |o| Riot::Assertion.new("foo", true) { raise Whoops, o } }
 
-  assertion_test_fails("when expected exception is raised", "should have not raised Whoops, but raised Whoops") do
+  assertion_test_fails("when expected exception is raised", "expected to not raise Whoops") do
     deny_raises(nil).raises(Whoops)
   end
 
-  assertion_test_passes("when unexpected exception is raised", "not raised Exception") do
+  assertion_test_passes("when unexpected exception is raised", "raises Exception") do
     deny_raises(nil).raises(Exception)
   end
 
-  assertion_test_passes("when nothing was raised", "raised nothing") do
+  assertion_test_passes("when nothing was raised", "raises Whoops") do
     Riot::Assertion.new("foo", true) { "barf" }.raises(Whoops)
   end
   
-  assertion_test_fails("when provided message equals expected message", 'should have not raised Whoops with message "Mom", but raised Whoops with message "Mom"') do
+  assertion_test_fails("when provided message equals expected message", 'expected to not raise Whoops with message "Mom", but raised Whoops with message "Mom"') do
     deny_raises('Mom').raises(Whoops, 'Mom')
   end
 
-  assertion_test_passes("when messages and exception aren't equal", 'not raised Exception with message "Dad"') do
+  assertion_test_passes("when messages and exception aren't equal", 'raises Exception with message "Dad"') do
     deny_raises('Mom').raises(Exception, 'Dad')
   end
 
-  assertion_test_fails("when provided message matches expected message", 'should have not raised Whoops with message /Mom/, but raised Whoops with message "Mom"') do
+  assertion_test_fails("when provided message matches expected message", 'expected to not raise Whoops with message /Mom/, but raised Whoops with message "Mom"') do
     deny_raises('Mom').raises(Whoops, /Mom/)
   end
 
-  assertion_test_fails("when messages don't match", "should have not raised Whoops with message /Mom/, but raised Whoops with message \"Dad\"") do
+  assertion_test_fails("when messages don't match", "expected to not raise Whoops with message /Mom/, but raised Whoops with message \"Dad\"") do
     deny_raises('Dad').raises(Whoops,/Mom/)
   end
 end # A raises assertion macro

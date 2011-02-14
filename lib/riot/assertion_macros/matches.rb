@@ -28,7 +28,7 @@ module Riot
       if actual.to_s =~ expected
         fail(expected_message(expected).not_to_match(actual))
       else
-        pass(new_message.does_not_match(expected))
+        pass(new_message.matches(expected))
       end
     end
   end

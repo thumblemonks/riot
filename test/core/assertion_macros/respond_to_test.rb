@@ -23,7 +23,7 @@ context "A negative respond_to assertion macro" do
     topic.responds_to(:length)
   end
   
-  assertion_test_passes("when method is not defined", "does not respond to :goofballs") do
+  assertion_test_passes("when method is not defined", "responds to :goofballs") do
     topic.respond_to(:goofballs)
   end
   

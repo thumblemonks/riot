@@ -29,7 +29,7 @@ module Riot
       if actual.include?(expected)
         fail expected_message(actual).to_not_include(expected)
       else
-        pass new_message.does_not_include(expected)
+        pass new_message.includes(expected)
       end
     end
     

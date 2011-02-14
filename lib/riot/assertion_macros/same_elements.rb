@@ -15,14 +15,14 @@ module Riot
     # @param [Object] expected the collection of elements that actual should be equivalent to
     def evaluate(actual, expected)
       same = (Set.new(expected) == Set.new(actual))
-      same ? pass : fail(expected_message.elements(expected).to_match(actual))
+      same ? pass(new_message.has_same_elements_as(expected)) : fail(expected_message.elements(expected).to_match(actual))
     end
 
     # (see Riot::AssertionMacro#devaluate)
     # @param [Object] expected the collection of elements that actual should not be equivalent to
     def devaluate(actual, expected)
       same = (Set.new(expected) == Set.new(actual))
-      same ? fail(expected_message.elements(expected).not_to_match(actual)) : pass
+      same ? fail(expected_message.elements(expected).not_to_match(actual)) : pass(new_message.has_same_elements_as(expected))
     end
 
   end

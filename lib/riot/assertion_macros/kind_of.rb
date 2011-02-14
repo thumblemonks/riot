@@ -26,7 +26,7 @@ module Riot
       if actual.kind_of?(expected)
         fail expected_message.not_kind_of(expected).not(actual.class)
       else
-        pass new_message.is_not_a_kind_of(expected)
+        pass new_message.is_a_kind_of(expected)
       end
     end
   end

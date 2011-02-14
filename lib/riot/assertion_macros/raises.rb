@@ -24,9 +24,9 @@ module Riot
     def evaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?
-        fail should_have_message.raised(expected_class).but.raised_nothing
+        fail new_message.expected_to_raise(expected_class).but.raised_nothing
       elsif expected_class != actual_exception.class
-        fail should_have_message.raised(expected_class).not(actual_exception.class)
+        fail new_message.expected_to_raise(expected_class).not(actual_exception.class)
       elsif expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
         fail expected_message(expected_message).for_message.not(actual_message)
       else
@@ -41,20 +41,20 @@ module Riot
     def devaluate(actual_exception, expected_class, expected_message=nil)
       actual_message = actual_exception && actual_exception.message
       if actual_exception.nil?
-        pass new_message.raised_nothing
+        pass new_message.raises(expected_class)
       elsif expected_class != actual_exception.class
         if expected_message && !(actual_message.to_s =~ %r[#{expected_message}])
-          pass new_message.not_raised(expected_class).with_message(expected_message)
+          pass new_message.raises(expected_class).with_message(expected_message)
         else
-          pass new_message.not_raised(expected_class)
+          pass new_message.raises(expected_class)
         end
       else
-        message = should_have_message.not_raised(expected_class)
+        message = new_message.expected_to_not_raise(expected_class)
         if expected_message
           fail message.with_message(expected_message).but.raised(actual_exception.class).
             with_message(actual_exception.message)
         else
-          fail message.but.raised(actual_exception.class)
+          fail message
         end
       end
     end # devaluate

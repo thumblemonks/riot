@@ -3,11 +3,11 @@ require 'teststrap'
 context "A same_elements assertion macro" do
   setup { Riot::Assertion.new("test") { ["foo", "bar", 69] } }
 
-  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned}) do
+  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned},%Q{has same elements as [69, "foo", "bar"]}) do
     topic.same_elements([69, "foo", "bar"])
   end
 
-  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned in any order}) do
+  assertion_test_passes(%Q{when [69, "foo", "bar"] are returned in any order},%Q{has same elements as ["foo", "bar", 69]}) do
     topic.same_elements(["foo", "bar", 69])
   end
 
@@ -27,7 +27,7 @@ context "A negative same_elements assertion macro" do
     topic.same_elements(["foo", "bar", 69])
   end
 
-  assertion_test_passes("when elements do not match") do
+  assertion_test_passes("when elements do not match",%Q{has same elements as ["foo", "bar", 96]}) do
     topic.same_elements(["foo", "bar", 96])
   end
   

@@ -7,11 +7,11 @@ context "An exists assertion macro" do
 
   asserts(":pass when result has a value") do
     assert_exists("foo")
-  end.equals([:pass, "is not nil"])
+  end.equals([:pass, "does exist"])
 
   asserts(":pass because empty string is considered a value") do
     assert_exists("")
-  end.equals([:pass, "is not nil"])
+  end.equals([:pass, "does exist"])
 
   asserts(":fail with message when value is nil") do
     assert_exists(nil)[0..1]
@@ -33,6 +33,6 @@ context "A negative exists assertion macro" do
 
   asserts(":pass when nil") do 
     assert_exists(nil)
-  end.equals([:pass, "is nil"])
+  end.equals([:pass, "does exist"])
   
 end # A negative exists assertion macro

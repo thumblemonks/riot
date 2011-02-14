@@ -7,10 +7,10 @@ context "An assigns assertion macro" do
     Riot::Assertion.new("test") { item }
   end
 
-  assertion_test_passes("when foo is defined") { topic.assigns(:foo) }
-  assertion_test_passes("when foo is defined with expected value") { topic.assigns(:foo, 1) }
+  assertion_test_passes("when foo is defined","assigns :foo") { topic.assigns(:foo) }
+  assertion_test_passes("when foo is defined with expected value","assigns :foo with 1") { topic.assigns(:foo, 1) }
 
-  assertion_test_fails("when foo does not match expectation", "expected :foo to be equal to 2, not 1") do
+  assertion_test_fails("when foo does not match expectation", "expected :foo to be assigned with 2, not 1") do
     topic.assigns(:foo, 2)
   end
 
@@ -32,15 +32,15 @@ context "A negative assigns assertion macro" do
 
   asserts(":pass when @bar is not defined") do
     topic.assigns(:bar).run(Riot::Situation.new)
-  end.equals([:pass, ""])
+  end.equals([:pass, "assigns :bar"])
 
   asserts(":pass when @nil_val is actually nil") do
     topic.assigns(:nil_val).run(Riot::Situation.new)
-  end.equals([:pass, ""])
+  end.equals([:pass, "assigns :nil_val"])
 
   asserts(":pass when @foo does not equal 2") do
     topic.assigns(:foo, 2).run(Riot::Situation.new)
-  end.equals([:pass, ""])
+  end.equals([:pass, "assigns :foo with 2"])
 
   asserts(":fail when @foo is defined") do
     topic.assigns(:foo).run(Riot::Situation.new)[0..1]
@@ -48,5 +48,5 @@ context "A negative assigns assertion macro" do
 
   asserts(":fail when @foo does equal 1") do
     topic.assigns(:foo, 1).run(Riot::Situation.new)[0..1]
-  end.equals([:fail, "expected :foo to not be equal to 1"])
+  end.equals([:fail, "expected :foo to not be assigned with 1"])
 end # A negative assigns assertion macro

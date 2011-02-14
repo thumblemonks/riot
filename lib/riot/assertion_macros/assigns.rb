@@ -28,9 +28,13 @@ module Riot
         if actual_value.nil?
           fail expected_message(variable).to_be_assigned_a_value
         elsif !expected_value.nil? && expected_value != actual_value
-          fail expected_message(variable).to_be_equal_to(expected_value).not(actual_value)
+          fail expected_message(variable).to_be_assigned_with(expected_value).not(actual_value)
         else
-          pass
+          if expected_value && actual_value
+            pass new_message.assigns(variable).with(expected_value)
+          else
+            pass new_message.assigns(variable)
+          end
         end
       end
     end
@@ -41,10 +45,14 @@ module Riot
     def devaluate(actual, *expectings)
       prepare(actual, *expectings) do |variable, expected_value, actual_value|
         if actual_value.nil? || (expected_value && expected_value != actual_value)
-          pass
+          if expected_value && actual_value
+            pass new_message.assigns(variable).with(expected_value)
+          else
+            pass new_message.assigns(variable)
+          end
         else
           message = expected_message(variable).to_not_be
-          fail(expected_value.nil? ? message.assigned_a_value : message.equal_to(expected_value))
+          fail(expected_value.nil? ? message.assigned_a_value : message.assigned_with(expected_value))
         end
       end
     end

@@ -38,7 +38,7 @@ context "A negative equivalent_to assertion macro" do
 
   asserts("an array is not equivalent to 'what'") do
     topic.equivalent_to([]).run(Riot::Situation.new)
-  end.equals([:pass, "is not equivalent to []"])
+  end.equals([:pass, "is equivalent to []"])
 
   context "with numeric topic" do
     setup { Riot::Assertion.new("blue", true) { 31413 } }
@@ -49,7 +49,7 @@ context "A negative equivalent_to assertion macro" do
 
     asserts ":pass when in expected range" do 
       topic.equivalent_to(32000..33000).run(Riot::Situation.new)
-    end.equals([:pass, "is not equivalent to 32000..33000"])
+    end.equals([:pass, "is equivalent to 32000..33000"])
     
   end # with numeric topic
 end # A negative equivalent_to assertion macro

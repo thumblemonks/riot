@@ -15,7 +15,7 @@ context "A kind_of assertion macro" do
 end # A kind_of assertion macro
 
 context "A negative kind_of assertion macro" do
-  assertion_test_passes(":pass when specific result is not a kind of String", "is not a kind of String") do
+  assertion_test_passes(":pass when specific result is not a kind of String", "is a kind of String") do
     Riot::Assertion.new("foo", true) { 1 }.kind_of(String)
   end
   
@@ -23,7 +23,7 @@ context "A negative kind_of assertion macro" do
     Riot::Assertion.new("foo", true) { "a" }.kind_of(String)
   end
 
-  assertion_test_passes(":pass when nil", "is not a kind of String") do
+  assertion_test_passes(":pass when nil", "is a kind of String") do
     Riot::Assertion.new("foo", true) { }.kind_of(String)
   end
   

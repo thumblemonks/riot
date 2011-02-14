@@ -18,12 +18,12 @@ module Riot
 
     # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
-      actual.nil? ? fail("expected a non-nil value") : pass("is not nil")
+      actual.nil? ? fail("expected a non-nil value") : pass("does exist")
     end
     
     # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
-      actual.nil? ? pass("is nil") : fail("expected a nil value")
+      actual.nil? ? pass("does exist") : fail("expected a nil value")
     end
   end
 end

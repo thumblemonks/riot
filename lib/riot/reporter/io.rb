@@ -70,15 +70,15 @@ module Riot
       end
     end
 
-    begin
-      raise LoadError if ENV["TM_MODE"]
-      require 'rubygems'
-      require 'term/ansicolor'
-      include Term::ANSIColor
-    rescue LoadError
-      def green(str); str; end
-      alias :red :green
-      alias :yellow :green
+    # Color output
+    def red(str);    with_color(31, str); end
+    def yellow(str); with_color(33, str); end
+    def green(str);  with_color(32, str); end
+    
+    # for color reference:
+    # http://www.pixelbeat.org/docs/terminal_colours/
+    def with_color(code,str)
+      "\e[#{code}m#{str}\e[0m"
     end
   end # IOReporter
 

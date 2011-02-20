@@ -35,9 +35,3 @@ class MockReporter < Riot::Reporter
   def error(description, e); end
   def results; end
 end
-
-class ColorHelper
-  require 'rubygems'
-  require 'term/ansicolor'
-  extend Term::ANSIColor
-end

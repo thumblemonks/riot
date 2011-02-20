@@ -73,14 +73,18 @@ context "StoryReporter" do
 
   asserts("success message is stripped if nil") do
     topic.pass("foo", nil)
-    ColorHelper.uncolored(@out.string)
-  end.equals("  + foo\n")
+    @out.string
+    # ColorHelper.uncolored(@out.string)
+  end.matches(/\+ \e\[32mfoo\e\[0m\n/)
+  # end.equals("  + foo\n")
 
   asserts("failure message excludes line info if none provided") do
     @out.rewind
     topic.fail("foo", "bar", nil, nil)
-    ColorHelper.uncolored(@out.string)
-  end.equals("  - foo: bar\n")
+    @out.string
+    # ColorHelper.uncolored(@out.string)
+  end.matches(/\- \e\[33mfoo: bar\e\[0m\n/)
+  # end.equals("  - foo: bar\n")
 
   context 'reporting on an empty context' do
     setup do

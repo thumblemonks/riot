@@ -1,3 +1,7 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "riot/version"
+
 Gem::Specification.new do |s|
   s.name          = %q{riot}
   s.version       = Riot::VERSION

@@ -1,7 +1,7 @@
-require 'rubygems'
-require 'rake'
+require 'bundler'
+Bundler::GemHelper.install_tasks
 
-task :default => ["test:all"]
+task :default   => ["test:all"]
 task "test:all" => ["test:core", "test:extensions"]
 
 require 'rake/testtask'
@@ -34,20 +34,3 @@ task("test:benchmarks") { run_benchmarks("ruby") }
 
 #
 # Some monks like diamonds. I like gems.
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "riot"
-    gem.summary = "An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test."
-    gem.description = "An extremely fast, expressive, and context-driven unit-testing framework. A replacement for all other testing frameworks. Protest the slow test."
-    gem.email = "gus@gusg.us"
-    gem.homepage = "http://github.com/thumblemonks/riot"
-    gem.authors = ["Justin 'Gus' Knowlden"]
-    gem.add_dependency 'rr'
-    gem.add_dependency 'term-ansicolor'
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end

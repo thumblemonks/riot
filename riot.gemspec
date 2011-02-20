@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = %q{riot}
-  s.version       = "0.12.1"
+  s.version       = Riot::VERSION
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Justin 'Gus' Knowlden"]
   s.summary       = %q{An extremely fast, expressive, and context-driven unit-testing framework. Protest the slow test.}

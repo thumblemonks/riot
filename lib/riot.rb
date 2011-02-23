@@ -95,6 +95,11 @@ module Riot
     Riot.reporter = Riot::DotMatrixReporter
   end
 
+  # Tells Riot to use {Riot::PrettyDotMatrixReporter} for reporting
+  def self.pretty_dots
+    Riot.reporter = Riot::PrettyDotMatrixReporter
+  end
+
   at_exit { exit(run.success?) unless Riot.alone? }
 end # Riot
 

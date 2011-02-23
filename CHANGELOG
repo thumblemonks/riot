@@ -4,6 +4,12 @@
 
 ==== Deprecating the not! assertion macro. It may just be gone by 0.13.0 [jaknowlden]
 
+==== Remove ANSI-color dependency [achiu]
+
+==== Switch from Jeweler to Bundler [achiu]
+
+==== Add PrettyDotMatrixReporter [achiu]
+
 == 0.12.1
 
 ==== Error reporting now filters the backtrace to include only meaningful line items. [mbriggs]

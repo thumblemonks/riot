@@ -133,6 +133,16 @@ module Riot
     def asserts_topic(what="that it")
       asserts(what) { topic }
     end
+
+    # Makes a negative assertion on the topic itself, e.g.
+    #
+    #   denies_topic.matches(/^ab+/)
+    #
+    # @param [String] what description of test
+    # @return [Riot::Assertion]
+    def denies_topic(what="that it")
+      denies(what) { topic }
+    end
   private
     def new_assertion(scope, what, negative=false, &definition)
       if what.kind_of?(Symbol)

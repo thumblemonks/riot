@@ -37,7 +37,7 @@ module Riot
     the_reporter = reporter.new
     the_reporter.summarize do
       root_contexts.each { |ctx| ctx.run(the_reporter) }
-    end
+    end unless root_contexts.empty?
     the_reporter
   end
 

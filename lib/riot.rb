@@ -100,7 +100,11 @@ module Riot
     Riot.reporter = Riot::PrettyDotMatrixReporter
   end
 
-  at_exit { exit(run.success?) unless Riot.alone? }
+  at_exit do
+    exit($!.status) unless $!.nil? || $!.success?
+    exit(run.success?) unless Riot.alone?
+  end
+
 end # Riot
 
 # A little bit of monkey-patch so we can have +context+ available anywhere.

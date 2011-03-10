@@ -136,6 +136,26 @@ module Riot
       new_assertion "denies", *what, {:negative => true}, &definition
     end
 
+    # This is the negative form of #should. This is exactly like denies. Just here for syntactic sugar.
+    #
+    # A basic eample is:
+    #
+    #   should_not("have size equal 2") { topic.size == 2 }
+    #
+    # In addition, the #denies shortcut as available as well:
+    #
+    #   should_not(:size).equals 3
+    #
+    # Or passing in arguments
+    #
+    #   should_not(:foo,1,2).equals(2)
+    #
+    # @param [String,Symbol] what description or property to inspect on the topic
+    # @return [Riot::Assertion]
+    def should_not(*what, &definition)
+      new_assertion "should not", *what, {:negative => true}, &definition
+    end
+
     # Makes an assertion on the topic itself, e.g.
     #
     #   asserts_topic.matches(/^ab+/)

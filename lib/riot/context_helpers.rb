@@ -80,13 +80,17 @@ module Riot
     #
     #   asserts(:size).equals(2)
     #
+    # Or with arguments:
+    # 
+    #   asserts(:foo,1,2).equals(3)
+    #
     # Passing a Symbol to +asserts+ enables this behaviour. For more information on
     # assertion macros, see {Riot::AssertionMacro}.
     #
     # @param [String, Symbol] what description of test or property to inspect on the topic
     # @return [Riot::Assertion]
-    def asserts(what, &definition)
-      new_assertion("asserts", what, &definition)
+    def asserts(*what, &definition)
+      new_assertion("asserts", *what, &definition)
     end
 
     # Same as #asserts, except it uses the phrase "should" in the report output. Sometimes you feel like a
@@ -94,10 +98,14 @@ module Riot
     #
     #   should("ensure expected") { "bar" }.equals("bar")
     #
+    #   #should also has the same shortcuts available to #asserts:
+    #
+    #   should(:bar,1,2).equals(3)
+    #
     # @param [String, Symbol] what description of test or property to inspect on the topic
     # @return [Riot::Assertion]
-    def should(what, &definition)
-      new_assertion("should", what, &definition)
+    def should(*what, &definition)
+      new_assertion("should", *what, &definition)
     end
 
     # Like an assertion, but expects negative results.
@@ -115,13 +123,17 @@ module Riot
     #
     #   denies(:size).equals(2)
     #
+    # the shorcut can also pass additional arguments to the method like:
+    #
+    #   denies(:foo,1,3).equals(2)
+    #
     # Passing a Symbol to +denies+ enables this behaviour. For more information on
     # assertion macros, see {Riot::AssertionMacro}.
     #
     # @param [String, Symbol] what description of test or property to inspect on the topic
     # @return [Riot::Assertion]
-    def denies(what, &definition)
-      new_assertion("denies", what, true, &definition)
+    def denies(*what, &definition)
+      new_assertion "denies", *what, {:negative => true}, &definition
     end
 
     # Makes an assertion on the topic itself, e.g.
@@ -144,18 +156,14 @@ module Riot
       denies(what) { topic }
     end
   private
-    def new_assertion(scope, what, negative=false, &definition)
-      if what.kind_of?(Symbol)
-        definition ||= proc { topic.send(what) }
-        description = "#{scope} ##{what}"
-      elsif what.kind_of?(Array)
-        definition ||= proc { topic.send(*what) }
-        description = "#{scope} ##{what.first} with argument(s): #{what[1..-1]}"
-      else
-        description = "#{scope} #{what}"
-      end
-
-      (@assertions << assertion_class.new(description, negative, &definition)).last
+    
+    def new_assertion(scope, *args, &definition)
+      options = args.extract_options!
+      definition ||= proc { topic.send(*args) }
+      description = "#{scope} #{args.first}"
+      description << " with arguments(s): #{args.drop(1)}" if args.size > 1
+      (@assertions << assertion_class.new(description, options[:negative], &definition)).last
     end
+
   end # AssertionHelpers
 end # Riot

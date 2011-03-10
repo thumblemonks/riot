@@ -115,3 +115,10 @@ class Object
   end
   alias_method :describe, :context
 end # Object
+
+class Array
+
+  def extract_options!
+    last.is_a?(::Hash) ? pop : {}
+  end
+end

@@ -100,7 +100,16 @@ module Riot
     Riot.reporter = Riot::PrettyDotMatrixReporter
   end
 
-  at_exit { exit(run.success?) unless Riot.alone? }
+  # Making sure to account for Riot being run as part of a larger rake task (or something similar).
+  # If a child process exited with a failing status, probably don't want to run Riot tests; just exit
+  # with the child status.
+  at_exit do
+    unless Riot.alone?
+      status = $?.exitstatus unless ($?.nil? || $?.success?)
+      exit(status || run.success?)
+    end
+  end
+  
 end # Riot
 
 # A little bit of monkey-patch so we can have +context+ available anywhere.
@@ -117,7 +126,6 @@ class Object
 end # Object
 
 class Array
-
   def extract_options!
     last.is_a?(::Hash) ? pop : {}
   end

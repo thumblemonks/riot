@@ -1,6 +1,29 @@
-== master
+== 0.12.3
 
-==== Adding a `denies_topic` macro to Context [Mon-Ouei]
+==== Going nuts with context helpers: should_not, asserts/denies_topic arguments [achiu]
+
+This works now: `should_not("do something")` as an alias for `denies`
+
+You can now pass arguments to `asserts`, `denies`, `should`, and `should_not`.
+
+    context "Playing with hashes" do
+			setup do
+				{ "foo" => "bar" }
+			end
+
+			asserts(:[], "foo").equals("bar")
+			should(:[], "foo").equals("bar")
+			denies(:[], "foo").equals("goo")
+			should_not(:[], "foo").equals("goo")
+		end # Playing with hashes
+
+==== Exit gracefully if a child process exited with failing status [timgaleckas]
+
+No tests will run in this situation.
+
+==== No status displayed if no tests run [timgaleckas]
+
+==== Adding a `denies_topic` macro to Context [Mon-Ouie]
 
 == 0.12.2
 

@@ -133,7 +133,8 @@ module Riot
     # @param [String, Symbol] what description of test or property to inspect on the topic
     # @return [Riot::Assertion]
     def denies(*what, &definition)
-      new_assertion "denies", *what, {:negative => true}, &definition
+      what << {:negative => true}
+      new_assertion "denies", *what, &definition
     end
 
     # This is the negative form of #should. This is exactly like denies. Just here for syntactic sugar.
@@ -153,7 +154,8 @@ module Riot
     # @param [String,Symbol] what description or property to inspect on the topic
     # @return [Riot::Assertion]
     def should_not(*what, &definition)
-      new_assertion "should not", *what, {:negative => true}, &definition
+      what << {:negative => true}
+      new_assertion "should not", *what, &definition
     end
 
     # Makes an assertion on the topic itself, e.g.

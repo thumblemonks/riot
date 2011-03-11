@@ -183,7 +183,7 @@ module Riot
       options = args.extract_options!
       definition ||= proc { topic.send(*args) }
       description = "#{scope} #{args.first}"
-      description << " with arguments(s): #{args.drop(1)}" if args.size > 1
+      description << " with arguments(s): #{args.slice(1, args.length)}" if args.size > 1
       (@assertions << assertion_class.new(description, options[:negative], &definition)).last
     end
 

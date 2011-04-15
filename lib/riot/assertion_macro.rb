@@ -10,7 +10,7 @@ module Riot
   #
   #     asserts(:comments).empty?
   #     denies(:comments).empty?
-  # 
+  #
   # == Writing your own macros
   #
   # Macros are added by subclassing {AssertionMacro}. For example, here's
@@ -18,7 +18,7 @@ module Riot
   #
   #     class EmptyMacro < AssertionMacro
   #       register :empty
-  #        
+  #
   #       def evaluate(actual)
   #         actual.length == 0 ? pass : fail(expected_message(actual).to_be_empty)
   #       end
@@ -70,7 +70,7 @@ module Riot
     # @return [Array[Symbol, String]]
     def pass(message=nil) [:pass, message.to_s]; end
 
-    # Returns a status tuple indicating the assertion failed and where it failed it if that can be 
+    # Returns a status tuple indicating the assertion failed and where it failed it if that can be
     # determined.
     #
     # @param [String] message the message to report with
@@ -136,6 +136,7 @@ require 'riot/assertion_macros/matches'
 require 'riot/assertion_macros/nil'
 require 'riot/assertion_macros/not_borat'
 require 'riot/assertion_macros/raises'
+require 'riot/assertion_macros/raises_kind_of'
 require 'riot/assertion_macros/respond_to'
 require 'riot/assertion_macros/same_elements'
 require 'riot/assertion_macros/size'

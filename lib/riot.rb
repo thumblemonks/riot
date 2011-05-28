@@ -34,42 +34,54 @@ module Riot
   #
   # @return [Riot::Reporter] the reporter that was used
   def self.run
-    the_reporter = reporter.new
+    the_reporter = reporter.new(Riot.reporter_options)
     the_reporter.summarize do
       root_contexts.each { |ctx| ctx.run(the_reporter) }
     end unless root_contexts.empty?
     the_reporter
   end
 
+  # Options that configure how Riot will run.
+  # 
+  # @return [Hash] the options that tell Riot how to run
+  def self.options
+    @options ||= {
+      :silent => false,
+      :alone => false,
+      :reporter => Riot::StoryReporter,
+      :reporter_options => {:plain => false}
+    }
+  end
+
   # This means you don't want to see any output from Riot. A "quiet riot".
   def self.silently!
-    @silent = true
+    Riot.options[:silent] = true
   end
 
   # Reponds to whether Riot is reporting silently.
   #
   # @return [Boolean]
   def self.silently?
-    defined?(@silent) && @silent == true
+    Riot.options[:silent] == true
   end
 
   # This means you don't want Riot to run tests for you. You will execute Riot.run manually.
   def self.alone!
-    @alone = true
+    Riot.options[:alone] = true
   end
 
   # Responds to whether Riot will run +at_exit+ (false) or manually (true).
   #
   # @return [Boolean]
   def self.alone?
-    defined?(@alone) && @alone == true
+    Riot.options[:alone] == true
   end
 
   # Allows the reporter class to be changed. Do this before tests are started.
   #
   # @param [Class] reporter_class the Class that represents a {Riot::Reporter}
   def self.reporter=(reporter_class)
-    @reporter_class = reporter_class
+    Riot.options[:reporter] = reporter_class
   end
 
   # Returns the class for the reporter that is currently selected. If no reporter was explicitly selected,
@@ -77,11 +89,14 @@ module Riot
   #
   # @return [Class] the Class that represents a {Riot::Reporter}
   def self.reporter
-    if Riot.silently?
-      Riot::SilentReporter
-    else
-      (defined?(@reporter_class) && @reporter_class) || Riot::StoryReporter
-    end
+    Riot.silently? ? Riot::SilentReporter : Riot.options[:reporter]
+  end
+
+  # Returns the options that will be passed to the Reporter when it is created.
+  #
+  # @return [Hash] the Hash of current options
+  def self.reporter_options
+    Riot.options[:reporter_options]
   end
 
   # @todo make this a flag that DotMatrix and Story respect and cause them to print errors/failures
@@ -100,6 +115,11 @@ module Riot
     Riot.reporter = Riot::PrettyDotMatrixReporter
   end
 
+  # Tells Riot to turn color off in the output
+  def self.plain!
+    Riot.reporter_options[:plain] = true
+  end
+
   # Making sure to account for Riot being run as part of a larger rake task (or something similar).
   # If a child process exited with a failing status, probably don't want to run Riot tests; just exit
   # with the child status.
@@ -109,7 +129,6 @@ module Riot
       exit(status || run.success?)
     end
   end
-  
 end # Riot
 
 # A little bit of monkey-patch so we can have +context+ available anywhere.

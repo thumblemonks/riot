@@ -1,12 +1,12 @@
 module Riot
 
-  # Outputs in the dot-notion almost everyone should be familiar with, "." implies pass, "F" implues a
+  # Outputs in the dot-notion almost everyone should be familiar with, "." implies pass, "F" implies a
   # failure, and "E" implies an error. If ansi-coloring is available, it is used. Error and failure messages
   # are buffered for output until the end.
   class DotMatrixReporter < IOReporter
     # Creates a new DotMatrixReporter and initializes the failure/error details buffer.
     # @param (see Riot::IOReporter#initialize)
-    def initialize(writer=STDOUT)
+    def initialize(*args)
       super
       @details = []
     end

@@ -6,12 +6,16 @@ module Riot
   # This is an abstract class. You should use some other or define your own sub-class that knows how to
   # handle +pass+, +fail+, and +error+.
   class IOReporter < Reporter
+
     # Creates a new IOReporter. You can give it your own IO writer or it will default to +STDOUT+.
+    # If you want to specifically turn colorization off in the output, pass the +plain+ option.
     #
     # @param [IO] writer the writer to use for results
-    def initialize(writer=STDOUT)
+    # @param [Hash] options options for reporter
+    def initialize(*args)
       super()
-      @writer = writer
+      @options = (args.last.kind_of?(Hash) ? args.pop : {})
+      @writer = (args.shift || STDOUT)
     end
 
     # (see Riot::Reporter#results)
@@ -75,10 +79,14 @@ module Riot
     def yellow(str); with_color(33, str); end
     def green(str);  with_color(32, str); end
     
+    def plain?
+      (@options[:plain] || @options["plain"])
+    end
+
     # for color reference:
     # http://www.pixelbeat.org/docs/terminal_colours/
     def with_color(code,str)
-      "\e[#{code}m#{str}\e[0m"
+      plain? ? str : "\e[#{code}m#{str}\e[0m"
     end
   end # IOReporter
 

@@ -71,9 +71,20 @@ module Riot
     end
 
     # Color output
-    def red(str);    with_color(31, str); end
-    def yellow(str); with_color(33, str); end
-    def green(str);  with_color(32, str); end
+    
+    # Luckily, Windows command prompt doesn't allow ANSI colors! Yay!
+    # Wait.. boo. Horribly unreadable tests!
+    # Quick and dirty fix (that should be replaced with better code
+    # and perhaps an option to allow ANSI colored outputs for reporters):
+    if !RUBY_PLATFORM['mswin32']
+      def red(str);    str; end
+      def green(str);  str; end
+      def yellow(str); str; end
+    else
+      def red(str);    with_color(31, str); end
+      def yellow(str); with_color(33, str); end
+      def green(str);  with_color(32, str); end
+    end
     
     # for color reference:
     # http://www.pixelbeat.org/docs/terminal_colours/

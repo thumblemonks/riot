@@ -1,3 +1,8 @@
+== 0.12.4
+
+==== Adding Riot.plain! option for not printing output in color [c00lryguy,
+jaknowlden]
+
 == 0.12.3
 
 ==== Going nuts with context helpers: should_not, asserts/denies_topic arguments [achiu]

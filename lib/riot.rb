@@ -149,3 +149,4 @@ class Array
     last.is_a?(::Hash) ? pop : {}
   end
 end
+

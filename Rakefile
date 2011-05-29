@@ -32,5 +32,3 @@ end
 desc "Run all of them fancy benchmarks, Howard!"
 task("test:benchmarks") { run_benchmarks("ruby") }
 
-#
-# Some monks like diamonds. I like gems.

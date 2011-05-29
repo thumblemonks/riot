@@ -35,3 +35,4 @@ class MockReporter < Riot::Reporter
   def error(description, e); end
   def results; end
 end
+

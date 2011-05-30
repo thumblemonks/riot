@@ -2,7 +2,7 @@ require 'riot/context_options'
 require 'riot/context_helpers'
 
 module Riot
-  RootContext = Struct.new(:setups, :teardowns, :detailed_description, :options)
+  RootContext = Struct.new(:setups, :teardowns, :detailed_description, :option_set)
 
   # Defines the classes {Riot::Context} will use when creating new assertions and situations.
   module ContextClassOverrides
@@ -51,7 +51,7 @@ module Riot
       @parent = parent || RootContext.new([],[], "", {})
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
-      @options = @parent.options
+      @options = @parent.option_set
       prepare_middleware(&definition)
     end
 

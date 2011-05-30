@@ -11,7 +11,7 @@ module Riot
     # @param [Object] key the key used to look up the option value later
     # @param [Object] value the option value to store
     def set(key, value)
-      options[key] = value
+      option_set[key] = value
     end
 
     # Returns the value of a set option. The key must match exactly, symbols and strings are not
@@ -20,13 +20,13 @@ module Riot
     # @param [Object] key the key used to look up the option value
     # @return [Object]
     def option(key)
-      options[key]
+      option_set[key]
     end
 
     # Returns the hash of defined options.
     #
     # @return [Hash]
-    def options
+    def option_set
       @options ||= {}
     end
 

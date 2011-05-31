@@ -28,7 +28,7 @@ module Riot
   # How to run Riot itself. This should be called +at_exit+ unless you suggested - by calling {Riot.alone!}
   # that you want to call this method yourself. If no {Riot.reporter} is set, the
   # {Riot::StoryReporter default} will be used.
-  # 
+  #
   # You can change reporters by setting the manually via {Riot.reporter=} or by using one of: {Riot.dots},
   # {Riot.silently!}, or {Riot.verbose}.
   #
@@ -42,7 +42,7 @@ module Riot
   end
 
   # Options that configure how Riot will run.
-  # 
+  #
   # @return [Hash] the options that tell Riot how to run
   def self.options
     @options ||= {
@@ -125,8 +125,7 @@ module Riot
   # with the child status.
   at_exit do
     unless Riot.alone?
-      status = $?.exitstatus unless ($?.nil? || $?.success?)
-      exit(status || run.success?)
+      exit run.success?
     end
   end
 end # Riot

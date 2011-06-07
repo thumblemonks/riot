@@ -12,16 +12,19 @@ In contrast to other popular Ruby testing frameworks such as Test::Unit, [Should
 
 In Riot, tests reside in `contexts`. Within these, a `topic` object is defined through a `setup` block. The actual assertions are then made with an `asserts` or `denies` block.
 
+```ruby
     context "An empty Array" do
       setup { Array.new }
       asserts("it is empty") { topic.empty? }
       denies("it has any elements") { topic.any? }
     end # An Array
+```
 
 As you can see, the setup block doesn't use any instance variables to save the object under test &mdash; rather, the return value of the block is used as the `topic`. This object can then be accessed in the assertions using the `topic` attribute. Furthermore, at their very basic level, assertions need only return a boolean. When using `asserts`, `true` indicates a pass while `false` indicates a fail; subsequently, when using `denies`, `true` indicates a failure whereas `false` indicates success.
 
 Of course, you can nest contexts as well; the `setup` blocks are executed outside-in; as in, the parents' setups are run before the current context allowing for a setup hierarchy. `teardown` blocks are run inside out; the current context's teardowns are run before any of its parents'. This is what you would expect from other frameworks as well.
 
+```ruby
     context "An Array" do
       setup { Array.new }
 
@@ -33,6 +36,7 @@ Of course, you can nest contexts as well; the `setup` blocks are executed outsid
         asserts("returns the element on #first") { topic.first == "foo" }
       end
     end # An Array
+```
 
 By the way, you can put any kind of ruby object in your context description. Riot will call `to_s` on the actual value before it is used in a reporting context. This fact will become [useful later](http://thumblemonks.github.com/riot/hacking.html#context-middleware) ;)
 
@@ -44,37 +48,45 @@ We can do this with assertion macros. You can think of these as special assertio
 
 Let's take this little for instance:
 
+```ruby
     context "Yummy things" do
       setup { ["cookies", "donuts"] }
 
       asserts("#first") { topic.first }.equals("cookies")
     end # Yummy things
+```
 
 First, how's that for a readable test? Second, you should notice that the assertion block will return the `first` item from the `topic` (which is assumed to be `Enumerable` in this case); if it isn't `Enumerable`, then you have other problems. Since the first element in the array is "cookies", the assertion will pass. Yay!
 
 But wait, there's more. Riot is about helping you write faster and more readable tests. Notice any duplication in the example above (besides the value "cookies")? I do. How about that `first` notation in the assertion name and reference in the assertion block. Riot provides a shortcut which allows you to reference methods on the topic through the assertion name. Here's another way to write the same test:
 
+```ruby
     context "Yummy things" do
       setup { ["cookies", "donuts"] }
 
       asserts(:first).equals("cookies")
     end # Yummy things
+```
 
 Now that's real yummy. Want some more? Perhaps you just want to test the topic itself &mdash; not a method or attribute of it. You could do this:
 
+```ruby
     context "Yummy things" do
       setup { ["cookies", "donuts"] }
 
       asserts("topic") { topic }.size(2)
     end # Yummy things
+```
 
 But, as you can probably already guess, that's gross and redundant. To solve this, Riot provides the `asserts_topic` shortcut which is a helper that pretty much just does `asserts("topic") { topic }` for you.
 
+```ruby
     context "Yummy things" do
       setup { ["cookies", "donuts"] }
 
       asserts_topic.size(2)
     end # Yummy things
+```
 
 Yep, more readable.
 
@@ -82,6 +94,7 @@ Yep, more readable.
 
 Way back in the first code example we saw a reference to `denies`; this is what is called the negative assertion. You could probably also call it a counter assertion, but I don't. You can use `denies` with any assertion macro that you can use `asserts` with; it's just that `denies` expects the assertion to fail for the test to pass. For instance:
 
+```ruby
     context "My wallet" do
       setup do
         Wallet.new(1000) # That's 1000 cents, or $10USD yo
@@ -90,6 +103,7 @@ Way back in the first code example we saw a reference to `denies`; this is what 
       asserts(:enough_for_lunch?)
       denies(:enough_for_lunch?)
     end # My wallet
+```
 
 One of those will pass and the other will fail. If $10 is not enough for lunch the `denies` statement will pass; and then you should move to Chicago where it is enough (if only barely).
 
@@ -213,6 +227,7 @@ This notion about a prior `setup` being the `topic` for a latter `setup` is true
 
 More than likely, however, you'll want to modify something about the topic without changing what the topic for the context is. To do this, Riot provides the `hookup` block, which is just like a `setup` block except that `hookup` will always return the `topic` that was provided to it. It's kind of like calling `Object#tap`. Here's a for-instance:
 
+```ruby
     context "A Person" do
       setup { Person.new(:name => "Master Blasterr") }
 
@@ -223,6 +238,7 @@ More than likely, however, you'll want to modify something about the topic witho
         asserts(:valid?) # Yay!
       end # with valid email
     end # A complex thing
+```
 
 If the point didn't smack you in the face there, think about using `setup` instead of `hookup` in the sub-context. Had you written that as a `setup` block, you'd have to return `topic` after setting the email address, or else the new topic would be the actual email address; and you probably don't want to actually be calling `"master@blast.err".valid?` in the assertion.
 
@@ -232,6 +248,7 @@ You can also call `hookup` as many times as you like; the great part is that the
 
 You remember how you used to &mdash; or currently do &mdash; create instance variables to hold some data that you're going to use in your tests? Well, Riot allows you to still do that yucky stuff, but would rather you use a helper to encapsulate it. For instance, you could do this:
 
+```ruby
     context "A greedy monkey" do
       setup do
         @a_ripe_banana = Banana.new(:ripe => true)
@@ -242,9 +259,11 @@ You remember how you used to &mdash; or currently do &mdash; create instance var
 
       asserts(:bananas).size(1)
     end # A greedy monkey
+```
 
 Or, you could do this
 
+```ruby
     context "A greedy monkey" do
       helper(:a_ripe_banana) { Banana.new(:ripe => true) }
       setup { Monkey.new }
@@ -253,6 +272,7 @@ Or, you could do this
 
       asserts(:bananas).size(1)
     end # A greedy monkey
+```
 
 "So! What's the difference?", you ask. Nothing really. It's all aesthetic; but, it's a better aesthetic for a couple of reasons. Let me tell you why:
 
@@ -263,6 +283,7 @@ Or, you could do this
 
 What's that about (4)? Yes, helpers are really just over-glorified methods, which means you can pass arguments to them. Which means you can build factories with them. Which means those factories can go away when the context is no longer used and they're no longer cluttering up your object space. You want another for instance, eh?
 
+```ruby
     context "A greedy monkey" do
       helper(:make_a_banana) do |color|
         Banana.new(:color => color)
@@ -279,6 +300,7 @@ What's that about (4)? Yes, helpers are really just over-glorified methods, whic
       asserts("green bananas") { topic.bananas.green }.size(1)
       asserts("blue bananas") { topic.bananas.blue }.size(1)
     end # A greedy monkey
+```
 
 Or you could `make_many_bananas` or whatever. There are also lots of clever ways to get helpers included into a context which you will hopefully see when you read up on Context Middleware and look through the Recipes. Riot Rails makes liberal use of helpers when [setting up a context](http://github.com/thumblemonks/riot-rails/master/lib/riot/action_controller/context_middleware.rb) to test controllers.
 
@@ -295,12 +317,15 @@ Running your Riot tests is pretty simple. You can put your test files wherever y
 
 I like the latter and use it often. It means the test directory is loaded into the load path, which means I  don't have to be explicit about where to find my `teststrap.rb` file (which you might have named `test_helper.rb` in other projects even though it's a silly name). In your teststrap file you'll put all your common setup; maybe even including your Riot hacks. An out-of-the-box teststrap might look like this:
 
+```ruby
     require 'rubygems'
     require '<my-library>'
     require 'riot'
+```
 
 Of course, you probably want to use rake to run your tests. Here's a basic Rakefile that will find our tests in the test directory or its subdirectories if the filename ends in `_test.rb`:
 
+```ruby
     require 'rubygems'
 
     require 'rake'
@@ -316,6 +341,7 @@ Of course, you probably want to use rake to run your tests. Here's a basic Rakef
     end
 
     task :default => :test
+```
 
 And then on the command line you simply run:
 
@@ -341,13 +367,16 @@ However, there are a number of things you expect from a test framework when mock
 
 But enough of this hemming and hawing. What's it look like?! In your `teststrap.rb` you need to require in `riot/rr`:
 
+```ruby
     # I'm teststrap.rb
 
     require 'rubygems'
     require 'riot/rr'
+```
 
 Then, in your tests, you use standard RR syntax for all of your mocking needs:
 
+```ruby
     require 'teststrap.rb'
 
     context "A nice Person" do
@@ -361,6 +390,7 @@ Then, in your tests, you use standard RR syntax for all of your mocking needs:
       end.equals("Nice haircut")
 
     end # A nice Person
+```
 
 So, if `#say_something_nice` never calls `#make_network_request`, that assertion will fail for that reason first. If it does call `#make_network_request`, but for some reason "Nice haircut" is not returned, the tests will fail for that reason instead. It's like catching two birds with one test.
 

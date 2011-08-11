@@ -51,7 +51,7 @@ module Riot
       @parent = parent || RootContext.new([],[], "", {})
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
-      @options = @parent.option_set
+      @options = @parent.option_set.dup
       prepare_middleware(&definition)
     end
 

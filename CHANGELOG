@@ -1,3 +1,8 @@
+== master
+
+==== Setting options in a sub-context don't leak back into the parent context
+[skade]
+
 == 0.12.4
 
 ==== Adding Riot.plain! option for not printing output in color [c00lryguy,

@@ -29,5 +29,8 @@ context "Context with options" do
 
     asserts("option :goo") { topic.option(:goo) }.equals("car")
     asserts("option \"car\"") { topic.option("car") }.equals(3)
+    asserts("option :goo on parent") do
+      topic.parent.option(:goo)
+    end.equals(nil)
   end # and with a nested context
 end # Context with options

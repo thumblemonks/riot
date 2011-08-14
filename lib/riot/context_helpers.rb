@@ -81,7 +81,7 @@ module Riot
     #   asserts(:size).equals(2)
     #
     # Or with arguments:
-    # 
+    #
     #   asserts(:foo,1,2).equals(3)
     #
     # Passing a Symbol to +asserts+ enables this behaviour. For more information on
@@ -178,12 +178,12 @@ module Riot
       denies(what) { topic }
     end
   private
-    
+
     def new_assertion(scope, *args, &definition)
       options = args.extract_options!
       definition ||= proc { topic.send(*args) }
       description = "#{scope} #{args.first}"
-      description << " with arguments(s): #{args.slice(1, args.length)}" if args.size > 1
+      description << " with arguments(s): #{args.slice(1, args.length).inspect}" if args.size > 1
       (@assertions << assertion_class.new(description, options[:negative], &definition)).last
     end
 

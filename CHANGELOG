@@ -1,5 +1,9 @@
 == master
 
+==== Use #inspect for printing arguments in error results [Mon-Ouie]
+
+==== Move BlankSlate into Riot namespace [Mon-Ouie]
+
 ==== Setting options in a sub-context don't leak back into the parent context
 [skade]
 

@@ -16,7 +16,7 @@ context "DotMatrixReporter" do
     end
     asserts_topic('puts a dot').matches('.')
   end
-  
+
   context 'with a failing test' do
     setup do
       Riot::Context.new('whatever') do
@@ -25,12 +25,12 @@ context "DotMatrixReporter" do
       topic.results(100)
       @out.string
     end
-    
+
     asserts_topic('puts an F').matches('F')
     asserts_topic("puts the full context + assertion name").matches('whatever asserts nope!')
     asserts_topic("puts the failure reason").matches(/Expected .* but got false instead/)
   end
-  
+
   context 'with an error test' do
     setup do
       Riot::Context.new('whatever') do
@@ -39,7 +39,7 @@ context "DotMatrixReporter" do
       topic.results(100)
       @out.string
     end
-    
+
     asserts_topic('puts an E').matches('E')
     asserts_topic('puts the full context + assertion name').matches('whatever asserts bang')
     asserts_topic('puts the exception message').matches('BOOM')

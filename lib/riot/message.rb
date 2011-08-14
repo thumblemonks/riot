@@ -1,8 +1,10 @@
-class BlankSlate
-  instance_methods.each { |meth| undef_method(meth) unless meth.to_s =~ /^(__|object_id)/ }
-end
-
 module Riot
+  class BlankSlate
+    instance_methods.each do |meth|
+      undef_method(meth) unless meth.to_s =~ /^(__|object_id)/
+    end
+  end
+
   # A Message is similar in nature (but not implementation) to a string buffer; you put some strings in and
   # calling {#to_s} will generate a single new string. What's special abnout Message is how you get strings
   # into it. By convention, any method called on a Message that isn't defined will have its name turned into
@@ -12,7 +14,7 @@ module Riot
   #   message = Riot::Message.new
   #   message.hello_world.to_s
   #    => "hello world"
-  #   
+  #
   #   message.whats_the_news.to_s
   #    => "hello world whats the news"
   #

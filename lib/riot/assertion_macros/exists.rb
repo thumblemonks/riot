@@ -13,16 +13,20 @@ module Riot
   #   asserts("test") { nil }.nil   # same thing
   #
   #   denies("test") { "foo" }.exists # would fail
+  #
+  # @deprecated Please use +denies.nil+ instead of +asserts.exists+.
   class ExistsMacro < AssertionMacro
     register :exists
 
     # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
+      warn "exists is deprecated; please use denies.nil instead of asserts.exists"
       actual.nil? ? fail("expected a non-nil value") : pass("does exist")
     end
     
     # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
+      warn "exists is deprecated; please use denies.nil instead of asserts.exists"
       actual.nil? ? pass("does exist") : fail("expected a nil value")
     end
   end

@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__) + "/../lib/")
 require 'riot'
 Riot.verbose
 
-Riot.dots if ENV["TM_MODE"]
+Riot.pretty_dots if ENV["TM_MODE"]
 
 module Riot
   module AssertionTestContextMacros

@@ -4,8 +4,11 @@
 
 ==== Move BlankSlate into Riot namespace [Mon-Ouie]
 
-==== Setting options in a sub-context don't leak back into the parent context
-[skade]
+==== Setting options in a sub-context don't leak back into the parent context [skade]
+
+==== Remove deprecated `not!` macro [charlietanksley]
+
+==== Fix all warnings so riot runs `-w` clean
 
 == 0.12.4
 

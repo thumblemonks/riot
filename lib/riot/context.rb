@@ -115,8 +115,8 @@ module Riot
     # choose. {Riot::AllImportantMiddleware} will always be the last in the chain.
     def prepare_middleware(&context_definition)
       last_middleware = AllImportantMiddleware.new(&context_definition)
-      Context.middlewares.inject(last_middleware) do |last_middleware, middleware|
-        middleware.new(last_middleware)
+      Context.middlewares.inject(last_middleware) do |previous_middleware, middleware|
+        middleware.new(previous_middleware)
       end.call(self)
     end
 

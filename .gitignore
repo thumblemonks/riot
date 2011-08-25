@@ -7,4 +7,4 @@ doc
 _site
 *.watchr
 .DS_Store
-
+Gemfile.lock

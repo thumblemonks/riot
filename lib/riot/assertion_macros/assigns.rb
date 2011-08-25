@@ -61,7 +61,9 @@ module Riot
 
     def prepare(actual, *expectings, &block)
       variable, expected_value = expectings
-      yield(variable, expected_value, actual.instance_variable_get("@#{variable}"))
+      var_name  = "@#{variable}"
+      var_value = actual.instance_variable_defined?(var_name) ? actual.instance_variable_get(var_name) : nil
+      yield(variable, expected_value, var_value)
     end
   end # AssignsMacro
 end # Riot

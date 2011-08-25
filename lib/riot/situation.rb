@@ -31,7 +31,7 @@ module Riot
     #
     # @return [Object] whatever the topic is currently set to
     def topic
-      @_topic
+      @_topic ||= nil
     end
 
     # This is where a setup block is actually evaluated and the +topic+ tracked.

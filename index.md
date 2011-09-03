@@ -213,10 +213,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.same_elements { Array }`
   * `denies.same_elements { Array }`
 
-* **Not!**: Expects no arguments and simply checks that the actual value is non-truthy. This is different than `exists` which only checks that the actual value is not nil. This assertion was added at the inception of Riot to deal with the fact that Riot didn't yet have negative assertions. I am hereby declaring this macro `@deprecated`. Please stop using it (note to self) because it will be removed someday.
-  * `asserts("i'm confused") { false }.not!`
-  * `denies("i'm not confused?") { true }.not!`
-
 ### Setups, Hookups, and Helpers {#setups-hookups}
 
 We're not even close to done yet; there's a lot more cool stuff for you to know about. You know about `setup` already; but you may not know that you can call `setup` multiple times within a Context. Well, you can. They run in the order you write them (top-down) and the result of a prior `setup` will be the `topic` for the next setup. In this way you **could** chain together some partitioned setup criteria without ever explicitly setting a variable (instance or local).

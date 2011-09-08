@@ -140,10 +140,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.nil`
   * `denies.nil`
 
-* **Exists**: pretty much the opposite of the `nil` assertion macro. Expects no arguments.
-  * `asserts.exists`
-  * `denies.exists`
-
 * **Matches**: compares the actual value to a provided regular expression
   * `asserts.matches(%r{Regex})`
   * `denies.matches(%r{Regex})`
@@ -208,7 +204,7 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.same_elements { Array }`
   * `denies.same_elements { Array }`
 
-* **Not!**: Expects no arguments and simply checks that the actual value is non-truthy. This is different than `exists` which only checks that the actual value is not nil. This assertion was added at the inception of Riot to deal with the fact that Riot didn't yet have negative assertions. I am hereby declaring this macro `@deprecated`. Please stop using it (note to self) because it will be removed someday.
+* **Not!**: Expects no arguments and simply checks that the actual value is non-truthy. This assertion was added at the inception of Riot to deal with the fact that Riot didn't yet have negative assertions. I am hereby declaring this macro `@deprecated`. Please stop using it (note to self) because it will be removed someday.
   * `asserts("i'm confused") { false }.not!`
   * `denies("i'm not confused?") { true }.not!`
 

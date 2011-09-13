@@ -8,16 +8,20 @@ module Riot
   #
   #   denies("an empty array") { [] }.any
   #   denies("an empty hash") { {} }.any
+  #
+  # @deprecated Please use +asserts.empty+ or +denies.empty+ instead.
   class AnyMacro < AssertionMacro
     register :any
 
     # (see Riot::AssertionMacro#evaluate)
     def evaluate(actual)
+      warn "any is deprecated; please use asserts.empty or denies.empty instead"
       any?(actual) ? pass("has items") : fail(expected_message(actual).to_have_items)
     end
 
     # (see Riot::AssertionMacro#devaluate)
     def devaluate(actual)
+      warn "any is deprecated; please use asserts.empty or denies.empty instead"
       any?(actual) ? fail(expected_message(actual).not_to_have_items) : pass("has items")
     end
   private

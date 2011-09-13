@@ -190,10 +190,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.size { Numeric }`
   * `denies.size { Numeric }`
 
-* **Any**: checks the result of calling `any?` on the actual value. Expects no arguments.
-  * `asserts.any`
-  * `denies.any`
-
 * **Empty**: checks the result of calling `empty?` on the actual value. Expects no arguments.
   * `asserts.empty`
   * `denies.empty`

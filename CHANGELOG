@@ -1,4 +1,10 @@
-== master
+== 0.12.5
+
+==== Remove doc for some deprecated macros: not, exists, any [charlietanskley]
+
+==== Deprecate two more macros [charlietanskley]
+
+==== make riot run -w clean. None of those pesky warnings [achiu]
 
 ==== Use #inspect for printing arguments in error results [Mon-Ouie]
 

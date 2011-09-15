@@ -13,21 +13,21 @@ module Riot
 
     # (see Riot::AssertionMacro#evaluate)
     # @param [Symbol, String] expected the method name that actual should respond to
-    def evaluate(actual, expected)
-      if actual.respond_to?(expected)
-        pass(new_message.responds_to(expected))
+    def evaluate(actual, expected, include_private=false)
+      if actual.respond_to?(expected, include_private)
+        pass new_message.responds_to(expected, include_private)
       else
-        fail(expected_message.method(expected).is_not_defined)
+        fail(expected_message.method(expected, include_private).is_not_defined)
       end
     end
     
     # (see Riot::AssertionMacro#devaluate)
     # @param [Symbol, String] expected the method name that actual should not respond to
-    def devaluate(actual, expected)
-      if actual.respond_to?(expected)
-        fail(expected_message.method(expected).is_defined)
+    def devaluate(actual, expected, include_private=false)
+      if actual.respond_to?(expected, include_private)
+        fail(expected_message.method(expected, include_private).is_defined)
       else
-        pass new_message.responds_to(expected)
+        pass new_message.responds_to(expected, include_private)
       end
     end
     

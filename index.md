@@ -145,10 +145,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.nil`
   * `denies.nil`
 
-* **Exists**: pretty much the opposite of the `nil` assertion macro. Expects no arguments.
-  * `asserts.exists`
-  * `denies.exists`
-
 * **Matches**: compares the actual value to a provided regular expression
   * `asserts.matches(%r{Regex})`
   * `denies.matches(%r{Regex})`

@@ -44,7 +44,13 @@ context "DotMatrixReporter" do
     asserts_topic('puts the full context + assertion name').matches('whatever asserts bang')
     asserts_topic('puts the exception message').matches('BOOM')
     # <file path>:<one or more number><two newlines><anything till end of line><newline> is the last thing in the stack trace
-    asserts_topic('puts the filtered exception backtrace').matches(/#{__FILE__}:\d+:[^\n]*\n\n.*$\n\z/)
+    asserts_topic('puts the filtered exception backtrace').matches do
+      if RUBY_VERSION =~ /^1.8.\d+/
+        /#{__FILE__}:\d+\n\n.*$\n\z/
+      else
+        /#{__FILE__}:\d+:[^\n]*\n\n.*$\n\z/
+      end
+    end
   end
 end
 

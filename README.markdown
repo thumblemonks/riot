@@ -8,6 +8,8 @@ A fast, expressive, and contextual ruby unit testing framework. Protest the slow
 
 ## Usage
 
+[![Build Status](https://secure.travis-ci.org/thumblemonks/riot.png?branch=master)](http://travis-ci.org/thumblemonks/riot)
+
 In contrast to other popular Ruby testing frameworks such as Test::Unit, [Shoulda](http://github.com/thoughtbot/shoulda) and [RSpec](http://rspec.info/), Riot does not run a `setup` and `teardown` sequence before and after each test. This speeds up test execution quite a bit, but also changes how you write your tests. In general and in my opinion, you should avoid mutating any objects under test and if you use Riot you're pretty much going to have to.
 
 In Riot, tests reside in `contexts`. Within these, a `topic` object is defined through a `setup` block. The actual assertions are then made with an `asserts` or `denies` block.

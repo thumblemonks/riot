@@ -8,3 +8,5 @@ _site
 *.watchr
 .DS_Store
 Gemfile.lock
+.rvmrc
+

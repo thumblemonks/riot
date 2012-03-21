@@ -21,7 +21,6 @@ In Riot, tests reside in `contexts`. Within these, a `topic` object is defined t
 context "An empty Array" do
   setup { Array.new }
   asserts("it is empty") { topic.empty? }
-  denies("it has any elements") { topic.any? }
 end # An Array
 {% endhighlight %}
 
@@ -145,10 +144,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `asserts.nil`
   * `denies.nil`
 
-* **Exists**: pretty much the opposite of the `nil` assertion macro. Expects no arguments.
-  * `asserts.exists`
-  * `denies.exists`
-
 * **Matches**: compares the actual value to a provided regular expression
   * `asserts.matches(%r{Regex})`
   * `denies.matches(%r{Regex})`
@@ -198,10 +193,6 @@ The advantage of using the block is that its innards are evaluated against the s
   * `denies.size(Numeric)`
   * `asserts.size { Numeric }`
   * `denies.size { Numeric }`
-
-* **Any**: checks the result of calling `any?` on the actual value. Expects no arguments.
-  * `asserts.any`
-  * `denies.any`
 
 * **Empty**: checks the result of calling `empty?` on the actual value. Expects no arguments.
   * `asserts.empty`

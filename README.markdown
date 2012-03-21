@@ -142,14 +142,14 @@ denies.equivalent_to { Object }
 Checks that the actual value has an instance variable defined within it's scope. You can also validate the value of that variable. Very much mimicing the `assigns` found in Rails-ish tests from way back in form, function, and need.
 
 ```ruby
-asserts("a person") { Person.new }.assigns(:email)`
-denies("a person") { Person.new }.assigns(:email)`
-asserts("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")`
-denies("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")`
-asserts.assigns { :email }`
-denies.assigns { :email }`
-asserts.assigns(:email) { "a@b.com" }`
-denies.assigns(:email) { "a@b.com" }`
+asserts("a person") { Person.new }.assigns(:email)
+denies("a person") { Person.new }.assigns(:email)
+asserts("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")
+denies("a person") { Person.new(:email => "a@b.com") }.assigns(:email, "a@b.com")
+asserts.assigns { :email }
+denies.assigns { :email }
+asserts.assigns(:email) { "a@b.com" }
+denies.assigns(:email) { "a@b.com" }
 ```
 
 #### Nil

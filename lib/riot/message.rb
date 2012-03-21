@@ -19,7 +19,7 @@ module Riot
   #    => "hello world whats the news"
   #
   # For every method called it is also acceptable to pass any number of arguments. These arguments will be
-  # added to the final message after having {Kernel#inspect} called on them. Another for instance:
+  # added to the final message after having `inspect` called on them. Another for instance:
   #
   #   message = Riot::Message.new
   #   message.expected([1, 2, 3], "foo").not([3, 2, 1], "bar")

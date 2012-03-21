@@ -1,328 +1,363 @@
-== 0.12.5
+# @markup markdown
 
-==== Remove doc for some deprecated macros: not, exists, any [charlietanskley]
+# 0.12.5
 
-==== Deprecate two more macros [charlietanskley]
+* Remove doc for some deprecated macros: not, exists, any [charlietanskley]
+* Deprecate two more macros [charlietanskley]
+* make riot run -w clean. None of those pesky warnings [achiu]
+* Use #inspect for printing arguments in error results [Mon-Ouie]
+* Move BlankSlate into Riot namespace [Mon-Ouie]
+* Setting options in a sub-context don't leak back into the parent context [skade]
+* Remove deprecated `not!` macro [charlietanksley]
+* Fix all warnings so riot runs `-w` clean
 
-==== make riot run -w clean. None of those pesky warnings [achiu]
+# 0.12.4
 
-==== Use #inspect for printing arguments in error results [Mon-Ouie]
-
-==== Move BlankSlate into Riot namespace [Mon-Ouie]
-
-==== Setting options in a sub-context don't leak back into the parent context [skade]
-
-==== Remove deprecated `not!` macro [charlietanksley]
-
-==== Fix all warnings so riot runs `-w` clean
-
-== 0.12.4
-
-==== Adding Riot.plain! option for not printing output in color [c00lryguy,
+* Adding Riot.plain! option for not printing output in color [c00lryguy,
 jaknowlden]
 
-== 0.12.3
+# 0.12.3
 
-==== Going nuts with context helpers: should_not, asserts/denies_topic arguments [achiu]
+* Going nuts with context helpers: should_not, asserts/denies_topic arguments [achiu]
 
 This works now: `should_not("do something")` as an alias for `denies`
 
 You can now pass arguments to `asserts`, `denies`, `should`, and `should_not`.
 
-    context "Playing with hashes" do
-			setup do
-				{ "foo" => "bar" }
-			end
+```
+context "Playing with hashes" do
+	setup do
+		{ "foo" => "bar" }
+	end
 
-			asserts(:[], "foo").equals("bar")
-			should(:[], "foo").equals("bar")
-			denies(:[], "foo").equals("goo")
-			should_not(:[], "foo").equals("goo")
-		end # Playing with hashes
+	asserts(:[], "foo").equals("bar")
+	should(:[], "foo").equals("bar")
+	denies(:[], "foo").equals("goo")
+	should_not(:[], "foo").equals("goo")
+end # Playing with hashes
+```
 
-==== Exit gracefully if a child process exited with failing status [timgaleckas]
+* Exit gracefully if a child process exited with failing status [timgaleckas]
 
 No tests will run in this situation.
 
-==== No status displayed if no tests run [timgaleckas]
+* No status displayed if no tests run [timgaleckas]
+* Adding a `denies_topic` macro to Context [Mon-Ouie]
 
-==== Adding a `denies_topic` macro to Context [Mon-Ouie]
+# 0.12.2
 
-== 0.12.2
+* RDoc'ed the hell out of everything [jaknowlden]
+* Deprecating the not! assertion macro. It may just be gone by 0.13.0 [jaknowlden]
+* Remove ANSI-color dependency [achiu]
+* Switch from Jeweler to Bundler [achiu]
+* Add PrettyDotMatrixReporter [achiu]
 
-==== RDoc'ed the hell out of everything [jaknowlden]
+# 0.12.1
 
-==== Deprecating the not! assertion macro. It may just be gone by 0.13.0 [jaknowlden]
+* Error reporting now filters the backtrace to include only meaningful line items. [mbriggs]
+* Added ability to pass method arguments to asserts. [sirupsen]
 
-==== Remove ANSI-color dependency [achiu]
+# 0.12.0
 
-==== Switch from Jeweler to Bundler [achiu]
+* Negative tests are finally here! Added support for `denies` and adjusted macros to care about it with `devaluate`. [jaknowlden, achiu]
 
-==== Add PrettyDotMatrixReporter [achiu]
+```
+denies("my name") { "Rumplestiltzkin" }.equals("Henry")
+```
 
-== 0.12.1
+# 0.11.4
 
-==== Error reporting now filters the backtrace to include only meaningful line items. [mbriggs]
-
-==== Added ability to pass method arguments to asserts. [sirupsen]
-
-== 0.12.0
-
-==== Negative tests are finally here! Added support for `denies` and adjusted macros to care about it with `devaluate`. [jaknowlden, achiu]
-
-    denies("my name") { "Rumplestiltzkin" }.equals("Henry")
-
-== 0.11.4
-
-==== [skade] Passing Proc's instead of lambdas to `instance_eval` to comply with ruby 1.9.2.
-
-==== [nu7hatch] Added `describe` alias for `context` for easier rspec porting. Useful at the top level and within a context.
+* [skade] Passing Proc's instead of lambdas to `instance_eval` to comply with ruby 1.9.2.
+* [nu7hatch] Added `describe` alias for `context` for easier rspec porting. Useful at the top level and within a context.
 
 Who can argue with porting from rspec to riot? Not me.
 
-    describe "My thing" do
-      asserts(:size).equals(:small)
-    end # My thing
+```
+describe "My thing" do
+  asserts(:size).equals(:small)
+end # My thing
+```
 
 The following also works:
 
-    context "Another thing is"
-      describe "my" do
-        asserts_topic.equals("marshmallow") # this test will fail ... because it will ... because it's wrong
-      end # my
-    end # Another thing is
+```
+context "Another thing is"
+  describe "my" do
+    asserts_topic.equals("marshmallow") # this test will fail ... because it will ... because it's wrong
+  end # my
+end # Another thing is
+```
 
-== 0.11.3
+# 0.11.3
 
-==== [jaknowlden] Modified `matches` assertion macro to treat actual as a string before executing regular expression comparison.
+* [jaknowlden] Modified `matches` assertion macro to treat actual as a string before executing regular expression comparison.
 
-    asserts("a number") { 42 }.matches(/\d+/)
-    # same as
-    asserts("a number as string") { "42" }.matches(/\d+/)
+```
+asserts("a number") { 42 }.matches(/\d+/)
+# same as
+asserts("a number as string") { "42" }.matches(/\d+/)
+```
 
-== 0.11.2
+# 0.11.2
 
-==== [jaknowlden] [ISSUE] Options were not nesting. Now fixed.
+* [jaknowlden] [ISSUE] Options were not nesting. Now fixed.
 
-== 0.11.1
+# 0.11.1
 
-==== [jaknowlden] Middleware can now acts more like you would expect. Middleware now know the next neighbor in the chain and can do stuff to the context before and after the user-defined context is prepared. Removes support for the handle? method. Now we act more like a Rack app.
+* [jaknowlden] Middleware can now acts more like you would expect. Middleware now know the next neighbor in the chain and can do stuff to the context before and after the user-defined context is prepared. Removes support for the handle? method. Now we act more like a Rack app.
 
-    class MyMiddleware < Riot::ContextMiddleware
-      register
-      
-      def call(context)
-        context.setup { "fooberries" }
+```
+class MyMiddleware < Riot::ContextMiddleware
+  register
+  
+  def call(context)
+    context.setup { "fooberries" }
 
-        middleware.call(context)
+    middleware.call(context)
 
-        context.hookup { "furberries" } if context.option(:barns)
-      end
-    end
+    context.hookup { "furberries" } if context.option(:barns)
+  end
+end
+```
 
-== 0.11.0
+# 0.11.0
 
-==== [jaknowlden] Added option to Context#setup which puts the specific setup block at the beginning of the setups to be called for a context. Also useful for middlewares.
+* [jaknowlden] Added option to Context#setup which puts the specific setup block at the beginning of the setups to be called for a context. Also useful for middlewares.
 
-    context "Foo" do
-      setup { puts "called second" }
-      setup { puts "called third" }
-      setup(true) { puts "called first" }
-    end # Foo
+```
+context "Foo" do
+  setup { puts "called second" }
+  setup { puts "called third" }
+  setup(true) { puts "called first" }
+end # Foo
+```
 
-==== [jaknowlden] Added idea of options for a context. This is another feature picked up from riot-rails work.
+* [jaknowlden] Added idea of options for a context. This is another feature picked up from riot-rails work.
 
 Essentially, these are useful for middlewares. For instance, if you wanted to tell a middleware that was looking for a "transactional" option before running code in a transaction block, you might do this:
 
-    context User do
-      set :transactional, true
-    end # User
+```
+context User do
+  set :transactional, true
+end # User
+```
 
 The middleware might do something with it:
 
-    class TransactionalMiddleware < Riot::ContextMiddleware
-      register
+```
+class TransactionalMiddleware < Riot::ContextMiddleware
+  register
 
-      def handle?(context) context.option(:transactional) == true; end
+  def handle?(context) context.option(:transactional) == true; end
 
-      def prepare(context)
-        # transactional stuff
-      end
-    end # TransactionalMiddleware
+  def prepare(context)
+    # transactional stuff
+  end
+end # TransactionalMiddleware
+```
 
 You can call set as many times as you like
 
-    context User do
-      set :transactional, true
-      set :foo, :bar
-    end
+```
+context User do
+  set :transactional, true
+  set :foo, :bar
+end
+```
 
-==== [jaknowlden] ContextMiddleware: a construction pattern that allows for custom code to be applied to any context given that the middleware chooses to.
+* [jaknowlden] ContextMiddleware: a construction pattern that allows for custom code to be applied to any context given that the middleware chooses to.
 
 This is something I started building into riot-rails and decided it was useful enough to just put it into riot itself. If, for instance, you wanted to add a setup with some stuff only if the context description was equal to "Your Mom":
 
-    class YourMomMiddleware < Riot::ContextMiddleware
-      register
+```
+class YourMomMiddleware < Riot::ContextMiddleware
+  register
 
-      def handle?(context)
-        context.description == "Your Mom"
-      end
+  def handle?(context)
+    context.description == "Your Mom"
+  end
 
-      def prepare(context)
-        context.setup do
-          "your mom is the topic"
-        end
-      end
-    end # YourMomMiddleware
-
-== 0.10.13
-
-==== [jaknowlden] Helpers are now run with other setups, not separately. Which means you could use a helper in a setup.
-
-    context "Foo" do
-      helper(:user) { User.new }
-      setup do
-        Baz.new(:user => user) # :)
-      end
-    end # Foo
-
-==== [vandrijevik] Correctly report non-RR assertion failures and errors when RR is used.
-
-    context "Foo.bar" do
-      asserts("baz is called") do
-        mock(Foo).baz
-        raise RuntimeError.new("oh noes")
-      end
+  def prepare(context)
+    context.setup do
+      "your mom is the topic"
     end
+  end
+end # YourMomMiddleware
+```
 
-  would previously return [:fail, "baz() Called 0 times. Expected 1 times."], and will now
-  correctly return [:error, #<RuntimeError: oh noes>]
+# 0.10.13
 
-==== [jaknowlden] Recording description as is. Providing #detailed_description for proper behavior
+* [jaknowlden] Helpers are now run with other setups, not separately. Which means you could use a helper in a setup.
 
-    foo_context = context(Foo) {}
-    bar_context = foo_context.context(Bar) {}
-    bar_context.description
-    => Bar
-    bar_context.detailed_description
-    => "Foo Bar"
+```
+context "Foo" do
+  helper(:user) { User.new }
+  setup do
+    Baz.new(:user => user) # :)
+  end
+end # Foo
+```
 
-==== [jaknowlden] No longer assuming topic when no block provided to an assertion. Instead, assuming block fails by default. Use `asserts_topic` only now.
+* [vandrijevik] Correctly report non-RR assertion failures and errors when RR is used.
 
-    context "foo" do
-      setup { "bar" }
-      asserts_topic.kind_of(String)
-      asserts("topic").kind_of(String) # Will fail since block returns `false`
-      asserts("topic").equals(false) # Will actually pass :)
-    end
+```
+context "Foo.bar" do
+  asserts("baz is called") do
+    mock(Foo).baz
+    raise RuntimeError.new("oh noes")
+  end
+end
+```
 
-== 0.10.12
+would previously return [:fail, "baz() Called 0 times. Expected 1 times."], and will now correctly return [:error, #<RuntimeError: oh noes>]
 
-==== [vandrijevik] Recognizing file and line number of an assertion declaration on failure
+* [jaknowlden] Recording description as is. Providing #detailed_description for proper behavior
 
-==== [vandrijevik,jaknowlden] RR support in Riot
+```
+foo_context = context(Foo) {}
+bar_context = foo_context.context(Bar) {}
+bar_context.description
+=> Bar
+bar_context.detailed_description
+=> "Foo Bar"
+```
 
-    # teststrap.rb
-    require 'riot'
-    require 'riot/rr'
-    
-    # your-test.rb
-    context "foo" do
-      asserts("failure due to not calling hello") { mock!.hello {"world"} } # actually fails
-    end
+* [jaknowlden] No longer assuming topic when no block provided to an assertion. Instead, assuming block fails by default. Use `asserts_topic` only now.
 
-==== [jaknowlden] Added Riot::Message to make messages in macros easier to write
+```
+context "foo" do
+  setup { "bar" }
+  asserts_topic.kind_of(String)
+  asserts("topic").kind_of(String) # Will fail since block returns `false`
+  asserts("topic").equals(false) # Will actually pass :)
+end
+```
 
-    def evaluate(actual, expected)
-      # ...
-      expected == actual pass(new_message.received(expected)) ? fail(expected(expected).not(actual))
-      # ...
-    end
+# 0.10.12
 
-==== [jaknowlden] Added responds_to as a respond_to alias
+* [vandrijevik] Recognizing file and line number of an assertion declaration on failure
+* [vandrijevik,jaknowlden] RR support in Riot
 
-==== [jaknowlden] Added the equivalent_to macro to compare case equality (===). equals is now (==)
+```
+# teststrap.rb
+require 'riot'
+require 'riot/rr'
 
-==== [jaknowlden] Assuming RootContext if nil parent provided. Added Context#parent to the API
+# your-test.rb
+context "foo" do
+  asserts("failure due to not calling hello") { mock!.hello {"world"} } # actually fails
+end
+```
 
-    Riot::Context.new("Hi", nil) {}.parent.class
-    => Riot::RootContext
+* [jaknowlden] Added Riot::Message to make messages in macros easier to write
 
-== 0.10.11
+```
+def evaluate(actual, expected)
+  # ...
+  expected == actual pass(new_message.received(expected)) ? fail(expected(expected).not(actual))
+  # ...
+end
+```
 
-==== [gabrielg, jaknowlden] Context#asserts_topic now takes an optional description
+* [jaknowlden] Added responds_to as a respond_to alias
+* [jaknowlden] Added the equivalent_to macro to compare case equality (===). equals is now (==)
+* [jaknowlden] Assuming RootContext if nil parent provided. Added Context#parent to the API
 
-    asserts_topic.exists
-    asserts_topic("some kind of description").exists
+```
+Riot::Context.new("Hi", nil) {}.parent.class
+=> Riot::RootContext
+```
 
-==== [gabrielg, jaknowlden] Added not! assertion macro
+# 0.10.11
 
-    setup { User.new(:funny? => false) }
-    asserts(:funny?).not!
+* [gabrielg, jaknowlden] Context#asserts_topic now takes an optional description
 
-==== [jaknowlden] Added Context#hookup to add some setup code to an already defined topic
+```
+asserts_topic.exists
+asserts_topic("some kind of description").exists
+```
 
-    context "yo mama" do
-      setup { YoMama.new }
-      # ...
-      context "is cool" do
-        hookup { topic.do_something_involving_state }
-        asserts_topic.kind_of?(YoMama)
-      end
-    end
+* [gabrielg, jaknowlden] Added not! assertion macro
 
-==== [jaknowlden] Added Riot.alone! mode to ensure Riot.run is not run at-exit
+```
+setup { User.new(:funny? => false) }
+asserts(:funny?).not!
+```
 
-    Riot.alone!
-    Riot.run
+* [jaknowlden] Added Context#hookup to add some setup code to an already defined topic
 
-  This will still print output unless you also Riot.silently!
+```
+context "yo mama" do
+  setup { YoMama.new }
+  # ...
+  context "is cool" do
+    hookup { topic.do_something_involving_state }
+    asserts_topic.kind_of?(YoMama)
+  end
+end
+```
 
-==== [gabrielg, jaknowlden] Returning non-zero status at-exit when tests don't pass
+* [jaknowlden] Added Riot.alone! mode to ensure Riot.run is not run at-exit
 
-== 0.10.10
+```
+Riot.alone!
+Riot.run
+```
 
-==== [dasch, jaknowlden] Passing assertion macros can now return a custom message
+This will still print output unless you also Riot.silently!
+
+* [gabrielg, jaknowlden] Returning non-zero status at-exit when tests don't pass
+
+# 0.10.10
+
+* [dasch, jaknowlden] Passing assertion macros can now return a custom message
+
+```
+def evaluate(actual, *expectings)
+  1 == 1 ? pass("1 does equal 1") : fail("1 does not equal 1 in this universe")
+end
+```
+
+* [jaknowlden] Removing Context#extend_assertions and related code
+* [dasch] Allow the use of symbolic descriptions as shorthands for sending the message to the topic
+
+```
+setup { "foo" }
+asserts(:upcase).equals("FOO")
+```
+
+* [jaknowlden, splattael] Added AssertionMacro and #register for macros
+
+```
+module My
+  class CustomThingAssertion < Riot::AssertionMacro
+    register :custom_thing
+    expects_exception!
 
     def evaluate(actual, *expectings)
-      1 == 1 ? pass("1 does equal 1") : fail("1 does not equal 1 in this universe")
-    end
-
-==== [jaknowlden] Removing Context#extend_assertions and related code
-
-==== [dasch] Allow the use of symbolic descriptions as shorthands for sending the message to the topic
-
-    setup { "foo" }
-    asserts(:upcase).equals("FOO")
-
-==== [jaknowlden, splattael] Added AssertionMacro and #register for macros
-
-    module My
-      class CustomThingAssertion < Riot::AssertionMacro
-        register :custom_thing
-        expects_exception!
-
-        def evaluate(actual, *expectings)
-          # ...
-        end
-      end
-      
-      Riot::Assertion.register_macro :custom_thing, CustomThingAssertion
-    end
-
-==== [splattael] Replace IOReporter#say with #puts. Also add #print.
-
-    class SomeNewReporter < IOReporter
-      def pass
-        puts "I PASSED"
-      end
-
-      def fail
-        print "F"
-      end
       # ...
     end
+  end
+  
+  Riot::Assertion.register_macro :custom_thing, CustomThingAssertion
+end
+```
 
-== 0.10.9 and before
+* [splattael] Replace IOReporter#say with #puts. Also add #print.
+
+```
+class SomeNewReporter < IOReporter
+  def pass
+    puts "I PASSED"
+  end
+
+  def fail
+    print "F"
+  end
+  # ...
+end
+```
+
+# 0.10.9 and before
 
 See the commit log: http://github.com/thumblemonks/riot/commits/master

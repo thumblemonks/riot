@@ -52,7 +52,7 @@ module Riot
     end
 
     # Anonymously evaluates any block given to it against the current instance of +self+. This is how
-    # {Riot::Assertion assertion} and {Riot::AssertionMAcro assertion macro} blocks are evaluated,
+    # {Riot::Assertion assertion} and {Riot::AssertionMacro assertion macro} blocks are evaluated,
     # for instance.
     #
     # @param [lambda] &block the block to evaluate against +self+

@@ -2,7 +2,7 @@ module Riot
 
   # A Reporter decides how to output the result of a test. When a context is set to be executed, the
   # {Riot::Reporter#describe_context} method is called with the context that will be running; this remains
-  # so until the next context is executed. After each {Riot#Assertion#evaluate assertion is evaluated}, 
+  # so until the next context is executed. After each {Riot::AssertionMacro#evaluate assertion is evaluated}, 
   # {Riot::Reporter#report} is called with the description of the assertion and the resulting response.
   #
   # The general idea is that a sub-class of Reporter should be defined that knows specifically how to

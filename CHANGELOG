@@ -1,5 +1,7 @@
 # @markup markdown
 
+* close #31 - RR seems to carry over some latent varification state between situations 
+
 # 0.12.5
 
 * Remove doc for some deprecated macros: not, exists, any [charlietanskley]

@@ -10,6 +10,11 @@ module Riot
     # setup, yeardown, helper, hookup, or assertion.
     class Situation < Riot::Situation
       include ::RR::Adapters::RRMethods
+
+      def initialize
+        self.reset
+        super
+      end
     end # Situation
 
     # Binds the {Riot::Assertion} to RR so that successes and failures found by RR are inherently handled

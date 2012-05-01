@@ -23,7 +23,7 @@ context "A raises_kind_of assertion macro" do
 
   assertion_test_fails("when nothing was raised",
                        "expected to raise kind of Whoops, but raised nothing") do
-    assertion = Riot::Assertion.new("foo") { "barf" }.raises_kind_of(Whoops)
+    Riot::Assertion.new("foo") { "barf" }.raises_kind_of(Whoops)
   end
 
   assertion_test_passes("when provided message equals expected message",

@@ -64,7 +64,7 @@ module Riot
     # @param [Array] backtrace an exception's backtrace
     # @param [lambda] &line_handler called each time a good line is found
     def filter_backtrace(backtrace, &line_handler)
-      cleansed, bad = [], true
+      bad = true
 
       # goal is to filter all the riot stuff/rake before the first non riot thing
       backtrace.reverse_each do |bt|

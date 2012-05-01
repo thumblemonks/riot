@@ -13,7 +13,7 @@ context "A raises assertion macro" do
   end
 
   assertion_test_fails("when nothing was raised", "expected to raise Whoops, but raised nothing") do
-    assertion = Riot::Assertion.new("foo") { "barf" }.raises(Whoops)
+    Riot::Assertion.new("foo") { "barf" }.raises(Whoops)
   end
   
   assertion_test_passes("when provided message equals expected message", %Q{raises Whoops with message "Mom"}) do

@@ -51,11 +51,8 @@ module Riot
     # @param [Exception] e the exception to generate the backtrace from
     # @return [String] the error response message
     def format_error(e)
-      format = []
-      format << "    #{e.class.name} occurred"
-      format << "#{e.to_s}"
+      format = ["    #{e.class.name} occurred", "#{e.to_s}"]
       filter_backtrace(e.backtrace) { |line| format << "      at #{line}" }
-
       format.join("\n")
     end
 
@@ -64,13 +61,8 @@ module Riot
     # @param [Array] backtrace an exception's backtrace
     # @param [lambda] &line_handler called each time a good line is found
     def filter_backtrace(backtrace, &line_handler)
-      bad = true
-
-      # goal is to filter all the riot stuff/rake before the first non riot thing
       backtrace.reverse_each do |bt|
-        # make sure we are still in the bad part
-        bad = (bt =~ /\/lib\/riot/ || bt =~ /rake_test_loader/) if bad
-        yield bt unless bad
+        yield bt unless (bt =~ /(\/lib\/riot|rake_test_loader)/)
       end
     end
 

@@ -48,6 +48,8 @@ module Riot
     def run(situation)
       situation.setup(&definition)
       [:setup]
+    rescue Exception => e
+      [:setup_error, e]
     end
   end # Setup
 

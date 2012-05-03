@@ -39,6 +39,11 @@ context "A reporter" do
     topic.errors
   end.equals(1)
 
+  asserts("error count increase when :setup_error sent to #report") do
+    topic.report("", [:setup_error, ""])
+    topic.errors
+  end.equals(2)
+
   asserts("description sent to #error") do
     topic.report("break it down", [:error, "error time"])
   end.equals("errored(break it down, error time)")

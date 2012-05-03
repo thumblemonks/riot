@@ -98,7 +98,11 @@ module Riot
     # @param [Riot::Reporter] reporter the reporter to report results to
     # @param [Riot::Situation] situation the situation to use for executing the context.
     def local_run(reporter, situation)
-      runnables.each { |runnable| reporter.report(runnable.to_s, runnable.run(situation)) }
+      runnables.each do |runnable|
+        code, response = *runnable.run(situation)
+        reporter.report(runnable.to_s, [code, response])
+        break if code == :setup_error
+      end
     end
 
     # Prints the full description from the context tree, grabbing the description from the parent and

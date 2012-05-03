@@ -69,7 +69,7 @@ module Riot
         @failures += 1
         message, line, file = *response[1..-1]
         fail(description, message, line, file)
-      when :error then
+      when :error, :setup_error then
         @errors += 1
         error(description, result)
       end

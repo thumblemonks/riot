@@ -20,20 +20,18 @@ context "StoryReporter" do
 
   context 'reporting on an empty context' do
     setup do
-      context = Riot::Context.new('empty context') do
+      context = Riot::Context.new('empty context') {
         context("a nested empty context") {}
-      end
-      context.run(topic)
+      }.run(topic)
     end
     should("not output context name") { @out.string }.empty
   end
 
   context "reporting on a non-empty context" do
     setup do
-      context = Riot::Context.new('supercontext') do
+      Riot::Context.new('supercontext') {
         asserts("truth") { true }
-      end
-      context.run(topic)
+      }.run(topic)
     end
 
     should('output context name') { @out.string }.matches(/supercontext/)

@@ -4,7 +4,6 @@ require 'bundler/setup'
 
 require 'riot'
 Riot.verbose
-
 Riot.pretty_dots if ENV["TM_MODE"]
 
 module Riot

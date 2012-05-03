@@ -30,7 +30,6 @@ module Riot
     def simple_error(e)
       format = []
       filter_backtrace(e.backtrace) { |line| format << "at #{line}" }
-
       format.join("\n")
     end
   end

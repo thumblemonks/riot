@@ -1,5 +1,6 @@
 # @markup markdown
 
+* Errors that occur during a setup, hookup, or teardown are handled gracefully 
 * close #31 - RR seems to carry over some latent varification state between situations 
 
 # 0.12.5

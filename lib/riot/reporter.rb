@@ -22,7 +22,8 @@ module Riot
     attr_accessor :current_context
 
     # Creates a new Reporter instance and initializes counts to zero
-    def initialize
+    def initialize(*args)
+      @options = args.extract_options!
       @passes = @failures = @errors = 0
       @current_context = ""
     end

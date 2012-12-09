@@ -13,8 +13,8 @@ module Riot
     # @param [IO] writer the writer to use for results
     # @param [Hash] options options for reporter
     def initialize(*args)
-      super()
-      @options = (args.last.kind_of?(Hash) ? args.pop : {})
+      super
+      @options = args.extract_options!
       @writer = (args.shift || STDOUT)
     end
 

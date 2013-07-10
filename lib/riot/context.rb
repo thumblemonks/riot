@@ -51,8 +51,11 @@ module Riot
       @parent = parent || RootContext.new([],[], "", {})
       @description = description
       @contexts, @setups, @assertions, @teardowns = [], [], [], []
+      @context_error = nil
       @options = @parent.option_set.dup
       prepare_middleware(&definition)
+    rescue Exception => e
+      @context_error = e
     end
 
     # Create a new test context.
@@ -88,8 +91,12 @@ module Riot
     # @return [Riot::Reporter] the given reporter
     def run(reporter)
       reporter.describe_context(self) unless @assertions.empty?
-      local_run(reporter, situation_class.new)
-      run_sub_contexts(reporter)
+      if @context_error
+        reporter.report("context preparation", [:context_error, @context_error])
+      else
+        local_run(reporter, situation_class.new)
+        run_sub_contexts(reporter)
+      end
       reporter
     end
 

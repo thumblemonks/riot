@@ -45,7 +45,7 @@ module Riot
       line ? "(on line #{line} in #{file})" : ""
     end
 
-    # Generates a message for assertions that error out. However, in the additional stacktrace, any mentions 
+    # Generates a message for assertions that error out. However, in the additional stacktrace, any mentions
     # of Riot and Rake framework methods calls are removed. Makes for a more readable error response.
     #
     # @param [Exception] e the exception to generate the backtrace from
@@ -70,7 +70,7 @@ module Riot
     def red(str);    with_color(31, str); end
     def yellow(str); with_color(33, str); end
     def green(str);  with_color(32, str); end
-    
+
     def plain?
       (@options[:plain] || @options["plain"])
     end

@@ -25,7 +25,7 @@ module Riot
     def initialize(*args)
       @options = args.extract_options!
       @passes = @failures = @errors = 0
-      @current_context = ""
+      @current_context = Riot::RootContext.new
     end
 
     def new(*args, &block); self; end
@@ -70,7 +70,7 @@ module Riot
         @failures += 1
         message, line, file = *response[1..-1]
         fail(description, message, line, file)
-      when :error, :setup_error then
+      when :error, :setup_error, :context_error then
         @errors += 1
         error(description, result)
       end

@@ -100,4 +100,24 @@ context "ContextMiddleware" do
 
     asserts("tests passed") { topic.passes }.equals(1)
   end # has access to options after context setup
+
+  context "that errors while preparing" do
+    hookup do
+      Class.new(Riot::ContextMiddleware) do
+        register
+        def call(context)
+          raise Exception.new("Banana pants")
+        end
+      end
+    end
+
+    setup do
+      Riot::Context.new("Foo") { asserts_topic.nil }.run(MockReporter.new)
+    end
+
+    asserts("tests passed") { topic.passes }.equals(0)
+    asserts("tests failed") { topic.failures }.equals(0)
+    asserts("tests errored") { topic.errors }.equals(1)
+  end # that is not meant to be used
+
 end # ContextMiddleware

@@ -1,5 +1,8 @@
 # @markup markdown
 
+# 0.12.6
+
+* Catch and report on errors that occur while running middleware. Context with error in middleware will not run.
 * Errors that occur during a setup, hookup, or teardown are handled gracefully 
 * close #31 - RR seems to carry over some latent varification state between situations 
 

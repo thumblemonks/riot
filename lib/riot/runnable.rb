@@ -20,7 +20,7 @@ module Riot
     end
 
     # Given a {Riot::Situation}, eval the provided block against it and then return a status tuple.
-    # 
+    #
     # @param [Riot::Situation] situation An instance of a {Riot::Situation}
     # @return [Array<Symbol[, String]>] array containing at least an evaluation state
     def run(situation)
@@ -39,8 +39,8 @@ module Riot
       super("setup", &definition)
     end
 
-    # Calls {Riot::Situation#setup} with the predefined block at {Riot::Context} run-time. Though this is 
-    # like every other kind of {Riot::RunnableBlock}, +run+ will not return a meaningful state, which means 
+    # Calls {Riot::Situation#setup} with the predefined block at {Riot::Context} run-time. Though this is
+    # like every other kind of {Riot::RunnableBlock}, +run+ will not return a meaningful state, which means
     # the reporter will likely not report anything.
     #
     # @param [Riot::Situation] situation the situation for the current {Riot::Context} run
@@ -48,13 +48,13 @@ module Riot
     def run(situation)
       situation.setup(&definition)
       [:setup]
-    rescue Exception => e
+    rescue StandardError => e
       [:setup_error, e]
     end
   end # Setup
 
-  # Used to decorate a helper. A helper generally ends up being a glorified method that can be referenced 
-  # from within a setup, teardown, hookup, other helpers, assertion blocks, and assertion macro blocks; 
+  # Used to decorate a helper. A helper generally ends up being a glorified method that can be referenced
+  # from within a setup, teardown, hookup, other helpers, assertion blocks, and assertion macro blocks;
   # basically anywhere the {Riot::Situation} instance is available.
   #
   #   context "Making dinner" do
@@ -74,8 +74,8 @@ module Riot
       @name = name
     end
 
-    # Calls {Riot::Situation#helper} with the predefined helper name and block at {Riot::Context} run-time. 
-    # Though this is like every other kind of {Riot::RunnableBlock}, +run+ will not return a meaningful 
+    # Calls {Riot::Situation#helper} with the predefined helper name and block at {Riot::Context} run-time.
+    # Though this is like every other kind of {Riot::RunnableBlock}, +run+ will not return a meaningful
     # state, which means the reporter will likely not report anything.
     #
     # @param [Riot::Situation] situation the situation for the current {Riot::Context} run

@@ -122,7 +122,7 @@ module Riot
 
   private
 
-    # Iterative over the registered middlewares and let them configure this context instance if they so
+    # Iterate over the registered middlewares and let them configure this context instance if they so
     # choose. {Riot::AllImportantMiddleware} will always be the last in the chain.
     def prepare_middleware(&context_definition)
       last_middleware = AllImportantMiddleware.new(&context_definition)

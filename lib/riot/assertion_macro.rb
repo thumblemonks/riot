@@ -53,6 +53,7 @@ module Riot
       # @param [String, Symbol] name the name of the macro
       def register(name)
         Assertion.register_macro name, self
+        Assertion.register_macro name.to_s + '?', self
       end
     end
 

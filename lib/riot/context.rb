@@ -106,8 +106,8 @@ module Riot
     # @param [Riot::Situation] situation the situation to use for executing the context.
     def local_run(reporter, situation)
       runnables.each do |runnable|
-        code, response = *runnable.run(situation)
-        reporter.report(runnable.to_s, [code, response])
+        code, response, line, file = *runnable.run(situation)
+        reporter.report(runnable.to_s, [code, response, line, file])
         break if code == :setup_error
       end
     end

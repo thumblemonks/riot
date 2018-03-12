@@ -3,7 +3,7 @@ $:.unshift(File.expand_path("../lib", __FILE__))
 require "riot/version"
 
 Gem::Specification.new do |s|
-  s.name          = %q{riot}
+  s.name          = %q{signal-riot}
   s.version       = Riot::VERSION
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Justin 'Gus' Knowlden"]

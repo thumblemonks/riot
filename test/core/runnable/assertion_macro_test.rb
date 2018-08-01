@@ -12,24 +12,18 @@ context "An AssertionMacro instance" do
   asserts_topic.responds_to(:file=)
 
   context "receiving #new_message" do
-    setup { topic.new_message("hope") }
-
-    asserts_topic.kind_of(Riot::Message)
-    asserts(:to_s).equals(%q["hope"])
+    asserts { topic.new_message("hope") }.kind_of(Riot::Message)
+    asserts { topic.new_message("hope").to_s }.equals(%q["hope"])
   end
 
   context "receiving #should_have_message" do
-    setup { topic.should_have_message("hope") }
-
-    asserts_topic.kind_of(Riot::Message)
-    asserts(:to_s).equals(%q[should have "hope"])
+    asserts { topic.should_have_message("hope") }.kind_of(Riot::Message)
+    asserts { topic.should_have_message("hope").to_s }.equals(%q[should have "hope"])
   end
 
   context "receiving #expected_message" do
-    setup { topic.expected_message("hope") }
-
-    asserts_topic.kind_of(Riot::Message)
-    asserts(:to_s).equals(%q[expected "hope"])
+    asserts { topic.expected_message("hope") }.kind_of(Riot::Message)
+    asserts { topic.expected_message("hope").to_s }.equals(%q[expected "hope"])
   end
 end # An AssertionMacro instance
 

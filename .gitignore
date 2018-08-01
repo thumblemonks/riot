@@ -1,12 +1,18 @@
+# packaging
 *.gem
 pkg
-.*.swp
-doc
-.yardoc
-*.tmproj
-_site
-*.watchr
-.DS_Store
 Gemfile.lock
 .rvmrc
 
+# editors
+.*.swp
+*.tmproj
+
+# documentation
+doc
+.yardoc
+_site
+*.watchr
+
+# misc
+.DS_Store

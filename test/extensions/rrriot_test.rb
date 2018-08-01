@@ -4,7 +4,7 @@ require 'riot/rr'
 context "Riot with RR support" do
   asserts("RR methods are available to an RR::Situation") do
     Riot::RR::Situation.ancestors
-  end.includes(::RR::Adapters::RRMethods)
+  end.includes(::RR::DSL)
 
   asserts("assertion passes when RR is satisfied") do
     situation = Riot::RR::Situation.new

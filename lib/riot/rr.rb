@@ -9,7 +9,8 @@ module Riot
     # RR methods that would typically be used: +mock+, +stub+, +verify+, etc. will be available to any
     # setup, yeardown, helper, hookup, or assertion.
     class Situation < Riot::Situation
-      include ::RR::Adapters::RRMethods
+      # include ::RR::Adapters::RRMethods
+      include ::RR::DSL
 
       def initialize
         self.reset

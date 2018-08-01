@@ -5,8 +5,8 @@ context "A kind_of assertion macro" do
     Riot::Assertion.new("foo") { "a" }.kind_of(String)
   end
 
-  assertion_test_fails(":fail when not a kind of String", "expected kind of String, not Fixnum") do
-    Riot::Assertion.new("foo") { 0 }.kind_of(String)
+  assertion_test_fails(":fail when not a kind of String", "expected kind of String, not Class") do
+    Riot::Assertion.new("foo") { Class }.kind_of(String)
   end
 
   assertion_test_fails(":fail when nil", "expected kind of String, not NilClass") do
